@@ -1,6 +1,6 @@
-package com.course.system.dao;
+package com.course.server.dao;
 
-import com.course.system.domain.Course;
+import com.course.server.domain.Course;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

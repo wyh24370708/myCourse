@@ -1,18 +1,18 @@
 package com.course.system.controller;
 
-import com.course.system.domain.Course;
-import com.course.system.service.TestService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.course.server.domain.Course;
+import com.course.server.service.TestService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Controller
 public class TestController {
 
-    @Autowired
+    @Resource
     private TestService testService;
 
     /**

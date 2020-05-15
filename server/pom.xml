@@ -9,19 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>system</artifactId>
+    <artifactId>server</artifactId>
 
     <dependencies>
-        <!--依赖server-->
-        <dependency>
-            <groupId>com.course</groupId>
-            <artifactId>server</artifactId>
-        </dependency>
-        <!--eureka客户端依赖-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
+
         <!--web依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -45,5 +36,4 @@
         </dependency>
 
     </dependencies>
-
 </project>

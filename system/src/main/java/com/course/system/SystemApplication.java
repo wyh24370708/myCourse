@@ -6,11 +6,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 @SpringBootApplication
 @EnableEurekaClient
-@MapperScan("com.course.system.dao")
+//service分子模块后,需要使用这个注解扫描其他模块,自身模块的内容,在@SpringBootApplication已经扫描了
+@ComponentScan("com.course")
+@MapperScan("com.course.server.dao")
 public class SystemApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(SystemApplication.class);

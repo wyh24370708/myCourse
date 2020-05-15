@@ -1,8 +1,8 @@
-package com.course.system.service.impl;
+package com.course.server.service.impl;
 
-import com.course.system.dao.TestMapper;
-import com.course.system.domain.Course;
-import com.course.system.service.TestService;
+import com.course.server.dao.TestMapper;
+import com.course.server.domain.Course;
+import com.course.server.service.TestService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
