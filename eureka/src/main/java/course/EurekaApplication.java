@@ -20,6 +20,6 @@ public class EurekaApplication {
 		SpringApplication app = new SpringApplication(EurekaApplication.class);
 		ConfigurableEnvironment env = app.run(args).getEnvironment();
 		LOG.info("eureka启动了! ! !");
-		LOG.info("eureka地址: \thttp:127.0.0.1:{}",env.getProperty("server.port"));
+		LOG.info("eureka地址: \thttp://127.0.0.1:{}",env.getProperty("server.port"));
 	}
 }
