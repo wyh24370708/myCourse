@@ -1,6 +1,6 @@
 package com.course.server.service.impl;
 
-import com.course.server.dao.CourseMapper;
+import com.course.server.mapper.CourseMapper;
 import com.course.server.domain.Course;
 import com.course.server.service.CourseService;
 import org.springframework.stereotype.Service;

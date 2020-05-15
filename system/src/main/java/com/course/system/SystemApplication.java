@@ -13,7 +13,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 @EnableEurekaClient
 //service分子模块后,需要使用这个注解扫描其他模块,自身模块的内容,在@SpringBootApplication已经扫描了
 @ComponentScan("com.course")
-@MapperScan("com.course.server.dao")
+@MapperScan("com.course.server.mapper")
 public class SystemApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(SystemApplication.class);

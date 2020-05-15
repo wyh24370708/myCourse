@@ -1,4 +1,4 @@
-package com.course.server.dao;
+package com.course.server.mapper;
 
 import com.course.server.domain.Course;
 import org.apache.ibatis.annotations.Mapper;
