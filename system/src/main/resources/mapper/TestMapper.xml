@@ -6,7 +6,7 @@
 
     <!--测试查询所有-->
     <select id="testFindAll" resultType="course">
-        select id,name from course;
+        select c.id,c.name from course c
     </select>
 
 </mapper>
