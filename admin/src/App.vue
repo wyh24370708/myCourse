@@ -5,13 +5,14 @@
         <div class="row">
           <div class="col-sm-10 col-sm-offset-1">
             <div class="login-container">
+              <!-- 中心标题 -->
               <div class="center">
                 <h1>
                   <i class="ace-icon fa fa-leaf green"></i>
-                  <span class="red">Ace</span>
-                  <span class="white" id="id-text2">Application</span>
+                  <span class="red">Ace </span>
+                  <span class="white" id="id-text2">在线视频课程系统</span>
                 </h1>
-                <h4 class="blue" id="id-company-text">&copy; Company Name</h4>
+<!--                <h4 class="blue" id="id-company-text">&copy; Company Name</h4>-->
               </div>
 
               <div class="space-6"></div>
@@ -61,42 +62,47 @@
                         </fieldset>
                       </form>
 
-                      <div class="social-or-login center">
-                        <span class="bigger-110">Or Login Using</span>
-                      </div>
+<!--                      &lt;!&ndash; 登陆方式 &ndash;&gt;-->
+<!--                      <div class="social-or-login center">-->
+<!--                        <span class="bigger-110">Or Login Using</span>-->
+<!--                      </div>-->
 
-                      <div class="space-6"></div>
+<!--                      <div class="space-6"></div>-->
+<!--                      &lt;!&ndash;三种方式&ndash;&gt;-->
+<!--                      <div class="social-login center">-->
+<!--                        <a class="btn btn-primary">-->
+<!--                          <i class="ace-icon fa fa-facebook"></i>-->
+<!--                        </a>-->
 
-                      <div class="social-login center">
-                        <a class="btn btn-primary">
-                          <i class="ace-icon fa fa-facebook"></i>
-                        </a>
+<!--                        <a class="btn btn-info">-->
+<!--                          <i class="ace-icon fa fa-twitter"></i>-->
+<!--                        </a>-->
 
-                        <a class="btn btn-info">
-                          <i class="ace-icon fa fa-twitter"></i>
-                        </a>
-
-                        <a class="btn btn-danger">
-                          <i class="ace-icon fa fa-google-plus"></i>
-                        </a>
-                      </div>
+<!--                        <a class="btn btn-danger">-->
+<!--                          <i class="ace-icon fa fa-google-plus"></i>-->
+<!--                        </a>-->
+<!--                      </div>-->
                     </div><!-- /.widget-main -->
 
-                    <div class="toolbar clearfix">
-                      <div>
-                        <a href="#" data-target="#forgot-box" class="forgot-password-link">
-                          <i class="ace-icon fa fa-arrow-left"></i>
-                          I forgot my password
-                        </a>
-                      </div>
 
-                      <div>
-                        <a href="#" data-target="#signup-box" class="user-signup-link">
-                          I want to register
-                          <i class="ace-icon fa fa-arrow-right"></i>
-                        </a>
-                      </div>
-                    </div>
+<!--                    <div class="toolbar clearfix">-->
+<!--                      &lt;!&ndash;忘记密码跳转页...&ndash;&gt;-->
+<!--                      <div>-->
+<!--                        <a href="#" data-target="#forgot-box" class="forgot-password-link">-->
+<!--                          <i class="ace-icon fa fa-arrow-left"></i>-->
+<!--                          I forgot my password-->
+<!--                        </a>-->
+<!--                      </div>-->
+
+<!--                      &lt;!&ndash;注册页面&ndash;&gt;-->
+<!--                      <div>-->
+<!--                        <a href="#" data-target="#signup-box" class="user-signup-link">-->
+<!--                          I want to register-->
+<!--                          <i class="ace-icon fa fa-arrow-right"></i>-->
+<!--                        </a>-->
+<!--                      </div>-->
+<!--                    </div>-->
+
                   </div><!-- /.widget-body -->
                 </div><!-- /.login-box -->
 
