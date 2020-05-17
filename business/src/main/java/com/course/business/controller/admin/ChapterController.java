@@ -18,7 +18,7 @@ public class ChapterController {
     @Resource
     private ChapterService chapterService;
 
-    @RequestMapping("/findAll")
+    @RequestMapping("/chapter")
     public List<ChapterDto> findAll() {
         return chapterService.findAll();
     }
