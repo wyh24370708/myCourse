@@ -488,9 +488,27 @@
     export default {
         name: 'admin',
         mounted: function () {
+            let _this = this;
             //组件每次加载,mounted都会被执行
             $("body").removeClass('login-layout blur-login');//删除登陆页面的body样式
             $("body").attr('class','no-skin'); //设置admin的body页面的的样式
+            //激活样式方法二
+            // _this.activeSidebar(_this.$route.name.replace('/','-') + "-sidebar");
+        },
+        watch: {
+            //激活样式方法三
+            $route: {
+                handler: function (val, oldVal) {
+                    console.log("---->页面跳转:", val,oldVal);
+                    let _this = this;
+                    _this.$nextTick(function () {//页面加载完成后执行
+                        console.log("==>"+_this.$route.name);
+                        _this.activeSidebar(_this.$route.name.replace('/','-') + "-sidebar");
+                        //welcome  <--> welcome-sidebar
+                        //js中关键字,代表当前执行方法的对象,养成一种习惯,  使用本地变量代替this,直接使用this会有很多坑
+                    })
+                }
+            }
         },
         methods: {
             /**
@@ -512,5 +530,6 @@
                 }
             }
         }
+
     }
 </script>
