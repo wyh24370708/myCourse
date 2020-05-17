@@ -40,8 +40,9 @@
                              targetPackage="com.course.server.mapper"
                              type="XMLMAPPER" />
 
-        <!--        <table tableName="test" domainObjectName="Test"/>-->
-        <table tableName="province" domainObjectName="Province"/>
+<!--        <table tableName="test" domainObjectName="Test"/>-->
+<!--        <table tableName="province" domainObjectName="Province"/>-->
+        <table tableName="chapter" domainObjectName="Chapter"/>
 
     </context>
 </generatorConfiguration>
