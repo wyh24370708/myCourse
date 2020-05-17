@@ -360,6 +360,7 @@
         </div><!-- /.sidebar-shortcuts -->
 
         <ul class="nav nav-list">
+          <li class="" id="welcome-sidebar">
             <router-link to="/admin/welcome">
               <i class="menu-icon fa fa-tachometer"></i>
               <span class="menu-text"> 欢迎 </span>
