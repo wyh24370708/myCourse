@@ -321,6 +321,7 @@
       </div><!-- /.navbar-container -->
     </div>
 
+    <!--内容部分-->
     <div class="main-container ace-save-state" id="main-container">
 
 
@@ -938,7 +939,8 @@
             <div class="row">
               <div class="col-xs-12">
                 <!-- PAGE CONTENT BEGINS -->
-
+                <!--页面内容,使用路由展现-->
+                <router-view/>
                 <!-- PAGE CONTENT ENDS -->
               </div><!-- /.col -->
             </div><!-- /.row -->
