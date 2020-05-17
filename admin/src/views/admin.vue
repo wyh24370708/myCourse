@@ -360,16 +360,15 @@
         </div><!-- /.sidebar-shortcuts -->
 
         <ul class="nav nav-list">
-          <li class="">
-            <a href="index.html">
+            <router-link to="/admin/welcome">
               <i class="menu-icon fa fa-tachometer"></i>
               <span class="menu-text"> 欢迎 </span>
-            </a>
+            </router-link>
 
             <b class="arrow"></b>
           </li>
 
-          <li class="activie open">
+          <li class="">
             <a href="#" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
               <span class="menu-text"> 系统管理 </span>
@@ -397,6 +396,30 @@
 
                 <b class="arrow"></b>
               </li>
+            </ul>
+          </li>
+
+          <li class="activie open">
+            <a href="#" class="dropdown-toggle">
+              <i class="menu-icon fa fa-list"></i>
+              <span class="menu-text"> 业务管理 </span>
+
+              <b class="arrow fa fa-angle-down"></b>
+            </a>
+
+            <b class="arrow"></b>
+
+            <ul class="submenu">
+              <li class="active" id="business-chapter-sidebar">
+                <router-link to="/admin/business/chapter">
+                  <i class="menu-icon fa fa-caret-right"></i>
+                  大章
+                </router-link>
+
+                <b class="arrow"></b>
+              </li>
+
+
             </ul>
           </li>
 
@@ -462,11 +485,31 @@
 
 <script>
     export default {
-        mode: 'admin',
+        name: 'admin',
         mounted: function () {
             //组件每次加载,mounted都会被执行
             $("body").removeClass('login-layout blur-login');//删除登陆页面的body样式
             $("body").attr('class','no-skin'); //设置admin的body页面的的样式
+        },
+        methods: {
+            /**
+             * 菜单激活样式.id是当前点击菜单的id
+             */
+            activeSidebar: function (id) {
+                //二级菜单
+                //兄弟菜单去掉active样式,自身增加active样式
+                $("#" + id).siblings().removeClass("active");
+                $("#" + id).siblings().find("li").removeClass("active");
+                $("#" + id).addClass("active");
+
+                //一级菜单
+                //如果有父菜单, 父菜单的兄弟菜单去掉active open, 父菜单增加active open
+                var parentLi = $("#" + id).parents("li");
+                if (parentLi){
+                    parentLi.siblings().removeClass("active open");
+                    parentLi.addClass("active open");
+                }
+            }
         }
     }
 </script>
