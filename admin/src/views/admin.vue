@@ -982,6 +982,12 @@
 </template>
 
 <script>
-  $("body").removeClass('login-layout blur-login');//删除登陆页面的body样式
-  $("body").attr('class','no-skin'); //设置admin的body页面的的样式
+  export default {
+      mode: 'admin',
+      mounted: function () {
+          //组件每次加载,mounted都会被执行
+          $("body").removeClass('login-layout blur-login');//删除登陆页面的body样式
+          $("body").attr('class','no-skin'); //设置admin的body页面的的样式
+      }
+  }
 </script>

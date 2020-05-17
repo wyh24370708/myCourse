@@ -248,9 +248,12 @@
 </template>
 
 <script>
-    $('body').attr('class', 'login-layout blur-login');
     export default {
         name: 'login',
+        mounted: function(){//mounted初始化样式
+            $("body").removeClass('no-skin');//删除登陆页面的body样式
+            $("body").attr('class','login-layout blur-login'); //设置admin的body页面的的样式
+        },
         methods:{
             login() {
                 this.$router.push("/admin")
