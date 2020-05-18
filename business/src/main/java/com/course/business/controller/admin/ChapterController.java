@@ -2,6 +2,7 @@ package com.course.business.controller.admin;
 
 import com.course.server.domain.Chapter;
 import com.course.server.dto.ChapterDto;
+import com.course.server.dto.PageDto;
 import com.course.server.service.ChapterService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +20,10 @@ public class ChapterController {
     private ChapterService chapterService;
 
     @RequestMapping("/list")
-    public List<ChapterDto> findAll() {
-        return chapterService.findAll();
+    public PageDto findAll(PageDto pageDto) {
+        System.out.println(pageDto);
+        chapterService.findAll(pageDto);
+        return pageDto;
     }
 
 }
