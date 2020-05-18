@@ -1,5 +1,17 @@
 <template>
   <div>
+    <!--刷新按钮
+      idea vue中的v-on爆红解决办法:
+        seettings – 》 Editor --》 Inspections 进到具体页面
+        XML -- Unbound XML namespace prefix
+    -->
+    <p>
+      <button class="btn btn-white btn-default btn-round"
+        v-on:click="list()">
+        <i class="ace-icon fa fa-refresh"></i>
+        刷新
+      </button>
+    </p>
     <table id="simple-table" class="table  table-bordered table-hover">
       <thead>
         <tr>
