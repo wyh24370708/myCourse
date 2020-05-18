@@ -983,17 +983,32 @@
     </table><!-- /.row -->
   </div>
 </template>
-
+<!--
+  /admin用于控台类的接口
+  /web用于网站类的接口
+  接口设计中,用不同的请求前缀代表不同的入口
+  做借口的隔离,方便做鉴定,统计,监控等
+-->
 <script>
   export default {
       name: 'chapter',
       mounted: function () {
           //激活样式方法一
           // this.$parent.activeSidebar("business-chapter-sidebar");//后面使用通用方法
+          let _this = this;
+          _this.list();
       },
       methods: {
-
+        list() {
+            let _this = this;
+            _this.$ajax.get('http://127.0.0.1:9002/business/admin/chapter/list').then(function (response) {
+                //then异步执行,当.then()前的方法执行完后再执行then()内部的程序，这样就避免了，数据没获取到等的问题。
+                console.log("查询大章结果:",response);
+                // 出现跨域问题,因为我们是前后端分离的
+                // Access to XMLHttpRequest at 'http://127.0.0.1:9002/business/admin/chapter/list' from origin 'http://localhost:8080'
+                // has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+            })
+        }
       }
   }
-
 </script>
