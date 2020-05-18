@@ -156,14 +156,18 @@
       methods: {
         list() {
             let _this = this;
-            _this.$ajax.get('http://127.0.0.1:9000/business/admin/chapter/list').then(function (response) {
+            //传输数据,通过表单的形式和流的形式,vue是通过流的方式,需要以@requestBody来获取数据
+            _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/list',{
+                pageNum: 1,
+                pageSize: 1
+            }).then(function (response) {
                 //then异步执行,当.then()前的方法执行完后再执行then()内部的程序，这样就避免了，数据没获取到等的问题。
                 console.log("查询大章结果:",response);
                 // 出现跨域问题,因为我们是前后端分离的
                 // Access to XMLHttpRequest at 'http://127.0.0.1:9002/business/admin/chapter/list' from origin 'http://localhost:8080'
                 // has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
 
-                _this.chapters = response.data//返回真实数据
+                _this.chapters = response.data.list//返回真实数据
             })
         }
       }
