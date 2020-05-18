@@ -13,7 +13,7 @@ module.exports = {
         'no-undef': 'off',
         'vue/no-unused-vars': 'off',
         'vue/require-v-for-key': 'off',
-        'no-unused-vars': 'off',
+        'no-unused-vars': 'off',//不检查定义不用的变量
         'vue/no-unused-components': 'off'
     },
     parserOptions: {

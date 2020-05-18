@@ -1,18 +1,27 @@
 <template>
   <div>
-    <!--刷新按钮
+    <!--按钮 Start-->
+    <p>
+      <button class="btn btn-white btn-default btn-round"
+              v-on:click="add()">
+        <i class="ace-icon fa fa-edit"></i>
+        新增
+      </button>
+      &nbsp;
+      <!--刷新按钮
       idea vue中的v-on爆红解决办法:
         seettings – 》 Editor --》 Inspections 进到具体页面
         XML -- Unbound XML namespace prefix
-    -->
-    <p>
+      -->
       <button class="btn btn-white btn-default btn-round"
         v-on:click="list(1)">
         <i class="ace-icon fa fa-refresh"></i>
         刷新
       </button>
     </p>
+    <!--按钮 end -->
 
+    <!--表单内容 start-->
     <table id="simple-table" class="table  table-bordered table-hover">
       <thead>
         <tr>
@@ -85,9 +94,47 @@
         </tr>
       </tbody>
     </table><!-- /.row -->
+    <!--表单内容 end -->
 
+    <!--新增内容 start -->
+    <div class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">新增课程</h4>
+          </div>
+          <div class="modal-body">
+            <!--模态框内容 Start -->
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label for="inputCourseId" class="col-sm-2 control-label">课程编号</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="inputCourseId" placeholder="请输入课程Id...">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputCourse" class="col-sm-2 control-label">课程名称</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="inputCourse" placeholder="请输入课程名称...">
+                </div>
+              </div>
+            </form>
+            <!--模态框内容 End -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary">保存</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!--新增内容 end -->
+
+    <!--分页内容 start-->
     <!--v-bind:xxx是组件中props设置的属性 list表示函数 itemCount表示显示最多显示几个按钮-->
     <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
+    <!--分页内容 end-->
   </div>
 </template>
 <!--
@@ -134,6 +181,11 @@
                 //渲染
                 _this.$refs.pagination.render(page,response.data.totalNum);
             })
+        },
+        add() {
+            let _this = this;
+            $(".modal").modal({backdrop:'static'});//点击模态框以外的地方,模态框不关闭
+            $(".modal").modal("show");//显示模态框
         }
       }
   }
