@@ -7,7 +7,28 @@ create table `chapter` (
         primary key (`id`)
 ) engine=innodb default charset=utf8mb4 comment '大章';
 
-
+select * from chapter;
+truncate table chapter;
+insert into chapter (course_id, name) values ('SC001','测试1');
+insert into chapter (course_id, name) values ('SC002','测试2');
+insert into chapter (course_id, name) values ('SC003','测试3');
+insert into chapter (course_id, name) values ('SC004','测试4');
+insert into chapter (course_id, name) values ('SC005','测试5');
+insert into chapter (course_id, name) values ('SC006','测试6');
+insert into chapter (course_id, name) values ('SC007','测试7');
+insert into chapter (course_id, name) values ('SC008','测试8');
+insert into chapter (course_id, name) values ('SC009','测试9');
+insert into chapter (course_id, name) values ('SC010','测试10');
+insert into chapter (course_id, name) values ('SC011','测试11');
+insert into chapter (course_id, name) values ('SC012','测试12');
+insert into chapter (course_id, name) values ('SC013','测试13');
+insert into chapter (course_id, name) values ('SC014','测试14');
+insert into chapter (course_id, name) values ('SC015','测试15');
+insert into chapter (course_id, name) values ('SC016','测试16');
+insert into chapter (course_id, name) values ('SC017','测试17');
+insert into chapter (course_id, name) values ('SC018','测试18');
+insert into chapter (course_id, name) values ('SC019','测试19');
+insert into chapter (course_id, name) values ('SC020','测试20');
 
 -- 测试
 drop table if exists course;
