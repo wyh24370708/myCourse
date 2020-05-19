@@ -231,9 +231,8 @@
         //删除
         del(id) {
             let _this = this;
-            _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/delete',{
-                id
-            }).then(function (response) {
+            _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id
+            ).then(function (response) {
                 //返回的数据
                 let resp = response.data;
                 //删除功能的日志

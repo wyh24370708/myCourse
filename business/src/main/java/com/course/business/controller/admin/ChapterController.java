@@ -9,14 +9,16 @@ import com.sun.org.apache.xml.internal.resolver.helpers.PublicId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * @GetMapping  get请求
+ * @PostMapping post请求
+ * @DeleteMapping delete的请求
+ */
 @RestController
 @RequestMapping("/admin/chapter")
 public class ChapterController {
@@ -30,7 +32,7 @@ public class ChapterController {
      * @param pageDto
      * @return
      */
-    @RequestMapping("/list")
+    @PostMapping("/list")
     public ResponseDto findAll(@RequestBody PageDto pageDto) {
         //统一返回格式 start
         ResponseDto<PageDto> responseDto = new ResponseDto<PageDto>();
@@ -48,7 +50,7 @@ public class ChapterController {
      * @param chapterDto
      * @return
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public ResponseDto save(@RequestBody ChapterDto chapterDto) {
         //统一返回格式 start
         ResponseDto<ChapterDto> responseDto = new ResponseDto<ChapterDto>();
@@ -63,14 +65,14 @@ public class ChapterController {
 
     /**
      * 删除大章
-     * @param chapterDto
+     * @param id
      */
-    @RequestMapping("/delete")
-    public ResponseDto delete(@RequestBody ChapterDto chapterDto){
+    @DeleteMapping("/delete/{id}")
+    public ResponseDto delete(@PathVariable String id){
         //统一返回格式 start
         ResponseDto responseDto = new ResponseDto();
-        chapterService.delete(chapterDto.getId());
-        LOG.info("删除大章的id:{}",chapterDto.getId());
+        chapterService.delete(id);
+        LOG.info("删除大章的id:{}",id);
         return responseDto;
     }
 
