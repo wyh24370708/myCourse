@@ -10,12 +10,10 @@ import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -73,6 +71,16 @@ public class ChapterServiceImpl implements ChapterService {
             this.update(chapter);
         }
     }
+
+    /**
+     * 删除大章
+     * @param id
+     */
+    @Override
+    public void delete(String id) {
+        chapterMapper.deleteByPrimaryKey(id);
+    }
+
     private void insert(Chapter chapter) {
         //设定新增的id的uuid值
         chapter.setId(UuidUtil.getShortUuid());
@@ -82,4 +90,6 @@ public class ChapterServiceImpl implements ChapterService {
     private void update(Chapter chapter) {
         chapterMapper.updateByPrimaryKey(chapter);
     }
+
+
 }

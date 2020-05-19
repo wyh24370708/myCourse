@@ -39,14 +39,17 @@
           <td>{{chapter.courseId}}</td>
           <td>
             <div class="hidden-sm hidden-xs btn-group">
-
+              <!--修改按钮 start-->
               <button class="btn btn-xs btn-info" v-on:click="edit(chapter)">
                 <i class="ace-icon fa fa-pencil bigger-120"></i>
               </button>
+              <!--修改按钮 end-->
 
-              <button class="btn btn-xs btn-danger">
+              <!--删除按钮 start-->
+              <button class="btn btn-xs btn-danger" v-on:click="del(chapter.id)">
                 <i class="ace-icon fa fa-trash-o bigger-120"></i>
               </button>
+              <!--删除按钮 end-->
 
             </div>
 
@@ -139,6 +142,9 @@
   /web用于网站类的接口
   接口设计中,用不同的请求前缀代表不同的入口
   做借口的隔离,方便做鉴定,统计,监控等
+
+  $refs引用子组件
+  vue中不能使用js的关键字, delete是js的关键字
 -->
 <script>
   //引入pagination组件
@@ -146,7 +152,7 @@
   export default {
       components: {Pagination},//引入pagination组件
       name: 'chapter',
-      mounted: function () {
+      mounted: function () {//页面加载初始化
           //激活样式方法一
           // this.$parent.activeSidebar("business-chapter-sidebar");//后面使用通用方法
           let _this = this;
@@ -154,7 +160,7 @@
           //使用分页组件
           _this.$refs.pagination.size = 5;//默认显示的条数
           _this.list(1);//调用list的方法
-  },
+      },
       data: function () {
         return {
             chapter: {}, //前台传入的数据
@@ -201,23 +207,42 @@
                 let resp = response.data;
                 //打印日志
                 console.log("保存大章的结果:{}",resp.content);
+                if (resp.success){//true
+                    //清楚模态框的内容-->更改到add()方法内部
+                    // _this.chapter.courseId = "";
+                    // _this.chapter.name = "";
 
-                //清楚模态框的内容-->更改到add()方法内部
-                // _this.chapter.courseId = "";
-                // _this.chapter.name = "";
-
-                //关闭模态框
-                $("#form-modal").modal("hide");
-                //调用list方法
-                _this.list(1);
+                    //关闭模态框
+                    $("#form-modal").modal("hide");
+                    //调用list方法
+                    _this.list(1);
+                }
             })
         },
 
         //修改
         edit(chapter) {
             let _this = this;
+            //传参chapter复制一个到{}里面,不影响_this.chapter,即不会修改页面的chapter内容
             _this.chapter = $.extend({},chapter);
             $("#form-modal").modal("show");
+        },
+
+        //删除
+        del(id) {
+            let _this = this;
+            _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/delete',{
+                id
+            }).then(function (response) {
+                //返回的数据
+                let resp = response.data;
+                //删除功能的日志
+                console.log("删除大章的结果:{}",resp.content);
+                if (resp.success){
+                    $("#form-modal").modal("hide");
+                    _this.list(1);
+                }
+            })
         }
 
       }

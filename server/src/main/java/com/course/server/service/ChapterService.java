@@ -19,4 +19,10 @@ public interface ChapterService {
      * 新增大章
      */
     void save(ChapterDto chapterDto);
+
+    /**
+     * 删除大章
+     * @param id
+     */
+    void delete(String id);
 }

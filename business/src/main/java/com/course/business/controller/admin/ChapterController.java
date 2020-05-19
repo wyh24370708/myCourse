@@ -5,6 +5,7 @@ import com.course.server.dto.ChapterDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.ResponseDto;
 import com.course.server.service.ChapterService;
+import com.sun.org.apache.xml.internal.resolver.helpers.PublicId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -48,7 +49,7 @@ public class ChapterController {
      * @return
      */
     @RequestMapping("/save")
-    public ResponseDto findAll(@RequestBody ChapterDto chapterDto) {
+    public ResponseDto save(@RequestBody ChapterDto chapterDto) {
         //统一返回格式 start
         ResponseDto<ChapterDto> responseDto = new ResponseDto<ChapterDto>();
 
@@ -57,6 +58,19 @@ public class ChapterController {
 
         //统一返回格式 end
         responseDto.setContent(chapterDto);
+        return responseDto;
+    }
+
+    /**
+     * 删除大章
+     * @param chapterDto
+     */
+    @RequestMapping("/delete")
+    public ResponseDto delete(@RequestBody ChapterDto chapterDto){
+        //统一返回格式 start
+        ResponseDto responseDto = new ResponseDto();
+        chapterService.delete(chapterDto.getId());
+        LOG.info("删除大章的id:{}",chapterDto.getId());
         return responseDto;
     }
 
