@@ -182,11 +182,14 @@
                 _this.$refs.pagination.render(page,response.data.totalNum);
             })
         },
+
         add() {
             let _this = this;
             $(".modal").modal({backdrop:'static'});//点击模态框以外的地方,模态框不关闭
             $(".modal").modal("show");//显示模态框
         }
+
+
       }
   }
 </script>

@@ -14,4 +14,9 @@ public interface ChapterService {
      * @return
      */
     void findAll(PageDto<Chapter> pageDto);
+
+    /**
+     * 新增大章
+     */
+    void save(ChapterDto chapterDto);
 }

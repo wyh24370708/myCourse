@@ -1,7 +1,7 @@
 -- 大章
 drop table if exists `chapter`;
 create table `chapter` (
-        `id` int not null auto_increment comment '编号',
+        `id` varchar(10) not null comment '编号',
         `course_id` varchar(8) unique comment '课程id',
         `name` varchar(52) not null comment '名称',
         primary key (`id`)
@@ -9,26 +9,23 @@ create table `chapter` (
 
 select * from chapter;
 truncate table chapter;
-insert into chapter (course_id, name) values ('SC001','测试1');
-insert into chapter (course_id, name) values ('SC002','测试2');
-insert into chapter (course_id, name) values ('SC003','测试3');
-insert into chapter (course_id, name) values ('SC004','测试4');
-insert into chapter (course_id, name) values ('SC005','测试5');
-insert into chapter (course_id, name) values ('SC006','测试6');
-insert into chapter (course_id, name) values ('SC007','测试7');
-insert into chapter (course_id, name) values ('SC008','测试8');
-insert into chapter (course_id, name) values ('SC009','测试9');
-insert into chapter (course_id, name) values ('SC010','测试10');
-insert into chapter (course_id, name) values ('SC011','测试11');
-insert into chapter (course_id, name) values ('SC012','测试12');
-insert into chapter (course_id, name) values ('SC013','测试13');
-insert into chapter (course_id, name) values ('SC014','测试14');
-insert into chapter (course_id, name) values ('SC015','测试15');
-insert into chapter (course_id, name) values ('SC016','测试16');
-insert into chapter (course_id, name) values ('SC017','测试17');
-insert into chapter (course_id, name) values ('SC018','测试18');
-insert into chapter (course_id, name) values ('SC019','测试19');
-insert into chapter (course_id, name) values ('SC020','测试20');
+insert into chapter (id, course_id, name) values ('001','SC001','测试1');
+insert into chapter (id, course_id, name) values ('002','SC002','测试2');
+insert into chapter (id, course_id, name) values ('003','SC003','测试3');
+insert into chapter (id, course_id, name) values ('004','SC004','测试4');
+insert into chapter (id, course_id, name) values ('005','SC005','测试5');
+insert into chapter (id, course_id, name) values ('006','SC006','测试6');
+insert into chapter (id, course_id, name) values ('007','SC007','测试7');
+insert into chapter (id, course_id, name) values ('008','SC008','测试8');
+insert into chapter (id, course_id, name) values ('009','SC009','测试9');
+insert into chapter (id, course_id, name) values ('010','SC010','测试10');
+insert into chapter (id, course_id, name) values ('011','SC011','测试11');
+insert into chapter (id, course_id, name) values ('012','SC012','测试12');
+
+
+
+
+
 
 -- 测试
 drop table if exists course;
