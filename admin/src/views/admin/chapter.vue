@@ -97,7 +97,7 @@
     <!--表单内容 end -->
 
     <!--新增内容 start -->
-    <div class="modal fade" tabindex="-1" role="dialog">
+    <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -175,23 +175,25 @@
                 pageNum: page,
                 pageSize: _this.$refs.pagination.size
             }).then(function (response) {
+                //返回的数据
+                let resp = response.data;
                 //then异步执行,当.then()前的方法执行完后再执行then()内部的程序，这样就避免了，数据没获取到等的问题。
-                console.log("查询大章结果:",response);
+                console.log("查询大章结果:",resp.content);
                 // 出现跨域问题,因为我们是前后端分离的
                 // Access to XMLHttpRequest at 'http://127.0.0.1:9002/business/admin/chapter/list' from origin 'http://localhost:8080'
                 // has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
 
-                _this.chapters = response.data.list;//返回真实数据
+                _this.chapters = resp.content.list;//返回真实数据
                 //渲染
-                _this.$refs.pagination.render(page,response.data.totalNum);
+                _this.$refs.pagination.render(page,resp.content.totalNum);
             })
         },
 
         //弹出新增的模态框
         add() {
             let _this = this;
-            $(".modal").modal({backdrop:'static'});//点击模态框以外的地方,模态框不关闭
-            $(".modal").modal("show");//显示模态框
+            $("#form-modal").modal({backdrop:'static'});//点击模态框以外的地方,模态框不关闭
+            $("#form-modal").modal("show");//显示模态框
         },
 
         //新增大章
@@ -200,15 +202,17 @@
             _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save',
               _this.chapter
             ).then(function (response) {
+                //返回的数据
+                let resp = response.data;
                 //打印日志
-                console.log("保存大章的结果:{}",response.data);
+                console.log("保存大章的结果:{}",resp.content);
 
                 //清楚模态框的内容
                 _this.chapter.courseId = "";
                 _this.chapter.name = "";
 
                 //关闭模态框
-                $(".modal").modal("hide");
+                $("#form-modal").modal("hide");
                 //调用list方法
                 _this.list(1);
             })
