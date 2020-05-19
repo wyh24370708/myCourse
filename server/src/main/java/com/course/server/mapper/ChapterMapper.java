@@ -10,7 +10,7 @@ public interface ChapterMapper {
 
     int deleteByExample(ChapterExample example);
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(String id);
 
     int insert(Chapter record);
 
@@ -18,7 +18,7 @@ public interface ChapterMapper {
 
     List<Chapter> selectByExample(ChapterExample example);
 
-    Chapter selectByPrimaryKey(Integer id);
+    Chapter selectByPrimaryKey(String id);
 
     int updateByExampleSelective(@Param("record") Chapter record, @Param("example") ChapterExample example);
 

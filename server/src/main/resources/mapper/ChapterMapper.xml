@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.course.server.mapper.ChapterMapper">
   <resultMap id="BaseResultMap" type="com.course.server.domain.Chapter">
-    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="course_id" jdbcType="VARCHAR" property="courseId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
   </resultMap>
@@ -81,15 +81,15 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from chapter
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from chapter
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.course.server.domain.ChapterExample">
     delete from chapter
@@ -100,7 +100,7 @@
   <insert id="insert" parameterType="com.course.server.domain.Chapter">
     insert into chapter (id, course_id, name
       )
-    values (#{id,jdbcType=INTEGER}, #{courseId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}
+    values (#{id,jdbcType=VARCHAR}, #{courseId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.course.server.domain.Chapter">
@@ -118,7 +118,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=VARCHAR},
       </if>
       <if test="courseId != null">
         #{courseId,jdbcType=VARCHAR},
@@ -138,7 +138,7 @@
     update chapter
     <set>
       <if test="record.id != null">
-        id = #{record.id,jdbcType=INTEGER},
+        id = #{record.id,jdbcType=VARCHAR},
       </if>
       <if test="record.courseId != null">
         course_id = #{record.courseId,jdbcType=VARCHAR},
@@ -153,7 +153,7 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update chapter
-    set id = #{record.id,jdbcType=INTEGER},
+    set id = #{record.id,jdbcType=VARCHAR},
       course_id = #{record.courseId,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR}
     <if test="_parameter != null">
@@ -170,12 +170,12 @@
         name = #{name,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.course.server.domain.Chapter">
     update chapter
     set course_id = #{courseId,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>
