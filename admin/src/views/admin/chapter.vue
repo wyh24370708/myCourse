@@ -110,13 +110,15 @@
               <div class="form-group">
                 <label for="inputCourseId" class="col-sm-2 control-label">课程编号</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="inputCourseId" placeholder="请输入课程Id...">
+                  <input type="text" class="form-control" id="inputCourseId" placeholder="请输入课程Id..."
+                         v-model="chapter.courseId" >
                 </div>
               </div>
               <div class="form-group">
                 <label for="inputCourse" class="col-sm-2 control-label">课程名称</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="inputCourse" placeholder="请输入课程名称...">
+                  <input type="text" class="form-control" id="inputCourse" placeholder="请输入课程名称..."
+                         v-model="chapter.name">
                 </div>
               </div>
             </form>
@@ -124,7 +126,8 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-            <button type="button" class="btn btn-primary">保存</button>
+            <button type="button" class="btn btn-primary"
+                  v-on:click="save()">保存</button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -160,7 +163,8 @@
   },
       data: function () {
         return {
-            chapters: []//初始化为空数组
+            chapter: {}, //前台传入的数据
+            chapters: []//初始化为空数组, 后台查询到的数据
         }
       },
       methods: {
@@ -183,10 +187,31 @@
             })
         },
 
+        //弹出新增的模态框
         add() {
             let _this = this;
             $(".modal").modal({backdrop:'static'});//点击模态框以外的地方,模态框不关闭
             $(".modal").modal("show");//显示模态框
+        },
+
+        //新增大章
+        save() {
+            let _this = this;
+            _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save',
+              _this.chapter
+            ).then(function (response) {
+                //打印日志
+                console.log("保存大章的结果:{}",response.data);
+
+                //清楚模态框的内容
+                _this.chapter.courseId = "";
+                _this.chapter.name = "";
+
+                //关闭模态框
+                $(".modal").modal("hide");
+                //调用list方法
+                _this.list(1);
+            })
         }
 
 

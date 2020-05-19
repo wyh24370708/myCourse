@@ -23,12 +23,29 @@ public class ChapterController {
     @Resource
     private ChapterService chapterService;
 
+    /**
+     * 查询所有大章
+     * @param pageDto
+     * @return
+     */
     @RequestMapping("/list")
     public PageDto findAll(@RequestBody PageDto pageDto) {
         //传输数据,通过表单的形式和流的形式,vue是通过流的方式,需要以@requestBody来获取数据
-        System.out.println(pageDto);
         chapterService.findAll(pageDto);
+        LOG.info("查询大章结果:{}",pageDto);
         return pageDto;
+    }
+
+    /**
+     * 新增大章
+     * @param chapterDto
+     * @return
+     */
+    @RequestMapping("/save")
+    public ChapterDto findAll(@RequestBody ChapterDto chapterDto) {
+        chapterService.save(chapterDto);
+        LOG.info("保存大章结果:{}",chapterDto);
+        return chapterDto;
     }
 
 }
