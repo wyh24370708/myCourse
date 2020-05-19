@@ -12,6 +12,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -55,16 +56,30 @@ public class ChapterServiceImpl implements ChapterService {
     }
 
     /**
-     * 新增大章
+     * 保存大章
+     *
+     * 新增和修改
      */
     @Override
     public void save(ChapterDto chapterDto) {
-        //设定新增的id的uuid值
-        chapterDto.setId(UuidUtil.getShortUuid());
-//        Chapter chapter = new Chapter();
-//        BeanUtils.copyProperties(chapterDto,chapter);
+        // Chapter chapter = new Chapter();
+        // BeanUtils.copyProperties(chapterDto,chapter);
         //工具类转换
         Chapter chapter = CopyUtil.copy(chapterDto, Chapter.class);
+        if (StringUtils.isEmpty(chapterDto.getId())){
+            //插入
+            this.insert(chapter);
+        }else{
+            this.update(chapter);
+        }
+    }
+    private void insert(Chapter chapter) {
+        //设定新增的id的uuid值
+        chapter.setId(UuidUtil.getShortUuid());
         chapterMapper.insert(chapter);
+    }
+
+    private void update(Chapter chapter) {
+        chapterMapper.updateByPrimaryKey(chapter);
     }
 }

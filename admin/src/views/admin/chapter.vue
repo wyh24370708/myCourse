@@ -39,11 +39,8 @@
           <td>{{chapter.courseId}}</td>
           <td>
             <div class="hidden-sm hidden-xs btn-group">
-              <button class="btn btn-xs btn-success">
-                <i class="ace-icon fa fa-check bigger-120"></i>
-              </button>
 
-              <button class="btn btn-xs btn-info">
+              <button class="btn btn-xs btn-info" v-on:click="edit(chapter)">
                 <i class="ace-icon fa fa-pencil bigger-120"></i>
               </button>
 
@@ -51,9 +48,6 @@
                 <i class="ace-icon fa fa-trash-o bigger-120"></i>
               </button>
 
-              <button class="btn btn-xs btn-warning">
-                <i class="ace-icon fa fa-flag bigger-120"></i>
-              </button>
             </div>
 
             <div class="hidden-md hidden-lg">
@@ -192,6 +186,7 @@
         //弹出新增的模态框
         add() {
             let _this = this;
+            _this.chapter = {};//清除上次编辑的内容
             $("#form-modal").modal({backdrop:'static'});//点击模态框以外的地方,模态框不关闭
             $("#form-modal").modal("show");//显示模态框
         },
@@ -207,17 +202,23 @@
                 //打印日志
                 console.log("保存大章的结果:{}",resp.content);
 
-                //清楚模态框的内容
-                _this.chapter.courseId = "";
-                _this.chapter.name = "";
+                //清楚模态框的内容-->更改到add()方法内部
+                // _this.chapter.courseId = "";
+                // _this.chapter.name = "";
 
                 //关闭模态框
                 $("#form-modal").modal("hide");
                 //调用list方法
                 _this.list(1);
             })
-        }
+        },
 
+        //修改
+        edit(chapter) {
+            let _this = this;
+            _this.chapter = $.extend({},chapter);
+            $("#form-modal").modal("show");
+        }
 
       }
   }
