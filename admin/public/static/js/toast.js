@@ -1,33 +1,44 @@
 //sweetalert2的toast，复制规定的代码
-const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    onOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-    }
-})
+//原来的消息提示框很小
+// const Toast = Swal.mixin({
+//     toast: true,
+//     position: 'top-end',
+//     showConfirmButton: false,
+//     timer: 3000,
+//     timerProgressBar: true,
+//     onOpen: (toast) => {
+//         toast.addEventListener('mouseenter', Swal.stopTimer)
+//         toast.addEventListener('mouseleave', Swal.resumeTimer)
+//     }
+// })
+
 //这个是全局的变量,其他的js可以引用
-toast = {
+Toast = {
     success: function (message) {
-        Toast.fire({
+        Swal.fire({
+            position: 'top-end',
             icon: 'success',
-            title: message
+            title: message,
+            showConfirmButton: false,
+            timer: 2000
         });
     },
     error: function (message) {
-        Toast.fire({
+        Swal.fire({
+            position: 'top-end',
             icon: 'error',
-            title: message
+            title: message,
+            showConfirmButton: false,
+            timer: 2000
         });
     },
     warning: function (message) {
-        Toast.fire({
+        Swal.fire({
+            position: 'top-end',
             icon: 'warning',
-            title: message
+            title: message,
+            showConfirmButton: false,
+            timer: 2000
         });
     }
 }

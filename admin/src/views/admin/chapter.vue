@@ -221,7 +221,7 @@
                     //调用list方法
                     _this.list(1);
                     //保存成功的提示框
-                    toast.success("保存成功!");
+                    Toast.success("保存成功!");
                 }
             })
         },
@@ -260,14 +260,12 @@
                             //重新查询list
                             _this.list(1);
                             //删除成功的提示框
-                            toast.success("删除成功!");
+                            Toast.success("删除成功!");
                         }
                     })
                 }
             })
-
         }
-
       }
   }
 </script>
