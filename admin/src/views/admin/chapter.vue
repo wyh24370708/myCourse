@@ -231,17 +231,36 @@
         //删除
         del(id) {
             let _this = this;
-            _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id
-            ).then(function (response) {
-                //返回的数据
-                let resp = response.data;
-                //删除功能的日志
-                console.log("删除大章的结果:{}",resp.content);
-                if (resp.success){
-                    $("#form-modal").modal("hide");
-                    _this.list(1);
+            //使用sweetalert2弹窗插件
+            Swal.fire({
+                title: '确定删除吗?',
+                text: "删除后不可恢复,确认删除?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '确认'
+            }).then((result) => {//点击确定还是取消的结果
+                if (result.value) {//true
+                    _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id
+                    ).then(function (response) {
+                        //返回的数据
+                        let resp = response.data;
+                        //删除功能的日志
+                        console.log("删除大章的结果:{}",resp.content);
+                        if (resp.success){
+                            // $("#form-modal").modal("hide");
+                            Swal.fire(
+                                '删除成功!',
+                                '这条记录被删除了',
+                                'success'
+                            )
+                            _this.list(1);
+                        }
+                    })
                 }
             })
+
         }
 
       }

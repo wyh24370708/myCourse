@@ -1,4 +1,7 @@
 -- 大章
+select * from chapter;
+truncate table chapter;
+#创建
 drop table if exists `chapter`;
 create table `chapter` (
         `id` varchar(10) not null comment '编号',
@@ -6,9 +9,7 @@ create table `chapter` (
         `name` varchar(52) not null comment '名称',
         primary key (`id`)
 ) engine=innodb default charset=utf8mb4 comment '大章';
-
-select * from chapter;
-truncate table chapter;
+#插入记录
 insert into chapter (id, course_id, name) values ('001','SC001','测试1');
 insert into chapter (id, course_id, name) values ('002','SC002','测试2');
 insert into chapter (id, course_id, name) values ('003','SC003','测试3');
