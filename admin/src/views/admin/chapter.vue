@@ -216,6 +216,8 @@
                     $("#form-modal").modal("hide");
                     //调用list方法
                     _this.list(1);
+                    //保存成功的提示框
+                    toast.success("保存成功!");
                 }
             })
         },
@@ -249,13 +251,10 @@
                         //删除功能的日志
                         console.log("删除大章的结果:{}",resp.content);
                         if (resp.success){
-                            // $("#form-modal").modal("hide");
-                            Swal.fire(
-                                '删除成功!',
-                                '这条记录被删除了',
-                                'success'
-                            )
+                            //重新查询list
                             _this.list(1);
+                            //删除成功的提示框
+                            toast.success("删除成功!");
                         }
                     })
                 }
