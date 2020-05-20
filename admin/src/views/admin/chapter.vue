@@ -232,6 +232,8 @@
                     _this.list(1);
                     //保存成功的提示框
                     Toast.success("保存成功!");
+                }else{//校验字段, 字段有问题
+                    Toast.warning(resp.message);
                 }
             })
         },

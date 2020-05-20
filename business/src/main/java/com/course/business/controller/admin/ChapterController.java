@@ -5,6 +5,7 @@ import com.course.server.dto.ChapterDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.ResponseDto;
 import com.course.server.service.ChapterService;
+import com.course.server.util.ValidatorUtil;
 import com.sun.org.apache.xml.internal.resolver.helpers.PublicId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +55,11 @@ public class ChapterController {
     public ResponseDto save(@RequestBody ChapterDto chapterDto) {
         //统一返回格式 start
         ResponseDto<ChapterDto> responseDto = new ResponseDto<ChapterDto>();
+
+        //保存校验
+        ValidatorUtil.length(chapterDto.getCourseId(),"课程编号", 1, 8);
+        ValidatorUtil.require(chapterDto.getCourseId(),"课程编号");
+        ValidatorUtil.require(chapterDto.getName(),"课程名称");
 
         chapterService.save(chapterDto);
         LOG.info("保存大章结果:{}",chapterDto);
