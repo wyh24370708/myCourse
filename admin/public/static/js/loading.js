@@ -3,7 +3,7 @@ Loading = {
     //显示
     show: function () {
         $.blockUI({
-            message: '<img src="/static/image/loading.gif" />',
+            message: '<img src="/static/image/loading.gif" />',//?路径
             css: {
                 zIndex: "10011",
                 padding: "10px",
