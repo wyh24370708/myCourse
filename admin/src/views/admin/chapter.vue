@@ -170,11 +170,13 @@
       methods: {
         list(page) {
             let _this = this;
+            Loading.show();
             //传输数据,通过表单的形式和流的形式,vue是通过流的方式,需要以@requestBody来获取数据
             _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/list',{
                 pageNum: page,
                 pageSize: _this.$refs.pagination.size
             }).then(function (response) {
+                Loading.hide();
                 //返回的数据
                 let resp = response.data;
                 //then异步执行,当.then()前的方法执行完后再执行then()内部的程序，这样就避免了，数据没获取到等的问题。
@@ -200,9 +202,11 @@
         //新增大章
         save() {
             let _this = this;
+            Loading.show();
             _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save',
               _this.chapter
             ).then(function (response) {
+                Loading.hide();
                 //返回的数据
                 let resp = response.data;
                 //打印日志
@@ -244,8 +248,10 @@
                 confirmButtonText: '确认'
             }).then((result) => {//点击确定还是取消的结果
                 if (result.value) {//true
+                    Loading.show();
                     _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id
                     ).then(function (response) {
+                        Loading.hide();
                         //返回的数据
                         let resp = response.data;
                         //删除功能的日志
