@@ -202,6 +202,16 @@
         //新增大章
         save() {
             let _this = this;
+            /**
+             * 前后都要做作校验,如果使用postman直接访问后台接口,就会出现问题
+             */
+            //校验字段
+            if (!Validator.require(_this.chapter.name,'课程名称')
+              || !Validator.require(_this.chapter.courseId,'课程编号')
+              || !Validator.length(_this.chapter.courseId,'课程名称', 1, 8)){
+                return;//只要有一个错误,下面都不执行了
+            }
+
             Loading.show();
             _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save',
               _this.chapter
