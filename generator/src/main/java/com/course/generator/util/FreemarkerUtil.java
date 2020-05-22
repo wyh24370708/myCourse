@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Map;
 
 public class FreemarkerUtil {
     /**
@@ -35,9 +36,9 @@ public class FreemarkerUtil {
      * @throws IOException
      * @throws TemplateException
      */
-    public static void generator(String fileName_to) throws IOException, TemplateException {
+    public static void generator(String fileName_to, Map<String,Object> map) throws IOException, TemplateException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(fileName_to));
-        temp.process(null,bw);
+        temp.process(map,bw);
         bw.flush();
         bw.close();
     }

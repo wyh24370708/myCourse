@@ -1,11 +1,10 @@
 package com.course.server.service;
 
-import com.course.server.domain.Chapter;
-import com.course.server.domain.Course;
-import com.course.server.dto.ChapterDto;
-import com.course.server.dto.PageDto;
+        import com.course.server.domain.Chapter;
+        import com.course.server.dto.ChapterDto;
+        import com.course.server.dto.PageDto;
 
-import java.util.List;
+        import java.util.List;
 
 public interface ChapterService {
 
