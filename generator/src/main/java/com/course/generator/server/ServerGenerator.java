@@ -16,15 +16,15 @@ import java.util.HashMap;
  */
 public class ServerGenerator {
 
+    private static String MODULE = "business";
     private static String toServicePath = "server\\src\\main\\java\\com\\course\\server\\service\\";
     private static String toServiceImplPath = "server\\src\\main\\java\\com\\course\\server\\service\\impl\\";
-    private static String toControllerPath = "business\\src\\main\\java\\com\\course\\business\\controller\\admin\\";
-    private static String Domain = null;
-    private static String domain = null;
+    private static String toControllerPath =
+            MODULE+"\\src\\main\\java\\com\\course\\"+MODULE+"\\controller\\admin\\";
 
     public static void main(String[] args) throws IOException, TemplateException {
 
-        HashMap<String, Object> map = getDomainMap(Domain,domain);
+        HashMap<String, Object> map = getDomainMap();
         //生成service接口
         FreemarkerUtil.initConfig("service.ftl");
         FreemarkerUtil.generator(toServicePath + map.get("Domain") + "Service.java", map);
@@ -39,16 +39,19 @@ public class ServerGenerator {
 
     /**
      * 存储实体类的名字
-     * @param domain
-     * @param domain1
      * @return
      */
-    private static HashMap<String, Object> getDomainMap(String domain, String domain1) {
-        Domain = "Section";
-        domain = "section";
+    private static HashMap<String, Object> getDomainMap() {
+        String module = MODULE;
+        String tableNameCN = "小节";
+        String Domain = "Section";
+        String domain = "section";
+
         HashMap<String, Object> map = new HashMap<>();
         map.put("Domain",Domain);
         map.put("domain",domain);
+        map.put("module",module);
+        map.put("tableNameCN",tableNameCN);
         return map;
     }
 }
