@@ -42,7 +42,8 @@
 
 <!--        <table tableName="test" domainObjectName="Test"/>-->
 <!--        <table tableName="province" domainObjectName="Province"/>-->
-        <table tableName="chapter" domainObjectName="Chapter"/>
+<!--        <table tableName="chapter" domainObjectName="Chapter"/>-->
+        <table tableName="section" domainObjectName="Section"/>
 
     </context>
 </generatorConfiguration>
