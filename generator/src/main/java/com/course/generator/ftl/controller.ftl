@@ -1,9 +1,9 @@
 package com.course.business.controller.admin;
 
-import com.course.server.dto.ChapterDto;
+import com.course.server.dto.${Domain}Dto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.ResponseDto;
-import com.course.server.service.ChapterService;
+import com.course.server.service.${Domain}Service;
 import com.course.server.util.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,17 +19,17 @@ import java.util.List;
  * @DeleteMapping delete的请求
  */
 @RestController
-@RequestMapping("/admin/chapter")
-public class ChapterController {
+@RequestMapping("/admin/${domain}")
+public class ${Domain}Controller {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ChapterController.class);
-    public static final String BUSINESS_NAME = "大章";
+    private static final Logger LOG = LoggerFactory.getLogger(${Domain}Controller.class);
+    public static final String BUSINESS_NAME = "(写出描述)";
 
     @Resource
-    private ChapterService chapterService;
+    private ${Domain}Service ${domain}Service;
 
     /**
-     * 查询所有大章
+     * 查询所有
      * @param pageDto
      * @return
      */
@@ -39,7 +39,7 @@ public class ChapterController {
         ResponseDto<PageDto> responseDto = new ResponseDto<PageDto>();
 
         //传输数据,通过表单的形式和流的形式,vue是通过流的方式,需要以@requestBody来获取数据
-        chapterService.findAll(pageDto);
+        ${domain}Service.findAll(pageDto);
         LOG.info("查询大章结果:{}",pageDto);
         //统一返回格式 end
         responseDto.setContent(pageDto);
@@ -47,37 +47,35 @@ public class ChapterController {
     }
 
     /**
-     * 新增大章
-     * @param chapterDto
+     * 新增
+     * @param ${domain}Dto
      * @return
      */
     @PostMapping("/save")
-    public ResponseDto save(@RequestBody ChapterDto chapterDto) {
+    public ResponseDto save(@RequestBody ${Domain}Dto ${domain}Dto) {
         //统一返回格式 start
-        ResponseDto<ChapterDto> responseDto = new ResponseDto<ChapterDto>();
+        ResponseDto<${Domain}Dto> responseDto = new ResponseDto<${Domain}Dto>();
 
         //保存校验
-        ValidatorUtil.length(chapterDto.getCourseId(),"课程编号", 1, 8);
-        ValidatorUtil.require(chapterDto.getCourseId(),"课程编号");
-        ValidatorUtil.require(chapterDto.getName(),"课程名称");
 
-        chapterService.save(chapterDto);
-        LOG.info("保存大章结果:{}",chapterDto);
+
+        ${domain}Service.save(${domain}Dto);
+        LOG.info("保存大章结果:{}",${domain}Dto);
 
         //统一返回格式 end
-        responseDto.setContent(chapterDto);
+        responseDto.setContent(${domain}Dto);
         return responseDto;
     }
 
     /**
-     * 删除大章
+     * 删除
      * @param id
      */
     @DeleteMapping("/delete/{id}")
     public ResponseDto delete(@PathVariable String id){
         //统一返回格式 start
         ResponseDto responseDto = new ResponseDto();
-        chapterService.delete(id);
+        ${domain}Service.delete(id);
         LOG.info("删除大章的id:{}",id);
         return responseDto;
     }
