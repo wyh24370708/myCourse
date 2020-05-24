@@ -54,7 +54,7 @@ public class DbUtil {
         rs.close();
         stmt.close();
         conn.close();
-        System.out.println("表名" + tableNameCN);
+        System.out.println("表名: " + tableNameCN);
         return tableNameCN;
     }
 
