@@ -411,6 +411,7 @@
             <b class="arrow"></b>
 
             <ul class="submenu">
+              <!--大章管理 start-->
               <li class="active" id="business-chapter-sidebar">
                 <router-link to="/admin/business/chapter">
                   <i class="menu-icon fa fa-caret-right"></i>
@@ -419,7 +420,18 @@
 
                 <b class="arrow"></b>
               </li>
+              <!--大章管理 end-->
 
+              <!--小节管理 start-->
+              <li class="active" id="business-section-sidebar">
+                <router-link to="/admin/business/section">
+                  <i class="menu-icon fa fa-caret-right"></i>
+                  小节
+                </router-link>
+
+                <b class="arrow"></b>
+              </li>
+              <!--小节管理 end-->
 
             </ul>
           </li>
