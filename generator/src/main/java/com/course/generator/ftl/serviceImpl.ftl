@@ -15,6 +15,11 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
+<#list typeSet as type>
+    <#if type=="Date">
+import java.util.Date;
+    </#if>
+</#list>
 
 @Service
 public class ${Domain}ServiceImpl implements ${Domain}Service {
@@ -34,7 +39,11 @@ public class ${Domain}ServiceImpl implements ${Domain}Service {
 
         //1. 倒叙排列
         ${Domain}Example ${domain}Example = new ${Domain}Example();
-        ${domain}Example.setOrderByClause("course_id desc");
+        <#list fieldList as field>
+            <#if field.nameHump=="sort">
+        ${domain}Example.setOrderByClause("sort desc");
+            </#if>
+        </#list>
         //2. 设置total属性
         List<${Domain}> ${domain}ListDB = ${domain}Mapper.selectByExample(${domain}Example);
         PageInfo<${Domain}> pageInfo = new PageInfo<>(${domain}ListDB);
@@ -74,12 +83,24 @@ public class ${Domain}ServiceImpl implements ${Domain}Service {
     }
 
     private void insert(${Domain} ${domain}) {
+        Date date = new Date();
+        <#list fieldList as field>
+            <#if field.nameHump=="createdAt">
+        ${domain}.setCreatedAt(date);
+            </#if>
+        </#list>
         //设定新增的id的uuid值
         ${domain}.setId(UuidUtil.getShortUuid());
         ${domain}Mapper.insert(${domain});
     }
 
     private void update(${Domain} ${domain}) {
+        Date date = new Date();
+        <#list fieldList as field>
+            <#if field.nameHump=="updatedAt">
+        ${domain}.setUpdatedAt(date);
+            </#if>
+        </#list>
         ${domain}Mapper.updateByPrimaryKey(${domain});
     }
     

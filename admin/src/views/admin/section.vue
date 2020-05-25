@@ -34,8 +34,6 @@
           <th>时长</th>
           <th>收费</th>
           <th>顺序</th>
-          <th>创建时间</th>
-          <th>修改时间</th>
         <th>操作</th>
       </tr>
       </thead>
@@ -50,8 +48,6 @@
           <td>{{section.time}}</td>
           <td>{{section.charge}}</td>
           <td>{{section.sort}}</td>
-          <td>{{section.createdAt}}</td>
-          <td>{{section.updatedAt}}</td>
         <td>
           <div class="hidden-sm hidden-xs btn-group">
             <!--修改按钮 start-->
@@ -121,76 +117,55 @@
             <form class="form-horizontal">
 
               <!-- freemaker生成 start -->
-                <div class="form-group">
-                  <label for="inputId" class="col-sm-2 control-label">ID</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputId"
-                           v-model="section.id" >
+                  <div class="form-group">
+                    <label for="inputTitle" class="col-sm-2 control-label">标题</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputTitle"
+                             v-model="section.title" >
+                    </div>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputTitle" class="col-sm-2 control-label">标题</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputTitle"
-                           v-model="section.title" >
+                  <div class="form-group">
+                    <label for="inputCourseId" class="col-sm-2 control-label">课程</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputCourseId"
+                             v-model="section.courseId" >
+                    </div>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputCourseId" class="col-sm-2 control-label">课程</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputCourseId"
-                           v-model="section.courseId" >
+                  <div class="form-group">
+                    <label for="inputChapterId" class="col-sm-2 control-label">大章</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputChapterId"
+                             v-model="section.chapterId" >
+                    </div>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputChapterId" class="col-sm-2 control-label">大章</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputChapterId"
-                           v-model="section.chapterId" >
+                  <div class="form-group">
+                    <label for="inputVideo" class="col-sm-2 control-label">视频</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputVideo"
+                             v-model="section.video" >
+                    </div>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputVideo" class="col-sm-2 control-label">视频</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputVideo"
-                           v-model="section.video" >
+                  <div class="form-group">
+                    <label for="inputTime" class="col-sm-2 control-label">时长</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputTime"
+                             v-model="section.time" >
+                    </div>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputTime" class="col-sm-2 control-label">时长</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputTime"
-                           v-model="section.time" >
+                  <div class="form-group">
+                    <label for="inputCharge" class="col-sm-2 control-label">收费</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputCharge"
+                             v-model="section.charge" >
+                    </div>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputCharge" class="col-sm-2 control-label">收费</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputCharge"
-                           v-model="section.charge" >
+                  <div class="form-group">
+                    <label for="inputSort" class="col-sm-2 control-label">顺序</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputSort"
+                             v-model="section.sort" >
+                    </div>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputSort" class="col-sm-2 control-label">顺序</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputSort"
-                           v-model="section.sort" >
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputCreatedAt" class="col-sm-2 control-label">创建时间</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputCreatedAt"
-                           v-model="section.createdAt" >
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputUpdatedAt" class="col-sm-2 control-label">修改时间</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputUpdatedAt"
-                           v-model="section.updatedAt" >
-                  </div>
-                </div>
               <!-- freemaker生成 end -->
 
             </form>
@@ -282,9 +257,9 @@
              */
             //校验字段
             if(1 != 1
-                  || !Validator.require(_this.section.title, "标题")
-                  || !Validator.length(_this.section.title, "标题", 1, 50)
-                  || !Validator.length(_this.section.video, "视频", 1, 200)
+                    || !Validator.require(_this.section.title, "标题")
+                    || !Validator.length(_this.section.title, "标题", 1, 50)
+                    || !Validator.length(_this.section.video, "视频", 1, 200)
             ){
               return;
             }

@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Date;
 
 @Service
 public class SectionServiceImpl implements SectionService {
@@ -34,7 +35,7 @@ public class SectionServiceImpl implements SectionService {
 
         //1. 倒叙排列
         SectionExample sectionExample = new SectionExample();
-        sectionExample.setOrderByClause("course_id desc");
+        sectionExample.setOrderByClause("sort desc");
         //2. 设置total属性
         List<Section> sectionListDB = sectionMapper.selectByExample(sectionExample);
         PageInfo<Section> pageInfo = new PageInfo<>(sectionListDB);
@@ -74,12 +75,16 @@ public class SectionServiceImpl implements SectionService {
     }
 
     private void insert(Section section) {
+        Date date = new Date();
+        section.setCreatedAt(date);
         //设定新增的id的uuid值
         section.setId(UuidUtil.getShortUuid());
         sectionMapper.insert(section);
     }
 
     private void update(Section section) {
+        Date date = new Date();
+        section.setUpdatedAt(date);
         sectionMapper.updateByPrimaryKey(section);
     }
     
