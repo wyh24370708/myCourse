@@ -74,8 +74,11 @@
     <!--确认框-->
     <script src="<%= BASE_URL %>static/js/confirm.js"></script>
 
-    <!--等待加载的组件 集成jQuery BlockUI Plugin-->
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery.blockUI/2.70.0-2014.11.23/jquery.blockUI.min.js"></script>
+    <!--等待加载的组件 集成jQuery BlockUI Plugin
+        由于cdn.bootcss.com偶尔出现404情况,导致js下载不下来,不稳定情况时有发生,也可能是网络不稳定
+    -->
+    <!--<script src="https://cdn.bootcdn.net/ajax/libs/jquery.blockUI/2.70.0-2014.11.23/jquery.blockUI.min.js"></script>-->
+    <script src="<%= BASE_URL %>static/js/jquery.blockUI.min.js"></script>
     <script src="<%= BASE_URL %>static/js/loading.js"></script>
 
     <!--校验组件-->

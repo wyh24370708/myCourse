@@ -282,7 +282,6 @@
              */
             //校验字段
             if(1 != 1
-                  || !Validator.require(_this.section.id, "ID")
                   || !Validator.require(_this.section.title, "标题")
                   || !Validator.length(_this.section.title, "标题", 1, 50)
                   || !Validator.length(_this.section.video, "视频", 1, 200)
