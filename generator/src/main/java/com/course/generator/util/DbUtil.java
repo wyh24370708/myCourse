@@ -82,11 +82,23 @@ public class DbUtil {
                 field.setType(type);
                 field.setJavaType(DbUtil.sqlTypeToJavaType(rs.getString("Type")));
                 field.setComment(comment);
+                /*字段是否可以为空*/
+                String nullAble = rs.getString("Null");
                 if (comment.contains("|")) {
                     field.setNameCn(comment.substring(0, comment.indexOf("|")));
                 } else {
                     field.setNameCn(comment);
                 }
+                /*字段是否可以为空*/
+                field.setNullAble("YES".equals(nullAble));
+                /*长度判断设置*/
+                if (type.toUpperCase().contains("varchar".toUpperCase())){
+                    String lengthStr = type.substring(type.indexOf("(") + 1, type.length() - 1);
+                    field.setLength(Integer.valueOf(lengthStr));
+                }else{
+                    field.setLength(0);
+                }
+                /*设置完成后,添加到fieldList中去*/
                 fieldList.add(field);
             }
         }

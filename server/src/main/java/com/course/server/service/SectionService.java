@@ -1,8 +1,10 @@
 package com.course.server.service;
 
 import com.course.server.domain.Section;
-import com.course.server.dto.PageDto;
 import com.course.server.dto.SectionDto;
+import com.course.server.dto.PageDto;
+
+import java.util.List;
 
 public interface SectionService {
 

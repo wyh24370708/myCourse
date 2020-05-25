@@ -2,8 +2,8 @@ package com.course.server.service.impl;
 
 import com.course.server.domain.Section;
 import com.course.server.domain.SectionExample;
-import com.course.server.dto.PageDto;
 import com.course.server.dto.SectionDto;
+import com.course.server.dto.PageDto;
 import com.course.server.mapper.SectionMapper;
 import com.course.server.service.SectionService;
 import com.course.server.util.CopyUtil;

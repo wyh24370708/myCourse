@@ -281,6 +281,14 @@
              * 前后都要做作校验,如果使用postman直接访问后台接口,就会出现问题
              */
             //校验字段
+            if(1 != 1
+                  || !Validator.require(_this.section.id, "ID")
+                  || !Validator.require(_this.section.title, "标题")
+                  || !Validator.length(_this.section.title, "标题", 1, 50)
+                  || !Validator.length(_this.section.video, "视频", 1, 200)
+            ){
+              return;
+            }
 
             Loading.show();
             _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/section/save',

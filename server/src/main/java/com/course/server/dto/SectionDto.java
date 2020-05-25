@@ -137,6 +137,7 @@ public class SectionDto {
         this.updatedAt = updatedAt;
     }
 
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -156,4 +157,5 @@ public class SectionDto {
         sb.append("]");
         return sb.toString();
     }
+
 }
