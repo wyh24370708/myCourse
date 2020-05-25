@@ -46,7 +46,7 @@
           <td>{{section.chapterId}}</td>
           <td>{{section.video}}</td>
           <td>{{section.time}}</td>
-          <td>{{section.charge}}</td>
+          <td>{{CHARGE | optionKV(section.charge)}}</td>
           <td>{{section.sort}}</td>
         <td>
           <div class="hidden-sm hidden-xs btn-group">
@@ -155,8 +155,10 @@
                   <div class="form-group">
                     <label for="inputCharge" class="col-sm-2 control-label">收费</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputCharge"
-                             v-model="section.charge" >
+                      <select type="text" class="form-control" id="inputCharge"
+                              v-model="section.charge">
+                        <option v-for="c in CHARGE" v-bind:value="c.key">{{c.value}}</option>
+                      </select>
                     </div>
                   </div>
                   <div class="form-group">
@@ -214,7 +216,8 @@
       data: function () {
         return {
             section: {}, //前台传入的数据
-            sections: []//初始化为空数组, 后台查询到的数据
+            sections: [],//初始化为空数组, 后台查询到的数据
+            CHARGE: [{key:"C",value:"收费"},{key:"F", value:"免费"}]
         }
       },
       methods: {
