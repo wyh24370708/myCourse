@@ -12,6 +12,12 @@
     <artifactId>generator</artifactId>
 
     <dependencies>
+        <!--依赖server-->
+        <dependency>
+            <groupId>com.course</groupId>
+            <artifactId>server</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!--freemarker-->
         <dependency>
             <groupId>org.freemarker</groupId>
