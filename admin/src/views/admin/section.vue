@@ -203,7 +203,7 @@
   import Pagination from '../../components/pagination.vue'
   export default {
       components: {Pagination},//引入pagination组件
-      name: 'section',
+      name: 'business-section',
       mounted: function () {//页面加载初始化
           //激活样式方法一
           // this.$parent.activeSidebar("business-section-sidebar");//后面使用通用方法

@@ -157,7 +157,7 @@
   import Pagination from '../../components/pagination.vue'
   export default {
       components: {Pagination},//引入pagination组件
-      name: '${domain}',
+      name: '${module}-${domain}',
       mounted: function () {//页面加载初始化
           //激活样式方法一
           // this.$parent.activeSidebar("${module}-${domain}-sidebar");//后面使用通用方法
