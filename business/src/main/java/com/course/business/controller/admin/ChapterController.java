@@ -1,6 +1,7 @@
 package com.course.business.controller.admin;
 
 import com.course.server.dto.ChapterDto;
+import com.course.server.dto.ChapterPageDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.ResponseDto;
 import com.course.server.service.ChapterService;
@@ -30,19 +31,19 @@ public class ChapterController {
 
     /**
      * 查询所有大章
-     * @param pageDto
+     * @param chapterPageDto
      * @return
      */
     @PostMapping("/list")
-    public ResponseDto findAll(@RequestBody PageDto pageDto) {
+    public ResponseDto findAll(@RequestBody ChapterPageDto chapterPageDto) {
         //统一返回格式 start
         ResponseDto<PageDto> responseDto = new ResponseDto<PageDto>();
 
         //传输数据,通过表单的形式和流的形式,vue是通过流的方式,需要以@requestBody来获取数据
-        chapterService.findAll(pageDto);
-        LOG.info("查询大章结果:{}",pageDto);
+        chapterService.findAll(chapterPageDto);
+        LOG.info("查询大章结果:{}",chapterPageDto);
         //统一返回格式 end
-        responseDto.setContent(pageDto);
+        responseDto.setContent(chapterPageDto);
         return responseDto;
     }
 

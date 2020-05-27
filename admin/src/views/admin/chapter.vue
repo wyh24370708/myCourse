@@ -111,10 +111,9 @@
             <!--模态框内容 Start -->
             <form class="form-horizontal">
               <div class="form-group">
-                <label for="inputCourseId" class="col-sm-2 control-label">课程编号</label>
+                <label class="col-sm-2 control-label">课程</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="inputCourseId" placeholder="请输入课程Id..."
-                         v-model="chapter.courseId" >
+                  <p class="form-control-static">{{course.name}}</p>
                 </div>
               </div>
               <div class="form-group">
@@ -187,7 +186,8 @@
             //传输数据,通过表单的形式和流的形式,vue是通过流的方式,需要以@requestBody来获取数据
             _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/chapter/list',{
                 pageNum: page,
-                pageSize: _this.$refs.pagination.size
+                pageSize: _this.$refs.pagination.size,
+                courseId: _this.course.id
             }).then(function (response) {
                 Loading.hide();
                 //返回的数据
@@ -218,9 +218,9 @@
             /**
              * 前后都要做作校验,如果使用postman直接访问后台接口,就会出现问题
              */
+            _this.chapter.courseId = _this.course.id;
             //校验字段
             if (!Validator.require(_this.chapter.name,'课程名称')
-              || !Validator.require(_this.chapter.courseId,'课程编号')
               || !Validator.length(_this.chapter.courseId,'课程名称', 1, 8)){
                 return;//只要有一个错误,下面都不执行了
             }

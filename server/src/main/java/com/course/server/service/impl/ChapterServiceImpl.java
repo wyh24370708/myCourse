@@ -3,6 +3,7 @@ package com.course.server.service.impl;
 import com.course.server.domain.Chapter;
 import com.course.server.domain.ChapterExample;
 import com.course.server.dto.ChapterDto;
+import com.course.server.dto.ChapterPageDto;
 import com.course.server.dto.PageDto;
 import com.course.server.mapper.ChapterMapper;
 import com.course.server.service.ChapterService;
@@ -27,18 +28,23 @@ public class ChapterServiceImpl implements ChapterService {
      * @return
      */
     @Override
-    public void findAll(PageDto pageDto) {
+    public void findAll(ChapterPageDto chapterPageDto) {
         //分页
-        PageHelper.startPage(pageDto.getPageNum(), pageDto.getPageSize());
+        PageHelper.startPage(chapterPageDto.getPageNum(), chapterPageDto.getPageSize());
         //查询数据库
 
         //1. 倒叙排列
         ChapterExample chapterExample = new ChapterExample();
         chapterExample.setOrderByClause("course_id desc");
+        ChapterExample.Criteria exampleCriteria = chapterExample.createCriteria();//只create一次,多次无用
+        if (!StringUtils.isEmpty(chapterPageDto.getCourseId())){
+            //where条件
+            exampleCriteria.andCourseIdEqualTo(chapterPageDto.getCourseId());
+        }
         //2. 设置total属性
         List<Chapter> chapterListDB = chapterMapper.selectByExample(chapterExample);
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapterListDB);
-        pageDto.setTotalNum(pageInfo.getTotal());
+        chapterPageDto.setTotalNum(pageInfo.getTotal());
         //转换
 //        List<ChapterDto> chapterDtos = new ArrayList<>();
 //            //Chapter转换成ChapterDto
@@ -50,7 +56,7 @@ public class ChapterServiceImpl implements ChapterService {
 //        }
         //工具类转换
         List<ChapterDto> chapterDtoList = CopyUtil.copyList(chapterListDB, ChapterDto.class);
-        pageDto.setList(chapterDtoList);
+        chapterPageDto.setList(chapterDtoList);
     }
 
     /**

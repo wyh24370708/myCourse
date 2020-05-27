@@ -2,6 +2,7 @@ package com.course.server.service;
 
         import com.course.server.domain.Chapter;
         import com.course.server.dto.ChapterDto;
+        import com.course.server.dto.ChapterPageDto;
         import com.course.server.dto.PageDto;
 
         import java.util.List;
@@ -12,7 +13,7 @@ public interface ChapterService {
      * 查询所有
      * @return
      */
-    void findAll(PageDto<Chapter> pageDto);
+    void findAll(ChapterPageDto chapterPageDto);
 
     /**
      * 新增大章
