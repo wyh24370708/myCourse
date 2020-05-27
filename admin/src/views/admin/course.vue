@@ -49,9 +49,9 @@
           <td>{{course.time}}</td>
           <td>{{course.price}}</td>
           <td>{{course.image}}</td>
-          <td>{{course.level}}</td>
-          <td>{{course.charge}}</td>
-          <td>{{course.status}}</td>
+          <td>{{COURSE_LEVEL | optionKV(course.level)}}</td>
+          <td>{{COURSE_CHARGE | optionKV(course.charge)}}</td>
+          <td>{{COURSE_STATUS | optionKV(course.status)}}</td>
           <td>{{course.enroll}}</td>
           <td>{{course.sort}}</td>
         <td>
@@ -240,8 +240,11 @@
       },
       data: function () {
         return {
-            course: {}, //前台传入的数据
-            courses: []//初始化为空数组, 后台查询到的数据
+          course: {}, //前台传入的数据
+          courses: [],//初始化为空数组, 后台查询到的数据
+          COURSE_CHARGE: COURSE_CHARGE,
+          COURSE_LEVEL: COURSE_LEVEL,
+          COURSE_STATUS: COURSE_STATUS
         }
       },
       methods: {

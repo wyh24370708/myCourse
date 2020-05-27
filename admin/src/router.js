@@ -5,6 +5,7 @@ import Admin from './views/admin.vue'
 import Welcome from './views/admin/welcome.vue'
 import Chapter from './views/admin/chapter.vue'
 import Section from './views/admin/section.vue'
+import Course from './views/admin/course.vue'
 
 /**
  * 1.router是VueRouter的一个对象，通过Vue.use(VueRouter)和VueRouter构造函数得到一个router的实例对象，
@@ -40,6 +41,10 @@ export default new Router({
             path: 'business/section',
             name: 'business/section',
             component: Section
+        },{
+            path: 'business/course',
+            name: 'business/course',
+            component: Course
         }]
 
     }]

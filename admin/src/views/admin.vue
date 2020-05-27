@@ -433,6 +433,17 @@
               </li>
               <!--小节管理 end-->
 
+              <!--课程管理 start-->
+              <li class="active" id="business-course-sidebar">
+                <router-link to="/admin/business/course">
+                  <i class="menu-icon fa fa-caret-right"></i>
+                  课程
+                </router-link>
+
+                <b class="arrow"></b>
+              </li>
+              <!--课程管理 end-->
+
             </ul>
           </li>
 

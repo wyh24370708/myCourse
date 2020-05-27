@@ -67,7 +67,7 @@ create table `course`(
 ) engine=innodb default charset=utf8mb4 comment='课程表';
 
 INSERT INTO course (id, name, summary, time, price, image, level, charge, status, enroll, sort, created_at, updated_at)
-    VALUES ('00000001', '测试课程01', '这是一门测试课程', 7200, 19.9, '', 0, 'C', 'D', 100, 0, now(), now());
+    VALUES ('00000001', '测试课程01', '这是一门测试课程', 7200, 19.9, '', '1', 'C', 'D', 100, 0, now(), now());
 
 select * from course;
 
