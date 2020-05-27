@@ -1,13 +1,19 @@
 <template>
   <div>
+    <h3>{{course.name}}</h3>
     <!--按钮 Start-->
     <p>
+      <router-link to="/business/course" class="btn btn-white btn-default btn-round">
+        <i class="ace-icon fa fa-arrow-left"></i>
+        返回课程
+      </router-link>
+      &nbsp;
       <button class="btn btn-white btn-default btn-round"
               v-on:click="add()">
         <i class="ace-icon fa fa-edit"></i>
         新增
       </button>
-      &nbsp;
+      &nbsp;&nbsp;
       <!--刷新按钮
       idea vue中的v-on爆红解决办法:
         seettings – 》 Editor --》 Inspections 进到具体页面
@@ -159,12 +165,19 @@
           //_this.list();//没有使用分页组件
           //使用分页组件
           _this.$refs.pagination.size = 5;//默认显示的条数
+
+          let course = SessionStorage.get("course") || {};//没有缓存就是默认空
+          if (Tool.isEmpty(course)){
+            _this.$router.push("/welcome");
+          }
+          _this.course = course;
           _this.list(1);//调用list的方法
       },
       data: function () {
         return {
             chapter: {}, //前台传入的数据
-            chapters: []//初始化为空数组, 后台查询到的数据
+            chapters: [],//初始化为空数组, 后台查询到的数据
+            course: {}
         }
       },
       methods: {

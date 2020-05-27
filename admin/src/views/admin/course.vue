@@ -57,7 +57,14 @@
               <span class="badge badge-info">排序：{{course.sort}}</span>
               <span class="badge badge-info">时长：{{course.time}}</span>
             </p>
+            <!--按钮 start-->
             <p>
+              <!--大章按钮 start-->
+              <button class="btn btn-white btn-xs btn-info btn-round" v-on:click="toChapter(course)">
+                大章
+              </button>
+              <!--大章按钮 end-->
+              &nbsp;
               <!--修改按钮 start-->
               <button class="btn btn-white btn-xs btn-info btn-round" v-on:click="edit(course)">
                 编辑
@@ -70,6 +77,7 @@
               </button>
               <!--删除按钮 end-->
             </p>
+            <!--按钮 end-->
           </div>
         </div>
       </div>
@@ -314,6 +322,7 @@
         }
       },
       methods: {
+        //获取数据
         list(page) {
             let _this = this;
             Loading.show();
@@ -415,11 +424,25 @@
                     }
                 })
             })
+        },
+
+        //点击【大章】 缓存课程course
+        toChapter(course) {
+          let _this = this;
+          //h5缓存 course
+          SessionStorage.set("course",course);
+          //页面跳转
+          _this.$router.push("/business/chapter");
         }
       }
   }
 </script>
-<style>
+
+
+<!--
+scoped :style下样式只适用于当前的组件,防止互相污染
+-->
+<style scoped>
   .caption h3{
     font-size: 25px;
   }

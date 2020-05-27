@@ -256,7 +256,8 @@
         },
         methods:{
             login() {
-                this.$router.push("/admin")
+                //默认欢迎页面
+                this.$router.push("/welcome")
             }
         }
     }
