@@ -1,13 +1,17 @@
 <template>
   <div>
-    <h3>{{course.name}}</h3>
+    <h4 class="lighter">
+      <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+      <a href="#modal-wizard" data-toggle="modal" class="pink"> {{course.name}} </a>
+    </h4>
+    <hr>
     <!--按钮 Start-->
     <p>
       <router-link to="/business/course" class="btn btn-white btn-default btn-round">
         <i class="ace-icon fa fa-arrow-left"></i>
         返回课程
       </router-link>
-      &nbsp;
+      &nbsp;&nbsp;
       <button class="btn btn-white btn-default btn-round"
               v-on:click="add()">
         <i class="ace-icon fa fa-edit"></i>
@@ -33,7 +37,6 @@
         <tr>
           <th>ID</th>
           <th>名称</th>
-          <th>课程ID</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -42,18 +45,23 @@
         <tr v-for="chapter in chapters">
           <td>{{chapter.id}}</td>
           <td>{{chapter.name}}</td>
-          <td>{{chapter.courseId}}</td>
           <td>
             <div class="hidden-sm hidden-xs btn-group">
+              <!--小节按钮 start-->
+              <button class="btn btn-white btn-xs btn-info btn-round" v-on:click="toSection(chapter)">
+                小节
+              </button>&nbsp;&nbsp;
+              <!--小节按钮 end-->
+
               <!--修改按钮 start-->
-              <button class="btn btn-xs btn-info" v-on:click="edit(chapter)">
-                <i class="ace-icon fa fa-pencil bigger-120"></i>
-              </button>
+              <button class="btn btn-white btn-xs btn-info btn-round" v-on:click="edit(chapter)">
+                编辑
+              </button>&nbsp;&nbsp;
               <!--修改按钮 end-->
 
               <!--删除按钮 start-->
-              <button class="btn btn-xs btn-danger" v-on:click="del(chapter.id)">
-                <i class="ace-icon fa fa-trash-o bigger-120"></i>
+              <button class="btn btn-white btn-xs btn-warning btn-round" v-on:click="del(chapter.id)">
+                删除
               </button>
               <!--删除按钮 end-->
 
@@ -158,7 +166,7 @@
       components: {Pagination},//引入pagination组件
       name: 'chapter',
       mounted: function () {//页面加载初始化
-          //激活样式方法一
+          // 激活样式方法一
           // this.$parent.activeSidebar("business-chapter-sidebar");//后面使用通用方法
           let _this = this;
           //_this.list();//没有使用分页组件
@@ -312,7 +320,19 @@
             //         })
             //     }
             // })
+        },
+
+        //点击【小节】
+        toSection(chapter) {
+          let _this = this;
+          SessionStorage.set("chapter",chapter);
+          _this.$router.push("/business/section");
         }
       }
   }
 </script>
+<style scoped>
+  .lighter {
+    font-size: 23px;
+  }
+</style>

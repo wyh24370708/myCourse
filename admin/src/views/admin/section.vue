@@ -1,7 +1,19 @@
 <template>
   <div>
+    <h4 class="lighter">
+      <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+      <a href="#modal-wizard" data-toggle="modal" class="pink"> {{course.name}} </a> :
+      <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+      <a href="#modal-wizard" data-toggle="modal" class="pink"> {{chapter.name}} </a>
+    </h4>
+    <hr>
     <!--按钮 Start-->
     <p>
+      <router-link to="/business/chapter" class="btn btn-white btn-default btn-round">
+        <i class="ace-icon fa fa-arrow-left"></i>
+        返回大章
+      </router-link>
+      &nbsp;&nbsp;
       <button class="btn btn-white btn-default btn-round"
               v-on:click="add()">
         <i class="ace-icon fa fa-edit"></i>
@@ -26,10 +38,8 @@
       <thead>
       <!--表头-->
       <tr>
-                  <th>ID</th>
+          <th>ID</th>
           <th>标题</th>
-          <th>课程</th>
-          <th>大章</th>
           <th>视频</th>
           <th>时长</th>
           <th>收费</th>
@@ -42,8 +52,6 @@
       <tr v-for="section in sections">
           <td>{{section.id}}</td>
           <td>{{section.title}}</td>
-          <td>{{section.courseId}}</td>
-          <td>{{section.chapterId}}</td>
           <td>{{section.video}}</td>
           <td>{{section.time}}</td>
           <td>{{SECTION_CHARGE | optionKV(section.charge)}}</td>
@@ -51,17 +59,16 @@
         <td>
           <div class="hidden-sm hidden-xs btn-group">
             <!--修改按钮 start-->
-            <button class="btn btn-xs btn-info" v-on:click="edit(section)">
-              <i class="ace-icon fa fa-pencil bigger-120"></i>
+            <button class="btn btn-white btn-xs btn-info btn-round" v-on:click="edit(section)">
+              编辑
             </button>
             <!--修改按钮 end-->
-
+            &nbsp;&nbsp;
             <!--删除按钮 start-->
-            <button class="btn btn-xs btn-danger" v-on:click="del(section.id)">
-              <i class="ace-icon fa fa-trash-o bigger-120"></i>
+            <button class="btn btn-white btn-xs btn-warning btn-round" v-on:click="del(section.id)">
+              删除
             </button>
             <!--删除按钮 end-->
-
           </div>
 
           <div class="hidden-md hidden-lg">
@@ -125,17 +132,15 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="inputCourseId" class="col-sm-2 control-label">课程</label>
+                    <label class="col-sm-2 control-label">课程</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputCourseId"
-                             v-model="section.courseId" >
+                      <p class="form-control-static" > {{course.name}} </p>
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="inputChapterId" class="col-sm-2 control-label">大章</label>
+                    <label class="col-sm-2 control-label">大章</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputChapterId"
-                             v-model="section.chapterId" >
+                      <p class="form-control-static" > {{chapter.name}} </p>
                     </div>
                   </div>
                   <div class="form-group">
@@ -211,13 +216,25 @@
           //_this.list();//没有使用分页组件
           //使用分页组件
           _this.$refs.pagination.size = 5;//默认显示的条数
+
+          //取出缓存
+          let chapter = SessionStorage.get("chapter");
+          let course = SessionStorage.get("course");
+          if (Tool.isEmpty(chapter) || Tool.isEmpty(course)){
+            _this.$router.push("/welcome");
+          }
+          _this.chapter = chapter;
+          _this.course = course;
+
           _this.list(1);//调用list的方法
       },
       data: function () {
         return {
             section: {}, //前台传入的数据
             sections: [],//初始化为空数组, 后台查询到的数据
-            SECTION_CHARGE: SECTION_CHARGE
+            SECTION_CHARGE: SECTION_CHARGE,
+            chapter: {},
+            course: {},
         }
       },
       methods: {
@@ -227,7 +244,9 @@
             //传输数据,通过表单的形式和流的形式,vue是通过流的方式,需要以@requestBody来获取数据
             _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/section/list',{
                 pageNum: page,
-                pageSize: _this.$refs.pagination.size
+                pageSize: _this.$refs.pagination.size,
+                courseId: _this.course.id,
+                chapterId: _this.chapter.id
             }).then(function (response) {
                 Loading.hide();
                 //返回的数据
@@ -255,10 +274,14 @@
         //新增小节
         save() {
             let _this = this;
+            //保存课程id和大章id
+            _this.section.courseId = _this.course.id;
+            _this.section.chapterId = _this.chapter.id;
             /**
              * 前后都要做作校验,如果使用postman直接访问后台接口,就会出现问题
              */
             //校验字段
+
             if(1 != 1
                     || !Validator.require(_this.section.title, "标题")
                     || !Validator.length(_this.section.title, "标题", 1, 50)

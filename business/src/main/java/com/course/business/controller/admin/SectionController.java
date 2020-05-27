@@ -3,6 +3,7 @@ package com.course.business.controller.admin;
 import com.course.server.dto.SectionDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.ResponseDto;
+import com.course.server.dto.SectionPageDto;
 import com.course.server.service.SectionService;
 import com.course.server.util.ValidatorUtil;
 import org.slf4j.Logger;
@@ -30,19 +31,21 @@ public class SectionController {
 
     /**
      * 查询所有
-     * @param pageDto
+     * @param sectionPageDto
      * @return
      */
     @PostMapping("/list")
-    public ResponseDto findAll(@RequestBody PageDto pageDto) {
+    public ResponseDto findAll(@RequestBody SectionPageDto sectionPageDto) {
         //统一返回格式 start
         ResponseDto<PageDto> responseDto = new ResponseDto<PageDto>();
-
+        //必输项
+        ValidatorUtil.require(sectionPageDto.getCourseId(),"课程");
+        ValidatorUtil.require(sectionPageDto.getChapterId(),"大章");
         //传输数据,通过表单的形式和流的形式,vue是通过流的方式,需要以@requestBody来获取数据
-        sectionService.findAll(pageDto);
-        LOG.info("查询大章结果:{}",pageDto);
+        sectionService.findAll(sectionPageDto);
+        LOG.info("查询大章结果:{}",sectionPageDto);
         //统一返回格式 end
-        responseDto.setContent(pageDto);
+        responseDto.setContent(sectionPageDto);
         return responseDto;
     }
 

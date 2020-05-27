@@ -37,7 +37,7 @@ CREATE TABLE `section` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='小节';
 
 INSERT INTO `section` (id, title, course_id, chapter_id, video, time, charge, sort, created_at, updated_at)
-    VALUES ('00000001', '测试小节01', '00000001', '00000000', '', 500, 'F', 1, now(), now());
+    VALUES ('10000001', '测试小节01', '00000001', '001', '', 500, 'F', 1, now(), now());
 
 
 select * from section;

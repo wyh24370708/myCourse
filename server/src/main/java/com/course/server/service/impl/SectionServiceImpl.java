@@ -4,6 +4,7 @@ import com.course.server.domain.Section;
 import com.course.server.domain.SectionExample;
 import com.course.server.dto.SectionDto;
 import com.course.server.dto.PageDto;
+import com.course.server.dto.SectionPageDto;
 import com.course.server.mapper.SectionMapper;
 import com.course.server.service.SectionService;
 import com.course.server.util.CopyUtil;
@@ -28,22 +29,29 @@ public class SectionServiceImpl implements SectionService {
      * @return
      */
     @Override
-    public void findAll(PageDto pageDto) {
+    public void findAll(SectionPageDto sectionPageDto) {
         //分页
-        PageHelper.startPage(pageDto.getPageNum(), pageDto.getPageSize());
+        PageHelper.startPage(sectionPageDto.getPageNum(), sectionPageDto.getPageSize());
         //查询数据库
 
         //1. 倒叙排列
         SectionExample sectionExample = new SectionExample();
         sectionExample.setOrderByClause("sort desc");
+        SectionExample.Criteria exampleCriteria = sectionExample.createCriteria();
+        if (!StringUtils.isEmpty(sectionPageDto.getCourseId())){
+            exampleCriteria.andCourseIdEqualTo(sectionPageDto.getCourseId());
+        }
+        if (!StringUtils.isEmpty(sectionPageDto.getChapterId())){
+            exampleCriteria.andChapterIdEqualTo(sectionPageDto.getChapterId());
+        }
         //2. 设置total属性
         List<Section> sectionListDB = sectionMapper.selectByExample(sectionExample);
         PageInfo<Section> pageInfo = new PageInfo<>(sectionListDB);
-        pageDto.setTotalNum(pageInfo.getTotal());
+        sectionPageDto.setTotalNum(pageInfo.getTotal());
         
         //工具类转换
         List<SectionDto> sectionDtoList = CopyUtil.copyList(sectionListDB, SectionDto.class);
-        pageDto.setList(sectionDtoList);
+        sectionPageDto.setList(sectionDtoList);
     }
 
     /**
