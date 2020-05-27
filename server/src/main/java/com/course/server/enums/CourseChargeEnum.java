@@ -10,7 +10,7 @@ public enum CourseChargeEnum {
      * 枚举值
      */
     CHARGE("C","收费"),
-    FREE("C","免费");
+    FREE("F","免费");
 
     private String code;
     private String desc;

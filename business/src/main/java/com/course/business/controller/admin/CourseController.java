@@ -60,7 +60,7 @@ public class CourseController {
         ValidatorUtil.require(courseDto.getName(), "课程名称");
         ValidatorUtil.length(courseDto.getName(), "课程名称", 1, 50);
         ValidatorUtil.length(courseDto.getSummary(), "概述", 1, 2000);
-        ValidatorUtil.length(courseDto.getImage(), "封面", 1, 100);
+//        ValidatorUtil.length(courseDto.getImage(), "封面", 1, 100);
 
         courseService.save(courseDto);
         LOG.info("保存大章结果:{}",courseDto);
