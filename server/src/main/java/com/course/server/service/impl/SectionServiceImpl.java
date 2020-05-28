@@ -16,6 +16,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -67,6 +68,9 @@ public class SectionServiceImpl implements SectionService {
      * 新增和修改
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    //一般自定义异常继承runtimeException,直接抛出Exception,事务不起作用
+    //同一个类中,方法A调用方法B也是不支持事务的,不经过spring内部的AOP动态代理
     public void save(SectionDto sectionDto) {
         // Section section = new Section();
         // BeanUtils.copyProperties(sectionDto,section);
