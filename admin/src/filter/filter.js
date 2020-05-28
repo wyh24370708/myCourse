@@ -41,16 +41,54 @@ let optionKV = (object, key) =>  {
   }
 };
 
+
+/**
+ * 时长格式化
+ * @param value 例如：36000
+ * @returns {string} 例如：10:00:00
+ */
+let formatSecond = (value) => {
+    value = value || 0;
+    let second = parseInt(value, 10); // 秒
+    let minute = 0; // 分
+    let hour = 0; // 小时
+    if (second > 60) {
+        // 当大于60秒时，才需要做转换
+        minute = Math.floor(second / 60);
+        second = Math.floor(second % 60);
+        if (minute > 60) {
+            hour = Math.floor(minute / 60);
+            minute = Math.floor(minute % 60);
+        }
+    } else {
+        // 小于60秒时，直接显示，不需要处理
+    }
+    let result = "" + PrefixInteger(second, 2) + "";
+    // 拼上分钟
+    result = "" + PrefixInteger(minute, 2) + ":" + result;
+    // 拼上小时
+    result = "" + PrefixInteger(hour, 2) + ":" + result;
+    return result;
+};
+
+/**
+ * 格式化指定长度，前面补0
+ */
+function PrefixInteger(num, length) {
+    return (Array(length).join('0') + num).slice(-length);
+}
+
+
+
 /**
  * export命令用于规定模块的对外接口。
 
  一个模块就是一个独立的文件。该文件内部的所有变量，外部无法获取。
  如果你希望外部能够读取模块内部的某个变量，就必须使用export关键字输出该变量。
  下面是一个 JS 文件，里面使用export命令输出变量。
-
-
  */
 
 export default {
-    optionKV
+    optionKV,
+    formatSecond
 }
