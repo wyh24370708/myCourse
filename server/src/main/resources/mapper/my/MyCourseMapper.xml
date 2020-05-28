@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.course.server.mapper.my.MyCourseMapper">
+    <update id="updateTime" >
+        UPDATE course c SET `time` =(
+            SELECT SUM(`time`) FROM section s WHERE s.course_id = #{courseId})
+            WHERE c.id = #{courseId};
+    </update>
+</mapper>

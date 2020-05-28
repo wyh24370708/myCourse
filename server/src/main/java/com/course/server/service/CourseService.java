@@ -24,5 +24,9 @@ public interface CourseService {
      * @param id
      */
     void delete(String id);
-    
+
+    /**
+     * 更新课程内视频总时长
+     */
+    void updateTime(String id);
 }

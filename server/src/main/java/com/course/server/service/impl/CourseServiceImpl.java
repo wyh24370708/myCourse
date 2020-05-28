@@ -5,11 +5,14 @@ import com.course.server.domain.CourseExample;
 import com.course.server.dto.CourseDto;
 import com.course.server.dto.PageDto;
 import com.course.server.mapper.CourseMapper;
+import com.course.server.mapper.my.MyCourseMapper;
 import com.course.server.service.CourseService;
 import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -20,8 +23,11 @@ import java.util.Date;
 @Service
 public class CourseServiceImpl implements CourseService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(CourseServiceImpl.class);
     @Resource
     private CourseMapper courseMapper;
+    @Resource
+    private MyCourseMapper myCourseMapper;
 
     /**
      * 查询所有
@@ -74,6 +80,17 @@ public class CourseServiceImpl implements CourseService {
         courseMapper.deleteByPrimaryKey(id);
     }
 
+    /**
+     * 更新时长
+     * @param id
+     */
+    @Override
+    public void updateTime(String id) {
+        LOG.info("课程总时长:{}",id);
+        myCourseMapper.updateTime(id);
+    }
+
+    //插入
     private void insert(Course course) {
         Date date = new Date();
         course.setCreatedAt(date);
@@ -81,7 +98,7 @@ public class CourseServiceImpl implements CourseService {
         course.setId(UuidUtil.getShortUuid());
         courseMapper.insert(course);
     }
-
+    //更新
     private void update(Course course) {
         Date date = new Date();
         course.setUpdatedAt(date);

@@ -6,11 +6,15 @@ import com.course.server.dto.SectionDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.SectionPageDto;
 import com.course.server.mapper.SectionMapper;
+import com.course.server.mapper.my.MyCourseMapper;
+import com.course.server.service.CourseService;
 import com.course.server.service.SectionService;
 import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -21,8 +25,11 @@ import java.util.Date;
 @Service
 public class SectionServiceImpl implements SectionService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(SectionServiceImpl.class);
     @Resource
     private SectionMapper sectionMapper;
+    @Resource
+    private CourseService courseService;
 
     /**
      * 查询所有
@@ -71,6 +78,7 @@ public class SectionServiceImpl implements SectionService {
         }else{
             this.update(section);
         }
+        courseService.updateTime(sectionDto.getCourseId());
     }
 
     /**
