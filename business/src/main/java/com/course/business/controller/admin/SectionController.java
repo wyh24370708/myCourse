@@ -43,7 +43,7 @@ public class SectionController {
         ValidatorUtil.require(sectionPageDto.getChapterId(),"大章");
         //传输数据,通过表单的形式和流的形式,vue是通过流的方式,需要以@requestBody来获取数据
         sectionService.findAll(sectionPageDto);
-        LOG.info("查询大章结果:{}",sectionPageDto);
+        LOG.info("查询小节结果:{}",sectionPageDto);
         //统一返回格式 end
         responseDto.setContent(sectionPageDto);
         return responseDto;
@@ -65,7 +65,7 @@ public class SectionController {
 //        ValidatorUtil.length(sectionDto.getVideo(), "视频", 1, 200);
 
         sectionService.save(sectionDto);
-        LOG.info("保存大章结果:{}",sectionDto);
+        LOG.info("保存小节结果:{}",sectionDto);
 
         //统一返回格式 end
         responseDto.setContent(sectionDto);
@@ -81,7 +81,7 @@ public class SectionController {
         //统一返回格式 start
         ResponseDto responseDto = new ResponseDto();
         sectionService.delete(id);
-        LOG.info("删除大章的id:{}",id);
+        LOG.info("删除小节的id:{}",id);
         return responseDto;
     }
 

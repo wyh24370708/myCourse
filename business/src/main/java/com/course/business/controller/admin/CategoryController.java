@@ -1,9 +1,9 @@
 package com.course.business.controller.admin;
 
-import com.course.server.dto.CourseDto;
+import com.course.server.dto.CategoryDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.ResponseDto;
-import com.course.server.service.CourseService;
+import com.course.server.service.CategoryService;
 import com.course.server.util.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,14 +19,14 @@ import java.util.List;
  * @DeleteMapping delete的请求
  */
 @RestController
-@RequestMapping("/admin/course")
-public class CourseController {
+@RequestMapping("/admin/category")
+public class CategoryController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CourseController.class);
-    public static final String BUSINESS_NAME = "课程表";
+    private static final Logger LOG = LoggerFactory.getLogger(CategoryController.class);
+    public static final String BUSINESS_NAME = "分类";
 
     @Resource
-    private CourseService courseService;
+    private CategoryService categoryService;
 
     /**
      * 查询所有
@@ -39,8 +39,8 @@ public class CourseController {
         ResponseDto<PageDto> responseDto = new ResponseDto<PageDto>();
 
         //传输数据,通过表单的形式和流的形式,vue是通过流的方式,需要以@requestBody来获取数据
-        courseService.findAll(pageDto);
-        LOG.info("查询课程表结果:{}",pageDto);
+        categoryService.findAll(pageDto);
+        LOG.info("查询分类结果:{}",pageDto);
         //统一返回格式 end
         responseDto.setContent(pageDto);
         return responseDto;
@@ -48,25 +48,24 @@ public class CourseController {
 
     /**
      * 新增
-     * @param courseDto
+     * @param categoryDto
      * @return
      */
     @PostMapping("/save")
-    public ResponseDto save(@RequestBody CourseDto courseDto) {
+    public ResponseDto save(@RequestBody CategoryDto categoryDto) {
         //统一返回格式 start
-        ResponseDto<CourseDto> responseDto = new ResponseDto<CourseDto>();
+        ResponseDto<CategoryDto> responseDto = new ResponseDto<CategoryDto>();
 
         //保存校验
-        ValidatorUtil.require(courseDto.getName(), "课程名称");
-        ValidatorUtil.length(courseDto.getName(), "课程名称", 1, 50);
-        ValidatorUtil.length(courseDto.getSummary(), "概述", 1, 2000);
-//        ValidatorUtil.length(courseDto.getImage(), "封面", 1, 100);
+        ValidatorUtil.require(categoryDto.getParent(), "父id");
+        ValidatorUtil.require(categoryDto.getName(), "名称");
+        ValidatorUtil.length(categoryDto.getName(), "名称", 1, 50);
 
-        courseService.save(courseDto);
-        LOG.info("保存课程表结果:{}",courseDto);
+        categoryService.save(categoryDto);
+        LOG.info("保存分类结果:{}",categoryDto);
 
         //统一返回格式 end
-        responseDto.setContent(courseDto);
+        responseDto.setContent(categoryDto);
         return responseDto;
     }
 
@@ -78,8 +77,8 @@ public class CourseController {
     public ResponseDto delete(@PathVariable String id){
         //统一返回格式 start
         ResponseDto responseDto = new ResponseDto();
-        courseService.delete(id);
-        LOG.info("删除课程表的id:{}",id);
+        categoryService.delete(id);
+        LOG.info("删除分类的id:{}",id);
         return responseDto;
     }
 
