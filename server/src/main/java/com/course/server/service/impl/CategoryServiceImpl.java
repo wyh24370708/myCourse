@@ -85,7 +85,18 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public void delete(String id) {
+        //如果这父级id,先删除子级的节点
+        deleteChildren(id);
         categoryMapper.deleteByPrimaryKey(id);
+    }
+    //删除子节点
+    private void deleteChildren(String id) {
+        Category category = categoryMapper.selectByPrimaryKey(id);
+        if ("00000000".equals(category.getParent())){
+            CategoryExample categoryExample= new CategoryExample();
+            categoryExample.createCriteria().andParentEqualTo(category.getId());
+            categoryMapper.deleteByExample(categoryExample);
+        }
     }
 
     private void insert(Category category) {

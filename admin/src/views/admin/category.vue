@@ -6,9 +6,9 @@
         <!--按钮 Start-->
         <p>
           <button class="btn btn-white btn-default btn-round"
-                  v-on:click="add()">
+                  v-on:click="addLevel_1()">
             <i class="ace-icon fa fa-edit"></i>
-            新增
+            新增一级
           </button>
           &nbsp;
           <!--刷新按钮
@@ -106,9 +106,9 @@
         <!--按钮 Start-->
         <p>
           <button class="btn btn-white btn-default btn-round"
-                  v-on:click="add()">
+                  v-on:click="addLevel_2()">
             <i class="ace-icon fa fa-edit"></i>
-            新增
+            新增二级
           </button>
         </p>
         <!--按钮 end -->
@@ -202,10 +202,9 @@
 
               <!-- freemaker生成 start -->
               <div class="form-group">
-                <label for="inputParent" class="col-sm-2 control-label">父id</label>
+                <label class="col-sm-2 control-label">父级</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="inputParent"
-                         v-model="category.parent" >
+                  <p class="form-control-static">{{ active.name || "无" }}</p>
                 </div>
               </div>
               <div class="form-group">
@@ -265,7 +264,7 @@
       data: function () {
         return {
           category: {}, //前台传入的数据
-          categorys: [],//初始化为空数组, 后台查询到的数据
+          categorys: [], //初始化为空数组, 后台查询到的数据
           level_1: [],
           level_2: [],
           active: {}
@@ -316,11 +315,27 @@
         /**
          * 【弹出新增的模态框】
          */
-        add() {
-            let _this = this;
-            _this.category = {};//清除上次编辑的内容
-            $("#form-modal").modal({backdrop:'static'});//点击模态框以外的地方,模态框不关闭
-            $("#form-modal").modal("show");//显示模态框
+        addLevel_1() {
+          let _this = this;
+          _this.active = {};
+          _this.category = {
+            parent: "00000000"
+          }
+          $("#form-modal").modal({backdrop:'static'});//点击模态框以外的地方,模态框不关闭
+          $("#form-modal").modal("show");//显示模态框
+        },
+        addLevel_2() {
+          let _this = this;
+          //新增二类保证一类已经点击了
+          if (Tool.isEmpty(_this.active)){
+            Toast.warning("请先选中一级分类");
+            return;
+          }
+          _this.category = {
+            parent : _this.active.id
+          }
+          $("#form-modal").modal({backdrop:'static'});//点击模态框以外的地方,模态框不关闭
+          $("#form-modal").modal("show");//显示模态框
         },
 
         /**
@@ -417,7 +432,7 @@
 </script>
 
 <style scoped>
-  .active td {
+  .active td{
     background-color: #d6e9c6 !important;
   }
 </style>
