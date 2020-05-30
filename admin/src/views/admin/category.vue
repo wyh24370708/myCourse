@@ -309,6 +309,12 @@
                   }
                 }
               }
+              _this.level_2 = [];
+              // 对当前一级分类中选中的表格触发一次点击事件，以刷新二级菜单列表
+              // 注意：界面的渲染需要等vue绑定好变量后才做，所以加延时100ms
+              setTimeout(function(){
+                $("tr.active").trigger("click");
+              },100)
             })
         },
 
@@ -373,7 +379,7 @@
                     $("#form-modal").modal("hide");
                     //调用list方法
                     _this.all();
-                    //保存成功的提示框
+                  //保存成功的提示框
                     Toast.success("保存成功!");
                 }else{//校验字段, 字段有问题
                     Toast.warning(resp.message);
