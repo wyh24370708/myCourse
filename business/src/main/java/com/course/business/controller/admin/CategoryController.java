@@ -30,6 +30,21 @@ public class CategoryController {
 
     /**
      * 查询所有
+     * @return
+     */
+    @PostMapping("/all")
+    public ResponseDto all() {
+        //统一返回格式 start
+        ResponseDto responseDto = new ResponseDto();
+        //传输数据,通过表单的形式和流的形式,vue是通过流的方式,需要以@requestBody来获取数据
+        List<CategoryDto> categoryDtoList = categoryService.all();
+        LOG.info("查询分类结果:{}",categoryDtoList);
+        //统一返回格式 end
+        responseDto.setContent(categoryDtoList);
+        return responseDto;
+    }
+    /**
+     * 查询所有
      * @param pageDto
      * @return
      */

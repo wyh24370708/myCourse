@@ -12,6 +12,12 @@ public interface CategoryService {
      * 查询所有
      * @return
      */
+    List<CategoryDto> all();
+
+    /**
+     * 查询所有
+     * @return
+     */
     void findAll(PageDto<Category> pageDto);
 
     /**

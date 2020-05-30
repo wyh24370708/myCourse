@@ -23,6 +23,21 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryMapper categoryMapper;
 
     /**
+     * 分类结构 查询所有
+     * @return
+     */
+    @Override
+    public List<CategoryDto> all() {
+
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.setOrderByClause("sort desc");
+        List<Category> categoryListDB = categoryMapper.selectByExample(categoryExample);
+        //工具类转换
+        List<CategoryDto> categoryDtoList = CopyUtil.copyList(categoryListDB, CategoryDto.class);
+        return categoryDtoList;
+    }
+
+    /**
      * 查询所有
      * @return
      */
@@ -34,7 +49,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         //1. 倒叙排列
         CategoryExample categoryExample = new CategoryExample();
-        categoryExample.setOrderByClause("sort desc");
+        categoryExample.setOrderByClause("sort asc");
         //2. 设置total属性
         List<Category> categoryListDB = categoryMapper.selectByExample(categoryExample);
         PageInfo<Category> pageInfo = new PageInfo<>(categoryListDB);

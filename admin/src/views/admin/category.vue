@@ -1,101 +1,193 @@
 <template>
   <div>
-    <!--按钮 Start-->
-    <p>
-      <button class="btn btn-white btn-default btn-round"
-              v-on:click="add()">
-        <i class="ace-icon fa fa-edit"></i>
-        新增
-      </button>
-      &nbsp;
-      <!--刷新按钮
-      idea vue中的v-on爆红解决办法:
-        seettings – 》 Editor --》 Inspections 进到具体页面
-        XML -- Unbound XML namespace prefix
-      -->
-      <button class="btn btn-white btn-default btn-round"
-              v-on:click="list(1)">
-        <i class="ace-icon fa fa-refresh"></i>
-        刷新
-      </button>
-    </p>
-    <!--按钮 end -->
+    <div class="row">
+      <!--分类一级列表 start-->
+      <div class="col-md-6">
+        <!--按钮 Start-->
+        <p>
+          <button class="btn btn-white btn-default btn-round"
+                  v-on:click="add()">
+            <i class="ace-icon fa fa-edit"></i>
+            新增
+          </button>
+          &nbsp;
+          <!--刷新按钮
+          idea vue中的v-on爆红解决办法:
+            seettings – 》 Editor --》 Inspections 进到具体页面
+            XML -- Unbound XML namespace prefix
+          -->
+          <button class="btn btn-white btn-default btn-round"
+                  v-on:click="all()">
+            <i class="ace-icon fa fa-refresh"></i>
+            刷新
+          </button>
+        </p>
+        <!--按钮 end -->
 
-    <!--表单内容 start-->
-    <table id="simple-table" class="table  table-bordered table-hover">
-      <thead>
-      <!--表头-->
-      <tr>
-                  <th>id</th>
-          <th>父id</th>
-          <th>名称</th>
-          <th>顺序</th>
-        <th>操作</th>
-      </tr>
-      </thead>
+        <!--表单内容 start-->
+        <table id="level1-table" class="table  table-bordered table-hover">
+          <thead>
+          <!--表头-->
+          <tr>
+            <th>id</th>
+            <th>名称</th>
+            <th>顺序</th>
+            <th>操作</th>
+          </tr>
+          </thead>
 
-      <tbody>
-      <tr v-for="category in categorys">
-          <td>{{category.id}}</td>
-          <td>{{category.parent}}</td>
-          <td>{{category.name}}</td>
-          <td>{{category.sort}}</td>
-        <td>
-          <div class="hidden-sm hidden-xs btn-group">
-            <!--修改按钮 start-->
-            <button class="btn btn-xs btn-info" v-on:click="edit(category)">
-              <i class="ace-icon fa fa-pencil bigger-120"></i>
-            </button>
-            <!--修改按钮 end-->
+          <tbody>
+          <tr v-for="category in level_1"
+              v-on:click="queryLevel_1(category)"
+              v-bind:class="{'active' : category.id === active.id}">
+            <td>{{category.id}}</td>
+            <td>{{category.name}}</td>
+            <td>{{category.sort}}</td>
+            <td>
+              <div class="hidden-sm hidden-xs btn-group">
+                <!--修改按钮 start-->
+                <button class="btn btn-xs btn-info" v-on:click="edit(category)">
+                  <i class="ace-icon fa fa-pencil bigger-120"></i>
+                </button>
+                <!--修改按钮 end-->
 
-            <!--删除按钮 start-->
-            <button class="btn btn-xs btn-danger" v-on:click="del(category.id)">
-              <i class="ace-icon fa fa-trash-o bigger-120"></i>
-            </button>
-            <!--删除按钮 end-->
+                <!--删除按钮 start-->
+                <button class="btn btn-xs btn-danger" v-on:click="del(category.id)">
+                  <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                </button>
+                <!--删除按钮 end-->
 
-          </div>
+              </div>
 
-          <div class="hidden-md hidden-lg">
-            <div class="inline pos-rel">
-              <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-              </button>
+              <div class="hidden-md hidden-lg">
+                <div class="inline pos-rel">
+                  <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
+                    <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
+                  </button>
 
-              <ul
-                      class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                <li>
-                  <a href="#" class="tooltip-info" data-rel="tooltip" title="View">
+                  <ul
+                    class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                    <li>
+                      <a href="#" class="tooltip-info" data-rel="tooltip" title="View">
                                         <span class="blue">
                                           <i class="ace-icon fa fa-search-plus bigger-120"></i>
                                         </span>
-                  </a>
-                </li>
+                      </a>
+                    </li>
 
-                <li>
-                  <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
+                    <li>
+                      <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
                                         <span class="green">
                                           <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
                                         </span>
-                  </a>
-                </li>
+                      </a>
+                    </li>
 
-                <li>
-                  <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+                    <li>
+                      <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
                                         <span class="red">
                                           <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-    </table><!-- /.row -->
-    <!--表单内容 end -->
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table><!-- /.row -->
+        <!--表单内容 end -->
+      </div>
+      <!--分类一级列表 end-->
 
+      <!--分类二级列表 start-->
+      <div class="col-md-6">
+        <!--按钮 Start-->
+        <p>
+          <button class="btn btn-white btn-default btn-round"
+                  v-on:click="add()">
+            <i class="ace-icon fa fa-edit"></i>
+            新增
+          </button>
+        </p>
+        <!--按钮 end -->
+
+        <!--表单内容 start-->
+        <table id="level2-table" class="table  table-bordered table-hover">
+          <thead>
+          <!--表头-->
+          <tr>
+            <th>id</th>
+            <th>名称</th>
+            <th>顺序</th>
+            <th>操作</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr v-for="category in level_2">
+            <td>{{category.id}}</td>
+            <td>{{category.name}}</td>
+            <td>{{category.sort}}</td>
+            <td>
+              <div class="hidden-sm hidden-xs btn-group">
+                <!--修改按钮 start-->
+                <button class="btn btn-xs btn-info" v-on:click="edit(category)">
+                  <i class="ace-icon fa fa-pencil bigger-120"></i>
+                </button>
+                <!--修改按钮 end-->
+
+                <!--删除按钮 start-->
+                <button class="btn btn-xs btn-danger" v-on:click="del(category.id)">
+                  <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                </button>
+                <!--删除按钮 end-->
+
+              </div>
+
+              <div class="hidden-md hidden-lg">
+                <div class="inline pos-rel">
+                  <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
+                    <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
+                  </button>
+
+                  <ul
+                    class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                    <li>
+                      <a href="#" class="tooltip-info" data-rel="tooltip" title="View">
+                                          <span class="blue">
+                                            <i class="ace-icon fa fa-search-plus bigger-120"></i>
+                                          </span>
+                      </a>
+                    </li>
+
+                    <li>
+                      <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
+                                          <span class="green">
+                                            <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+                                          </span>
+                      </a>
+                    </li>
+
+                    <li>
+                      <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+                                          <span class="red">
+                                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                          </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table><!-- /.row -->
+        <!--表单内容 end -->
+      </div>
+      <!--分类二级列表 end-->
+    </div>
     <!--新增内容 start -->
     <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
@@ -109,27 +201,27 @@
             <form class="form-horizontal">
 
               <!-- freemaker生成 start -->
-                  <div class="form-group">
-                    <label for="inputParent" class="col-sm-2 control-label">父id</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputParent"
-                             v-model="category.parent" >
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputName" class="col-sm-2 control-label">名称</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputName"
-                             v-model="category.name" >
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputSort" class="col-sm-2 control-label">顺序</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputSort"
-                             v-model="category.sort" >
-                    </div>
-                  </div>
+              <div class="form-group">
+                <label for="inputParent" class="col-sm-2 control-label">父id</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="inputParent"
+                         v-model="category.parent" >
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputName" class="col-sm-2 control-label">名称</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="inputName"
+                         v-model="category.name" >
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputSort" class="col-sm-2 control-label">顺序</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="inputSort"
+                         v-model="category.sort" >
+                </div>
+              </div>
               <!-- freemaker生成 end -->
 
             </form>
@@ -144,11 +236,6 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <!--新增内容 end -->
-
-    <!--分页内容 start-->
-    <!--v-bind:xxx是组件中props设置的属性 list表示函数 itemCount表示显示最多显示几个按钮-->
-    <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
-    <!--分页内容 end-->
   </div>
 </template>
 <!--
@@ -161,13 +248,7 @@
   vue中不能使用js的关键字, delete是js的关键字
 -->
 <script>
-  /**
-   * 【引入pagination组件】
-   */
-  import Pagination from '../../components/pagination.vue'
-
   export default {
-      components: {Pagination},//引入pagination组件
       name: 'business-category',
       /**
        * 【页面加载初始化】
@@ -176,18 +257,18 @@
           //激活样式方法一
           // this.$parent.activeSidebar("business-category-sidebar");//后面使用通用方法
           let _this = this;
-          //_this.list();//没有使用分页组件
-          //使用分页组件
-          _this.$refs.pagination.size = 5;//默认显示的条数
-          _this.list(1);//调用list的方法
+          _this.all();//调用list的方法
       },
       /**
        * 【默认数据】
        */
       data: function () {
         return {
-            category: {}, //前台传入的数据
-            categorys: []//初始化为空数组, 后台查询到的数据
+          category: {}, //前台传入的数据
+          categorys: [],//初始化为空数组, 后台查询到的数据
+          level_1: [],
+          level_2: [],
+          active: {}
         }
       },
 
@@ -196,28 +277,39 @@
        */
       methods: {
         /**
-         * 【获取数据】
+         * 【获取数据 树形结构】
          */
-        list(page) {
+        all() {
             let _this = this;
             Loading.show();
-            //传输数据,通过表单的形式和流的形式,vue是通过流的方式,需要以@requestBody来获取数据
-            _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/category/list',{
-                pageNum: page,
-                pageSize: _this.$refs.pagination.size
-            }).then(function (response) {
+            _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/category/all',{}
+            ).then(function (response) {
                 Loading.hide();
                 //返回的数据
                 let resp = response.data;
                 //then异步执行,当.then()前的方法执行完后再执行then()内部的程序，这样就避免了，数据没获取到等的问题。
                 console.log("查询分类结果:",resp.content);
-                // 出现跨域问题,因为我们是前后端分离的
-                // Access to XMLHttpRequest at 'http://127.0.0.1:9002/business/admin/category/list' from origin 'http://localhost:8080'
-                // has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
-
-                _this.categorys = resp.content.list;//返回真实数据
-                //渲染
-                _this.$refs.pagination.render(page,resp.content.totalNum);
+                _this.categorys = resp.content;//返回真实数据
+              
+              //将所有的记录格式化成树形结构
+              _this.level_1 = [];
+              for (let i = 0; i < _this.categorys.length; i++) {
+                // debugger
+                let categorySingle = _this.categorys[i];//i
+                if (categorySingle.parent === '00000000'){
+                  _this.level_1.push(categorySingle);
+                  for (let j = 0; j <_this.categorys.length; j++) {
+                    let child = _this.categorys[j];//j
+                    if (child.parent === categorySingle.id){
+                      if (Tool.isEmpty(categorySingle.children)){
+                        categorySingle.children = [];
+                      }
+                      categorySingle.children.push(child);
+                      console.log(categorySingle.children);
+                    }
+                  }
+                }
+              }
             })
         },
 
@@ -265,7 +357,7 @@
                     //关闭模态框
                     $("#form-modal").modal("hide");
                     //调用list方法
-                    _this.list(1);
+                    _this.all();
                     //保存成功的提示框
                     Toast.success("保存成功!");
                 }else{//校验字段, 字段有问题
@@ -288,26 +380,44 @@
          * 【删除】
          */
         del(id) {
-            let _this = this;
-            //comfirm组件引入
-            Confirm.show("删除分类后不可恢复,确认删除?",function () {
-                Loading.show();
-                _this.$ajax.delete(process.env.VUE_APP_SERVER + '/business/admin/category/delete/'+id
-                ).then(function (response) {
-                    Loading.hide();
-                    //返回的数据
-                    let resp = response.data;
-                    //删除功能的日志
-                    console.log("删除分类的结果:{}",resp.content);
-                    if (resp.success){
-                        //重新查询list
-                        _this.list(1);
-                        //删除成功的提示框
-                        Toast.success("删除成功!");
-                    }
-                })
-            })
+          let _this = this;
+          //comfirm组件引入
+          Confirm.show("删除分类后不可恢复,确认删除?",function () {
+              Loading.show();
+              _this.$ajax.delete(process.env.VUE_APP_SERVER + '/business/admin/category/delete/'+id
+              ).then(function (response) {
+                  Loading.hide();
+                  //返回的数据
+                  let resp = response.data;
+                  //删除功能的日志
+                  console.log("删除分类的结果:{}",resp.content);
+                  if (resp.success){
+                      //重新查询list
+                      _this.all();
+                      //删除成功的提示框
+                      Toast.success("删除成功!");
+                  }
+              })
+          })
+        },
+        /**
+         * 【查询一级分类】
+         * @param category
+         */
+        queryLevel_1(category) {
+          let _this = this;
+          console.log("点击触发了...");
+          _this.active = category;
+          _this.level_2 = category.children;
+          console.log("children:{}", category.children);
+
         }
       }
   }
 </script>
+
+<style scoped>
+  .active td {
+    background-color: #d6e9c6 !important;
+  }
+</style>
