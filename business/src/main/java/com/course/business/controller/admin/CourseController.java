@@ -1,9 +1,11 @@
 package com.course.business.controller.admin;
 
 import com.course.server.dto.CourseDto;
+import com.course.server.dto.Course_categoryDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.ResponseDto;
 import com.course.server.service.CourseService;
+import com.course.server.service.Course_categoryService;
 import com.course.server.util.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,8 @@ public class CourseController {
 
     @Resource
     private CourseService courseService;
+    @Resource
+    private Course_categoryService course_categoryService;
 
     /**
      * 查询所有
@@ -80,6 +84,18 @@ public class CourseController {
         ResponseDto responseDto = new ResponseDto();
         courseService.delete(id);
         LOG.info("删除课程表的id:{}",id);
+        return responseDto;
+    }
+
+    /**
+     * 编辑U回显课程分类
+     */
+    @PostMapping("/listCategory/{id}")
+    public ResponseDto listCategory(@PathVariable("id") String courseId){
+        //统一返回格式 start
+        ResponseDto responseDto = new ResponseDto();
+        List<Course_categoryDto> dtoList = course_categoryService.queryCategoryList(courseId);
+        responseDto.setContent(dtoList);
         return responseDto;
     }
 

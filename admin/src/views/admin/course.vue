@@ -253,125 +253,127 @@
          * 【获取数据】
          */
         list(page) {
-            let _this = this;
-            Loading.show();
-            //传输数据,通过表单的形式和流的形式,vue是通过流的方式,需要以@requestBody来获取数据
-            _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/list',{
-                pageNum: page,
-                pageSize: _this.$refs.pagination.size
-            }).then(function (response) {
-                Loading.hide();
-                //返回的数据
-                let resp = response.data;
-                //then异步执行,当.then()前的方法执行完后再执行then()内部的程序，这样就避免了，数据没获取到等的问题。
-                console.log("查询课程表结果:",resp.content);
-                // 出现跨域问题,因为我们是前后端分离的
-                // Access to XMLHttpRequest at 'http://127.0.0.1:9002/business/admin/course/list' from origin 'http://localhost:8080'
-                // has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+          let _this = this;
+          Loading.show();
+          //传输数据,通过表单的形式和流的形式,vue是通过流的方式,需要以@requestBody来获取数据
+          _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/list', {
+            pageNum: page,
+            pageSize: _this.$refs.pagination.size
+          }).then(function (response) {
+            Loading.hide();
+            //返回的数据
+            let resp = response.data;
+            //then异步执行,当.then()前的方法执行完后再执行then()内部的程序，这样就避免了，数据没获取到等的问题。
+            console.log("查询课程表结果:", resp.content);
+            // 出现跨域问题,因为我们是前后端分离的
+            // Access to XMLHttpRequest at 'http://127.0.0.1:9002/business/admin/course/list' from origin 'http://localhost:8080'
+            // has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
 
-                _this.courses = resp.content.list;//返回真实数据
-                //渲染
-                _this.$refs.pagination.render(page,resp.content.totalNum);
-            })
+            _this.courses = resp.content.list;//返回真实数据
+            //渲染
+            _this.$refs.pagination.render(page, resp.content.totalNum);
+          })
         },
 
         /**
          * 【弹出新增的模态框】
          */
         add() {
-            let _this = this;
-            _this.course = {};//清除上次编辑的内容
-            _this.tree = {};
-            $("#form-modal").modal({backdrop:'static'});//点击模态框以外的地方,模态框不关闭
-            $("#form-modal").modal("show");//显示模态框
+          let _this = this;
+          _this.course = {};//清除上次编辑的内容
+          _this.tree.checkAllNodes(false);//清除课程zTree中勾选的
+          $("#form-modal").modal({backdrop: 'static'});//点击模态框以外的地方,模态框不关闭
+          $("#form-modal").modal("show");//显示模态框
         },
 
         /**
          * 【新增课程表】
          */
         save() {
-            let _this = this;
-            /**
-             * 前后都要做作校验,如果使用postman直接访问后台接口,就会出现问题
-             */
-            //校验字段
-            if(1 != 1
-                    || !Validator.require(_this.course.name, "课程名称")
-                    || !Validator.length(_this.course.name, "课程名称", 1, 50)
-                    || !Validator.length(_this.course.summary, "概述", 1, 2000)
-            ){
-              return;
+          let _this = this;
+          /**
+           * 前后都要做作校验,如果使用postman直接访问后台接口,就会出现问题
+           */
+          //校验字段
+          if (1 != 1
+            || !Validator.require(_this.course.name, "课程名称")
+            || !Validator.length(_this.course.name, "课程名称", 1, 50)
+            || !Validator.length(_this.course.summary, "概述", 1, 2000)
+          ) {
+            return;
+          }
+
+          //树形结构选中的数据
+          let categorys_checked = _this.tree.getCheckedNodes(true);
+          if (Tool.isEmpty(categorys_checked)) {
+            Toast.warning(" 请选择分类！");
+            return;
+          }
+          console.log("选中的节点数据:{}", categorys_checked);
+          //保存课程分类.只需要category_id ,当然我们也可以传递所有的节点的数据
+          _this.course.categorys = categorys_checked;
+
+          Loading.show();
+          _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/save',
+            _this.course
+          ).then(function (response) {
+            Loading.hide();
+            //返回的数据
+            let resp = response.data;
+            //打印日志
+            console.log("保存课程表的结果:{}", resp.content);
+            if (resp.success) {//true
+              //清楚模态框的内容-->更改到add()方法内部
+              // _this.course.courseId = "";
+              // _this.course.name = "";
+
+              //关闭模态框
+              $("#form-modal").modal("hide");
+              //调用list方法
+              _this.list(1);
+              //保存成功的提示框
+              Toast.success("保存成功!");
+            } else {//校验字段, 字段有问题
+              Toast.warning(resp.message);
             }
-
-            //树形结构选中的数据
-            let categorys_checked = _this.tree.getCheckedNodes(true);
-            if (Tool.isEmpty(categorys_checked)){
-              Toast.warning(" 请选择分类！");
-              return;
-            }
-            console.log("选中的节点数据:{}",categorys_checked);
-            //保存课程分类.只需要category_id ,当然我们也可以传递所有的节点的数据
-            _this.course.categorys = categorys_checked;
-
-            Loading.show();
-            _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/save',
-              _this.course
-            ).then(function (response) {
-                Loading.hide();
-                //返回的数据
-                let resp = response.data;
-                //打印日志
-                console.log("保存课程表的结果:{}",resp.content);
-                if (resp.success){//true
-                    //清楚模态框的内容-->更改到add()方法内部
-                    // _this.course.courseId = "";
-                    // _this.course.name = "";
-
-                    //关闭模态框
-                    $("#form-modal").modal("hide");
-                    //调用list方法
-                    _this.list(1);
-                    //保存成功的提示框
-                    Toast.success("保存成功!");
-                }else{//校验字段, 字段有问题
-                    Toast.warning(resp.message);
-                }
-            })
+          })
         },
 
         /**
          * 【修改】
          */
         edit(course) {
-            let _this = this;
-            //传参course复制一个到{}里面,不影响_this.course,即不会修改页面的course内容
-            _this.course = $.extend({},course);
-            $("#form-modal").modal("show");
+          let _this = this;
+          //传参course复制一个到{}里面,不影响_this.course,即不会修改页面的course内容
+          _this.course = $.extend({}, course);
+          _this.tree.checkAllNodes(false);//清除课程zTree中勾选的
+          _this.listCategory(course.id);
+          $("#form-modal").modal("show");
         },
 
         /**
          * 【删除】
          */
         del(id) {
-            let _this = this;
-            //comfirm组件引入
-            Confirm.show("删除课程表后不可恢复,确认删除?",function () {
-                Loading.show();
-                _this.$ajax.delete(process.env.VUE_APP_SERVER + '/business/admin/course/delete/'+id
-                ).then(function (response) {
-                    Loading.hide();
-                    //返回的数据
-                    let resp = response.data;
-                    //删除功能的日志
-                    console.log("删除课程表的结果:{}",resp.content);
-                    if (resp.success){
-                        //重新查询list
-                        _this.list(1);
-                        //删除成功的提示框
-                        Toast.success("删除成功!");
-                    }
-                })
+          let _this = this;
+          //comfirm组件引入
+          Confirm.show("删除课程表后不可恢复,确认删除?", function () {
+            Loading.show();
+            _this.$ajax.delete(process.env.VUE_APP_SERVER + '/business/admin/course/delete/' + id
+            ).then(function (response) {
+              Loading.hide();
+              //返回的数据
+              let resp = response.data;
+              //删除功能的日志
+              console.log("删除课程表的结果:{}", resp.content);
+              if (resp.success) {
+                //重新查询list
+                _this.list(1);
+                //删除成功的提示框
+                Toast.success("删除成功!");
+              }
             })
+          })
         },
 
         /**
@@ -380,7 +382,7 @@
         toChapter(course) {
           let _this = this;
           //h5缓存 course
-          SessionStorage.set("course",course);
+          SessionStorage.set("course", course);
           //页面跳转
           _this.$router.push("/business/chapter");
         },
@@ -391,12 +393,12 @@
         allCategory() {
           let _this = this;
           Loading.show();
-          _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/category/all',{}
+          _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/category/all', {}
           ).then(function (response) {
             Loading.hide();
             let resp = response.data;
             //then异步执行,当.then()前的方法执行完后再执行then()内部的程序，这样就避免了，数据没获取到等的问题。
-            console.log("查询分类结果:",resp.content);
+            console.log("查询分类结果:", resp.content);
             _this.categorys = resp.content;//返回真实数据
             _this.initTree();//初始化树形结构
           })
@@ -421,9 +423,28 @@
             }
           };
 
-          let zNodes =_this.categorys;//树形结构的数据
+          let zNodes = _this.categorys;//树形结构的数据
 
           _this.tree = $.fn.zTree.init($("#tree"), setting, zNodes);
+        },
+
+        /**
+         * 【编辑回显已勾选的分类】
+         */
+        listCategory(id) {
+          let _this = this;
+          Loading.show()
+          _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/course/listCategory/" + id
+          ).then(function (response) {
+            Loading.hide();
+            let categorys = response.data.content;
+            //查询已勾选,显示出来
+            for (let i = 0, LEN = categorys.length; i < LEN; i++) {
+              let node = _this.tree.getNodeByParam("id", categorys[i].categoryId);
+              _this.tree.checkNode(node, true);
+            }
+          })
+
         }
       }
   }

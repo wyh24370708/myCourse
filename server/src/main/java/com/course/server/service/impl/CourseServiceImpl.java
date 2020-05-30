@@ -15,6 +15,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -61,6 +62,7 @@ public class CourseServiceImpl implements CourseService {
      * 新增和修改
      */
     @Override
+    @Transactional
     public void save(CourseDto courseDto) {
         //保存课程基本信息
         // Course course = new Course();

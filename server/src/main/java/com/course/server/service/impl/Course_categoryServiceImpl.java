@@ -11,7 +11,9 @@ import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -75,8 +77,10 @@ public class Course_categoryServiceImpl implements Course_categoryService {
 
     /**
      * 批量保存
+     * 先清空,在保存
      */
     @Override
+    @Transactional
     public void saveBatch(String courseId, List<CategoryDto> dtoList) {
         //清空课程分类数据
         Course_categoryExample example = new Course_categoryExample();
@@ -90,6 +94,17 @@ public class Course_categoryServiceImpl implements Course_categoryService {
             course_category.setCategoryId(categoryDto.getId());
             insert(course_category);
         }
+    }
+
+    /**
+     * 编辑U回显课程分类
+     */
+    @Override
+    public List<Course_categoryDto> queryCategoryList(String courseId) {
+        Course_categoryExample example = new Course_categoryExample();
+        example.createCriteria().andCourseIdEqualTo(courseId);
+        List<Course_category> course_categoryList = course_categoryMapper.selectByExample(example);
+        return CopyUtil.copyList(course_categoryList,Course_categoryDto.class);
     }
 
     private void insert(Course_category course_category) {

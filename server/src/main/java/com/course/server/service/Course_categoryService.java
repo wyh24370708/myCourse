@@ -31,4 +31,8 @@ public interface Course_categoryService {
      */
     void saveBatch(String courseId, List<CategoryDto> dtoList);
 
+    /**
+     * 编辑U回显课程分类
+     */
+    List<Course_categoryDto> queryCategoryList(String courseId);
 }
