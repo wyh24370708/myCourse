@@ -128,6 +128,15 @@ insert into `category` (id, parent, name, sort) values ('00000703', '00000700', 
 
 select * from category;
 
+-- 课程分类表
+drop table if exists `course_category`;
+create table `course_category` (
+    `id` char(8) not null default '' comment 'id',
+    `course_id` char(8) comment '课程|course_id',
+    `category_id` char(8) comment '分类|category_id',
+    primary key (`id`)
+)engine = innodb default charset = utf8mb4 comment '课程分类';
+
 -- 测试
 drop table if exists course;
 CREATE TABLE `course` (

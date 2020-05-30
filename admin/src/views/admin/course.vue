@@ -221,16 +221,19 @@
   export default {
       components: {Pagination},//引入pagination组件
       name: 'business-course',
-      mounted: function () {//页面加载初始化
-          //激活样式方法一
-          // this.$parent.activeSidebar("business-course-sidebar");//后面使用通用方法
+      /**
+       * 【页面初始化】
+       */
+      mounted: function () {
+          //激活样式方法一 this.$parent.activeSidebar("business-course-sidebar");//后面使用通用方法
           let _this = this;
           _this.allCategory();//初始化树形结构
-          //_this.list();//没有使用分页组件
-          //使用分页组件
           _this.$refs.pagination.size = 5;//默认显示的条数
           _this.list(1);//调用list的方法
       },
+      /**
+       * 【初始化数据】
+       */
       data: function () {
         return {
           course: {}, //前台传入的数据
@@ -238,11 +241,17 @@
           COURSE_CHARGE: COURSE_CHARGE,
           COURSE_LEVEL: COURSE_LEVEL,
           COURSE_STATUS: COURSE_STATUS,
-          categorys: []
+          categorys: [],
+          tree: {},
         }
       },
+      /**
+       * 【调用方法】
+       */
       methods: {
-        //获取数据
+        /**
+         * 【获取数据】
+         */
         list(page) {
             let _this = this;
             Loading.show();
@@ -266,15 +275,20 @@
             })
         },
 
-        //弹出新增的模态框
+        /**
+         * 【弹出新增的模态框】
+         */
         add() {
             let _this = this;
             _this.course = {};//清除上次编辑的内容
+            _this.tree = {};
             $("#form-modal").modal({backdrop:'static'});//点击模态框以外的地方,模态框不关闭
             $("#form-modal").modal("show");//显示模态框
         },
 
-        //新增课程表
+        /**
+         * 【新增课程表】
+         */
         save() {
             let _this = this;
             /**
@@ -288,6 +302,16 @@
             ){
               return;
             }
+
+            //树形结构选中的数据
+            let categorys_checked = _this.tree.getCheckedNodes(true);
+            if (Tool.isEmpty(categorys_checked)){
+              Toast.warning(" 请选择分类！");
+              return;
+            }
+            console.log("选中的节点数据:{}",categorys_checked);
+            //保存课程分类.只需要category_id ,当然我们也可以传递所有的节点的数据
+            _this.course.categorys = categorys_checked;
 
             Loading.show();
             _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/save',
@@ -315,7 +339,9 @@
             })
         },
 
-        //修改
+        /**
+         * 【修改】
+         */
         edit(course) {
             let _this = this;
             //传参course复制一个到{}里面,不影响_this.course,即不会修改页面的course内容
@@ -323,7 +349,9 @@
             $("#form-modal").modal("show");
         },
 
-        //删除
+        /**
+         * 【删除】
+         */
         del(id) {
             let _this = this;
             //comfirm组件引入
@@ -346,7 +374,9 @@
             })
         },
 
-        //点击【大章】 缓存课程course
+        /**
+         * 点击【大章】 缓存课程course
+         */
         toChapter(course) {
           let _this = this;
           //h5缓存 course
@@ -354,7 +384,6 @@
           //页面跳转
           _this.$router.push("/business/chapter");
         },
-
 
         /**
          * 【获取数据 树形结构】
@@ -392,9 +421,9 @@
             }
           };
 
-          let zNodes =_this.categorys;
+          let zNodes =_this.categorys;//树形结构的数据
 
-          $.fn.zTree.init($("#tree"), setting, zNodes);
+          _this.tree = $.fn.zTree.init($("#tree"), setting, zNodes);
         }
       }
   }

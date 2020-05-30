@@ -7,6 +7,7 @@ import com.course.server.dto.PageDto;
 import com.course.server.mapper.CourseMapper;
 import com.course.server.mapper.my.MyCourseMapper;
 import com.course.server.service.CourseService;
+import com.course.server.service.Course_categoryService;
 import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
@@ -28,6 +29,8 @@ public class CourseServiceImpl implements CourseService {
     private CourseMapper courseMapper;
     @Resource
     private MyCourseMapper myCourseMapper;
+    @Resource
+    private Course_categoryService course_categoryService;
 
     /**
      * 查询所有
@@ -59,6 +62,7 @@ public class CourseServiceImpl implements CourseService {
      */
     @Override
     public void save(CourseDto courseDto) {
+        //保存课程基本信息
         // Course course = new Course();
         // BeanUtils.copyProperties(courseDto,course);
         //工具类转换
@@ -69,6 +73,9 @@ public class CourseServiceImpl implements CourseService {
         }else{
             this.update(course);
         }
+
+        //批量-保存课程分类
+        course_categoryService.saveBatch(courseDto.getId(), courseDto.getCategorys());
     }
 
     /**
