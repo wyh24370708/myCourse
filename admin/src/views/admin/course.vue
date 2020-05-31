@@ -65,6 +65,11 @@
               </button>
               <!--大章按钮 end-->
               &nbsp;
+              <!--内容按钮 start-->
+              <button class="btn btn-white btn-xs btn-info btn-round" v-on:click="editContent(course)">
+                内容
+              </button>
+              <!--内容按钮 end-->
               <!--修改按钮 start-->
               <button class="btn btn-white btn-xs btn-info btn-round" v-on:click="edit(course)">
                 编辑
@@ -198,6 +203,40 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <!--新增内容 end -->
+
+    <!--富文本编辑器 新增内容 start -->
+    <div id="course-content-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--modal-lg  使得弹出框变宽,平铺效果.不换行 后面还要div设置col-lg-12-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">内容编辑</h4>
+          </div>
+          <div class="modal-body">
+            <!--模态框内容 Start -->
+            <form class="form-horizontal">
+                <div class="form-group">
+                  <div class="col-lg-12">
+                    <div id="content"></div>
+                  </div>
+                </div>
+            </form>
+            <!--模态框内容 End -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              取消
+            </button>
+            <button type="button" class="btn btn-primary"
+                    v-on:click="saveContent()">
+              保存
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!--富文本编辑器  新增内容 end -->
 
     <!--分页内容 start-->
     <!--v-bind:xxx是组件中props设置的属性 list表示函数 itemCount表示显示最多显示几个按钮-->
@@ -445,6 +484,59 @@
             }
           })
 
+        },
+
+        /**
+         * 【打开内容编辑框】
+         */
+        editContent(course) {
+          let _this = this;
+          let id = course.id;
+          _this.course = course;
+          //初始化Summernote
+          $('#content').summernote({
+            height: 300,
+            focus: true
+          });
+          // 先清空历史文本
+          $("#content").summernote('code', '');
+          Loading.show();
+          _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/findContent/' + id
+          ).then(function (response) {
+            Loading.hide();
+            let resp = response.data;
+
+            if (resp.success) {//true
+              $("#course-content-modal").modal({backdrop: 'static'});//点击模态框以外的地方,模态框不关闭
+              if(resp.content) {
+                $("#content").summernote('code', resp.content.content);
+              }
+            } else {//校验字段, 字段有问题
+              Toast.warning(resp.message);
+            }
+          })
+        },
+        /**
+         * 【保存课程内容】
+         */
+        saveContent() {
+          let _this = this;
+          Loading.show();
+          //获取匹配的元素集中第一个summernote的HTML内容。 这个页面只有这一个summernote
+          let content = $('#content').summernote('code');
+          _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/course/saveContent",{
+            id: _this.course.id,
+            content: content
+          }).then((response) =>{
+            let resp = response.data;
+            Loading.hide();
+            if (resp.success){
+              $("#course-content-modal").modal("hide");
+              Toast.success("保存成功!");
+            }else{
+              Toast.warning(resp.message);
+            }
+          })
         }
       }
   }

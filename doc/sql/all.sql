@@ -145,6 +145,7 @@ create table `course_content` (
     primary key (`id`)
 )engine = innodb default charset = utf8mb4 comment '课程内容';
 
+select * from course_content;
 
 -- 测试
 drop table if exists course;
