@@ -218,6 +218,12 @@
             <form class="form-horizontal">
                 <div class="form-group">
                   <div class="col-lg-12">
+                      {{saveContentDate}}
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-lg-12">
                     <div id="content"></div>
                   </div>
                 </div>
@@ -282,6 +288,7 @@
           COURSE_STATUS: COURSE_STATUS,
           categorys: [],
           tree: {},
+          saveContentDate: "",
         }
       },
       /**
@@ -500,6 +507,8 @@
           });
           // 先清空历史文本
           $("#content").summernote('code', '');
+          //初始化保存时间
+          _this.saveContentDate = "";
           Loading.show();
           _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/findContent/' + id
           ).then(function (response) {
@@ -511,6 +520,18 @@
               if(resp.content) {
                 $("#content").summernote('code', resp.content.content);
               }
+              //设定定时保存
+              /*
+              * setTimeOut 单次的定时任务
+              * setInterval 重复的定时任务
+              */
+              let interval = setInterval( function () {
+                _this.saveContent();
+              },10000);
+              //关闭模态框 自动保存
+              $("#course-content-modal").on("hidden.bs.modal",function (e) {
+                clearInterval(interval);
+              });
             } else {//校验字段, 字段有问题
               Toast.warning(resp.message);
             }
@@ -531,8 +552,9 @@
             let resp = response.data;
             Loading.hide();
             if (resp.success){
-              $("#course-content-modal").modal("hide");
-              Toast.success("保存成功!");
+              //Toast.success("保存成功!");  //已经设置文本自动保存,不必给出提示框
+              let dateFormat = Tool.dateFormat("yyyy-MM-dd hh:mm:ss");
+              _this.saveContentDate = "最近保存的时间: " + dateFormat;
             }else{
               Toast.warning(resp.message);
             }
