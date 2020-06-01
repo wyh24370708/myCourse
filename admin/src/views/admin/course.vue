@@ -59,28 +59,21 @@
             </p>
             <!--按钮 start-->
             <p>
-              <!--大章按钮 start-->
               <button class="btn btn-white btn-xs btn-info btn-round" v-on:click="toChapter(course)">
                 大章
-              </button>
-              <!--大章按钮 end-->
-              &nbsp;
-              <!--内容按钮 start-->
+              </button>&nbsp;
               <button class="btn btn-white btn-xs btn-info btn-round" v-on:click="editContent(course)">
                 内容
-              </button>
-              <!--内容按钮 end-->
-              <!--修改按钮 start-->
+              </button>&nbsp;
+              <button class="btn btn-white btn-xs btn-info btn-round" v-on:click="openSortModal(course)">
+                排序
+              </button>&nbsp;
               <button class="btn btn-white btn-xs btn-info btn-round" v-on:click="edit(course)">
                 编辑
-              </button>
-              <!--修改按钮 end-->
-              &nbsp;
-              <!--删除按钮 start-->
+              </button>&nbsp;
               <button class="btn btn-white btn-xs btn-warning btn-round" v-on:click="del(course.id)">
                 删除
-              </button>
-              <!--删除按钮 end-->
+              </button>&nbsp;
             </p>
             <!--按钮 end-->
           </div>
@@ -187,7 +180,7 @@
                   <label for="inputSort" class="col-sm-2 control-label">顺序</label>
                   <div class="col-sm-10">
                     <input type="text" class="form-control" id="inputSort"
-                           v-model="course.sort" >
+                           v-model="course.sort" disabled>
                   </div>
                 </div>
               <!-- freemaker生成 end -->
@@ -244,6 +237,45 @@
     </div><!-- /.modal -->
     <!--富文本编辑器  新增内容 end -->
 
+    <!--调整排序 start -->
+    <div id="sort-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">编辑顺序</h4>
+          </div>
+          <div class="modal-body">
+            <!--模态框内容 Start -->
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">原排序</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control"
+                         v-model="sort.oldSort" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">新排序</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control"
+                         v-model="sort.newSort" :placeholder="range">
+                </div>
+              </div>
+
+            </form>
+            <!--模态框内容 End -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary"
+                    v-on:click="updateSort()">更新排序</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!--调整排序 end -->
+
     <!--分页内容 start-->
     <!--v-bind:xxx是组件中props设置的属性 list表示函数 itemCount表示显示最多显示几个按钮-->
     <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
@@ -289,6 +321,12 @@
           categorys: [],
           tree: {},
           saveContentDate: "",
+          sort: {
+            id: "",
+            oldSort: 0,
+            newSort: 0,
+          },
+          range: "",//排序范围
         }
       },
       /**
@@ -326,7 +364,9 @@
          */
         add() {
           let _this = this;
-          _this.course = {};//清除上次编辑的内容
+          _this.course = {
+            sort: _this.$refs.pagination.total + 1
+          };//清除上次编辑的内容
           _this.tree.checkAllNodes(false);//清除课程zTree中勾选的
           $("#form-modal").modal({backdrop: 'static'});//点击模态框以外的地方,模态框不关闭
           $("#form-modal").modal("show");//显示模态框
@@ -559,6 +599,54 @@
               Toast.warning(resp.message);
             }
           })
+        },
+
+        /**
+         * 【打开排序模态框】
+         */
+        openSortModal(course) {
+          let _this = this;
+          _this.sort = {
+            id: course.id,
+            oldSort: course.sort,
+            newSort: course.sort
+          }
+          let total = _this.$refs.pagination.total;
+          _this.range = "1~" + total;//排序方位
+          $("#sort-modal").modal("show");
+        },
+
+        /**
+         * 【保存排序】
+         */
+        updateSort() {
+          let _this = this;
+          // console.log("sort:{}",_this.sort);
+          if (_this.sort.newSort === _this.sort.oldSort){
+            Toast.warning("排序没有变化");
+            return;
+          }
+          let total = _this.$refs.pagination.total;
+          // console.log("排序最大值:{}", total);
+          //校验字段
+          if ( _this.sort.newSort > total || _this.newSort < 1) {
+            Toast.error("输入新排序已超出范围");
+            return;
+          }
+          Loading.show();
+          _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/course/updateSort",
+            _this.sort
+          ).then((response) => {
+            let resp = response.data;
+            Loading.hide();
+            if (resp.success){
+              Toast.success("更新排序成功!");
+              $("#sort-modal").modal("hide");
+              _this.list(1);
+            }else{
+              Toast.error("更新排序失败");
+            }
+          });
         }
       }
   }

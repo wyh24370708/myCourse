@@ -119,7 +119,16 @@ public class CourseController {
         return responseDto;
     }
 
-
+    /**
+     * 【更新排序】
+     */
+    @PostMapping("/updateSort")
+    public ResponseDto updateSort(@RequestBody SortDto sortDto){
+        ResponseDto responseDto = new ResponseDto();
+        LOG.info("更新排序:{}",sortDto);
+        courseService.uodateSort(sortDto);
+        return responseDto;
+    }
 
 
 }

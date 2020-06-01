@@ -6,6 +6,7 @@ import com.course.server.domain.Course_content;
 import com.course.server.dto.CourseDto;
 import com.course.server.dto.Course_contentDto;
 import com.course.server.dto.PageDto;
+import com.course.server.dto.SortDto;
 import com.course.server.mapper.CourseMapper;
 import com.course.server.mapper.Course_contentMapper;
 import com.course.server.mapper.my.MyCourseMapper;
@@ -50,7 +51,7 @@ public class CourseServiceImpl implements CourseService {
 
         //1. 倒叙排列
         CourseExample courseExample = new CourseExample();
-        courseExample.setOrderByClause("sort desc");
+        courseExample.setOrderByClause("sort asc");
         //2. 设置total属性
         List<Course> courseListDB = courseMapper.selectByExample(courseExample);
         PageInfo<Course> pageInfo = new PageInfo<>(courseListDB);
@@ -82,7 +83,7 @@ public class CourseServiceImpl implements CourseService {
         }
 
         //批量-保存课程分类
-        course_categoryService.saveBatch(courseDto.getId(), courseDto.getCategorys());
+        course_categoryService.saveBatch(course.getId(), courseDto.getCategorys());
     }
 
     /**
@@ -127,6 +128,26 @@ public class CourseServiceImpl implements CourseService {
         if (i == 0){
             course_contentMapper.insert(courseContent);
         }
+    }
+
+    /**
+     * 【更新排序】
+     * @param sortDto
+     */
+    @Override
+    public void uodateSort(SortDto sortDto) {
+        //更新sort
+        myCourseMapper.updateSortById(sortDto);
+        int num = sortDto.getNewSort() > sortDto.getOldSort() ? 0 : 1;
+        //顺序的前后启动
+       switch (num){
+           case 0:
+               myCourseMapper.moveSortsForward(sortDto);//顺序组前移
+               break;
+           case 1:
+               myCourseMapper.moveSortBackward(sortDto);//顺序组后移
+               break;
+       }
     }
 
     //插入

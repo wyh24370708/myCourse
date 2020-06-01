@@ -2,9 +2,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.course.server.mapper.my.MyCourseMapper">
+    <!--更新保存时间-->
     <update id="updateTime" >
         UPDATE course c SET `time` =(
             SELECT SUM(`time`) FROM section s WHERE s.course_id = #{courseId})
             WHERE c.id = #{courseId};
     </update>
+
+    <!--更新顺序-->
+    <update id="updateSortById" parameterType="com.course.server.dto.SortDto">
+        update course set `sort` = #{newSort} where `id` = #{id}
+    </update>
+    <!--顺序前移-->
+    <update id="moveSortsForward" parameterType="com.course.server.dto.SortDto">
+        <![CDATA[
+            update course
+                set `sort` = (`sort` - 1 )
+            where
+                `sort` >= #{oldSort} and `sort` <= #{newSort}
+                and `id`!= #{id}
+        ]]>
+    </update>
+    <!--顺序后移-->
+    <update id="moveSortBackward" parameterType="com.course.server.dto.SortDto">
+        <![CDATA[
+            update course
+                set `sort` = (`sort` + 1 )
+            where
+                `sort` >= #{newSort} and `sort` <= #{oldSort}
+                and `id`!= #{id}
+        ]]>
+    </update>
+
+
 </mapper>
