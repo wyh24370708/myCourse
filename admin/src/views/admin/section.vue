@@ -218,8 +218,8 @@
           _this.$refs.pagination.size = 5;//默认显示的条数
 
           //取出缓存
-          let chapter = SessionStorage.get("chapter");
-          let course = SessionStorage.get("course");
+          let chapter = SessionStorage.get(SESSION_KEY_CHAPTER);
+          let course = SessionStorage.get(SESSION_KEY_COURSE);
           if (Tool.isEmpty(chapter) || Tool.isEmpty(course)){
             _this.$router.push("/welcome");
           }

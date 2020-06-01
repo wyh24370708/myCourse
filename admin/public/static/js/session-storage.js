@@ -1,3 +1,6 @@
+SESSION_KEY_CHAPTER = "SESSION_KEY_CHAPTER";
+SESSION_KEY_COURSE = "SESSION_KEY_COURSE";
+
 //会话缓存
 SessionStorage = {
     get: function (key) {

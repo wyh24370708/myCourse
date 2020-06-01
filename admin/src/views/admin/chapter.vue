@@ -173,7 +173,7 @@
           //使用分页组件
           _this.$refs.pagination.size = 5;//默认显示的条数
 
-          let course = SessionStorage.get("course") || {};//没有缓存就是默认空
+          let course = SessionStorage.get(SESSION_KEY_COURSE) || {};//没有缓存就是默认空
           if (Tool.isEmpty(course)){
             _this.$router.push("/welcome");
           }
@@ -325,7 +325,7 @@
         //点击【小节】
         toSection(chapter) {
           let _this = this;
-          SessionStorage.set("chapter",chapter);
+          SessionStorage.set(SESSION_KEY_CHAPTER,chapter);
           _this.$router.push("/business/section");
         }
       }

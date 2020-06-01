@@ -468,7 +468,7 @@
         toChapter(course) {
           let _this = this;
           //h5缓存 course
-          SessionStorage.set("course", course);
+          SessionStorage.set(SESSION_KEY_COURSE, course);
           //页面跳转
           _this.$router.push("/business/chapter");
         },
