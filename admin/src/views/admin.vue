@@ -433,6 +433,17 @@
               </li>
               <!--课程管理 end-->
 
+              <!--讲师管理 start-->
+              <li class="active" id="business-teacher-sidebar">
+                <router-link to="/business/teacher">
+                  <i class="menu-icon fa fa-caret-right"></i>
+                  讲师管理
+                </router-link>
+
+                <b class="arrow"></b>
+              </li>
+              <!--讲师管理 end-->
+
 <!--              &lt;!&ndash;大章管理 start&ndash;&gt;-->
 <!--              <li class="active" id="business-chapter-sidebar">-->
 <!--                <router-link to="/business/chapter">-->
