@@ -3,7 +3,7 @@
     <button type="button" class="btn btn-default btn-white btn-round"
             v-bind:disabled="page === 1"
             v-on:click="selectPage(1)">
-      1
+      首页
     </button>
     <button type="button" class="btn btn-default btn-white btn-round"
             v-bind:disabled="page === 1"
@@ -24,7 +24,7 @@
     <button type="button" class="btn btn-default btn-white btn-round"
             v-bind:disabled="page === pageTotal"
             v-on:click="selectPage(pageTotal)">
-      {{pageTotal||1}}
+      尾页
     </button>
     &nbsp;
     <span class="m--padding-10">
