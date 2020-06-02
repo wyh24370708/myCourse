@@ -45,6 +45,22 @@
             <h3 class="search-title">
               <a href="#" class="blue">{{course.name}}</a>
             </h3>
+            <!--讲师 start
+              v-for中 对循环的数组,可通过filter进行数据过滤
+            -->
+            <div class="profile-activity clearfix"
+                 v-for="teacher in teachers.filter(t=>{return t.id===course.teacherId})">
+              <div>
+                <img v-show="!teacher.image" class="pull-left" alt="" src="/static/image/profile-pic.jpg">
+                <img v-show="teacher.image" class="pull-left" alt="" v-bind:src="teacher.image">
+                <a class="user" href="#">{{teacher.name}}</a>
+                <br>
+                <p class="glyphicon glyphicon-user" aria-hidden="true">
+                  {{teacher.position}}
+                </p>
+              </div>
+            </div>
+            <!-- 讲师 end -->
             <p>
               <span class="blue bolder bigger-150">
                 <i class="fa fa-rmb"></i>
@@ -53,7 +69,6 @@
             </p>
             <p>{{course.summary}}</p>
             <p>
-              <span class="badge badge-info">{{course.id}}</span>
               <span class="badge badge-info">排序：{{course.sort}}</span>
               <span class="badge badge-info">时长：{{course.time | formatSecond}}</span>
             </p>
@@ -686,6 +701,15 @@ scoped :style下样式只适用于当前的组件,防止互相污染
 -->
 <style scoped>
   .caption h3{
-    font-size: 25px;
+    font-size: 20px;
+  }
+  /*字体大小自适应  屏幕变小就会下面的样式*/
+  @media (max-width: 1199px) {
+    .caption h3 {
+      font-size: 16px;
+    }
+  }
+  .user{
+    font-size: 15px;
   }
 </style>
