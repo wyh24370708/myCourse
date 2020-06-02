@@ -115,8 +115,9 @@
                   <div class="form-group">
                     <label for="inputImage" class="col-sm-2 control-label">头像</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputImage"
-                             v-model="teacher.image" >
+                      <input type="file"
+                             id="inputImage"
+                             v-on:change="upLoadImage()" >
                     </div>
                   </div>
                   <div class="form-group">
@@ -299,6 +300,24 @@
                     }
                 })
             })
+        },
+        /**
+         * 【上传讲师头像】
+         */
+        upLoadImage() {
+          let _this = this;
+          Loading.show();
+          let formData = new window.FormData;
+          console.log("formData1:{}",formData)
+          formData.append("file", document.querySelector("#inputImage").files[0]);
+          console.log("formData2:{}",formData)
+          // key："file"必须和后端controller参数名一致
+          _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/upload",
+            formData
+          ).then((response) => {
+            Loading.hide();
+            let resp = response.data;
+          })
         }
       }
   }
