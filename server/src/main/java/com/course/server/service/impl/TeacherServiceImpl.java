@@ -72,6 +72,18 @@ public class TeacherServiceImpl implements TeacherService {
         teacherMapper.deleteByPrimaryKey(id);
     }
 
+    /**
+     * 查询所有 不分页
+     * @return
+     */
+    @Override
+    public List<TeacherDto> all() {
+        TeacherExample example = new TeacherExample();
+        List<Teacher> teacherList = teacherMapper.selectByExample(example);
+        List<TeacherDto> teacherDtoList = CopyUtil.copyList(teacherList, TeacherDto.class);
+        return teacherDtoList;
+    }
+
     private void insert(Teacher teacher) {
         //设定新增的id的uuid值
         teacher.setId(UuidUtil.getShortUuid());

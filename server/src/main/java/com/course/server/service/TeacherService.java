@@ -24,5 +24,9 @@ public interface TeacherService {
      * @param id
      */
     void delete(String id);
-    
+
+    /**
+     * 查询所有 不分页
+     */
+    List<TeacherDto> all();
 }

@@ -110,6 +110,16 @@
                   </div>
                 </div>
                 <div class="form-group">
+                  <label class="col-sm-2 control-label">讲师</label>
+                  <div class="col-sm-10">
+                    <select type="text" class="form-control" v-model="course.teacherId">
+                      <option v-for="teacher in teachers" v-bind:value="teacher.id">
+                        {{teacher.name}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
                   <label for="inputSummary" class="col-sm-2 control-label">概述</label>
                   <div class="col-sm-10">
                     <textarea v-model="course.summary" type="text" class="form-control" id="inputSummary"></textarea>
@@ -305,6 +315,7 @@
           //激活样式方法一 this.$parent.activeSidebar("business-course-sidebar");//后面使用通用方法
           let _this = this;
           _this.allCategory();//初始化树形结构
+          _this.allTeacher();//初始化讲师查询
           _this.$refs.pagination.size = 5;//默认显示的条数
           _this.list(1);//调用list的方法
       },
@@ -327,6 +338,7 @@
             newSort: 0,
           },
           range: "",//排序范围
+          teachers: [],
         }
       },
       /**
@@ -647,6 +659,22 @@
               Toast.error("更新排序失败");
             }
           });
+        },
+
+        /**
+         * 【查询所有讲师】
+         */
+        allTeacher() {
+          let _this = this;
+          Loading.show();
+          _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/teacher/all"
+
+          ).then((response) =>{
+              Loading.hide();
+              let resp = response.data;
+              console.log("查询所有讲师:{}",resp.content);
+              _this.teachers = resp.content;
+          })
         }
       }
   }

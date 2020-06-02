@@ -40,7 +40,7 @@ public class TeacherController {
 
         //传输数据,通过表单的形式和流的形式,vue是通过流的方式,需要以@requestBody来获取数据
         teacherService.findAll(pageDto);
-        LOG.info("查询大章结果:{}",pageDto);
+        LOG.info("查询讲师结果:{}",pageDto);
         //统一返回格式 end
         responseDto.setContent(pageDto);
         return responseDto;
@@ -66,7 +66,7 @@ public class TeacherController {
         ValidatorUtil.length(teacherDto.getIntro(), "简介", 1, 500);
 
         teacherService.save(teacherDto);
-        LOG.info("保存大章结果:{}",teacherDto);
+        LOG.info("保存讲师结果:{}",teacherDto);
 
         //统一返回格式 end
         responseDto.setContent(teacherDto);
@@ -82,7 +82,22 @@ public class TeacherController {
         //统一返回格式 start
         ResponseDto responseDto = new ResponseDto();
         teacherService.delete(id);
-        LOG.info("删除大章的id:{}",id);
+        LOG.info("删除讲师的id:{}",id);
+        return responseDto;
+    }
+
+    /**
+     * 查询所有 不分页
+     * @return
+     */
+    @PostMapping("/all")
+    public ResponseDto all() {
+        //统一返回格式 start
+        ResponseDto responseDto = new ResponseDto();
+        List<TeacherDto> teacherDtos = teacherService.all();
+        LOG.info("查询讲师结果:{}",teacherDtos);
+        //统一返回格式 end
+        responseDto.setContent(teacherDtos);
         return responseDto;
     }
 
