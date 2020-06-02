@@ -24,85 +24,65 @@
     <!--按钮 end -->
 
     <!--表单内容 start-->
-    <table id="simple-table" class="table  table-bordered table-hover">
-      <thead>
-      <!--表头-->
-      <tr>
-                  <th>id</th>
-          <th>姓名</th>
-          <th>昵称</th>
-          <th>头像</th>
-          <th>职位</th>
-          <th>座右铭</th>
-          <th>简介</th>
-        <th>操作</th>
-      </tr>
-      </thead>
+    <div class="row">
+      <div class="col-xs-12 col-sm-3 center">
+        <div>
+        <span class="profile-picture">
+          <!--课程默认图片-->
+          <img v-show="!teacher.image"
+               class="editable img-responsive editable-click editable-empty"
+               src="/static/image/profile-pic.jpg"
+               v-bind::title="teacher.intro"/>
+          <!--数据库存的课程图片-->
+          <img v-show="teacher.image"
+               class="media-object"
+               v-bind:src="teacher.image"
+               v-bind::title="teacher.intro"/>
+        </span>
 
-      <tbody>
-      <tr v-for="teacher in teachers">
-          <td>{{teacher.id}}</td>
-          <td>{{teacher.name}}</td>
-          <td>{{teacher.nickname}}</td>
-          <td>{{teacher.image}}</td>
-          <td>{{teacher.position}}</td>
-          <td>{{teacher.motto}}</td>
-          <td>{{teacher.intro}}</td>
-        <td>
-          <div class="hidden-sm hidden-xs btn-group">
-            <!--修改按钮 start-->
-            <button class="btn btn-xs btn-info" v-on:click="edit(teacher)">
-              <i class="ace-icon fa fa-pencil bigger-120"></i>
-            </button>
-            <!--修改按钮 end-->
+          <div class="space-4"></div>
 
-            <!--删除按钮 start-->
-            <button class="btn btn-xs btn-danger" v-on:click="del(teacher.id)">
-              <i class="ace-icon fa fa-trash-o bigger-120"></i>
-            </button>
-            <!--删除按钮 end-->
-
-          </div>
-
-          <div class="hidden-md hidden-lg">
-            <div class="inline pos-rel">
-              <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-              </button>
-
-              <ul
-                      class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                <li>
-                  <a href="#" class="tooltip-info" data-rel="tooltip" title="View">
-                                        <span class="blue">
-                                          <i class="ace-icon fa fa-search-plus bigger-120"></i>
-                                        </span>
-                  </a>
-                </li>
-
-                <li>
-                  <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
-                                        <span class="green">
-                                          <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-                                        </span>
-                  </a>
-                </li>
-
-                <li>
-                  <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
-                                        <span class="red">
-                                          <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                        </span>
-                  </a>
-                </li>
-              </ul>
+          <div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+            <div class="inline position-relative">
+              <a href="#" class="user-title-label dropdown-toggle" data-toggle="dropdown">
+                <i class="ace-icon fa fa-circle light-green"></i>
+                &nbsp;
+                <span class="white">{{teacher.position}}</span>
+              </a>
             </div>
           </div>
-        </td>
-      </tr>
-      </tbody>
-    </table><!-- /.row -->
-    <!--表单内容 end -->
+        </div>
+
+        <div class="space-6"></div>
+
+        <a href="#" v-bind:title="teacher.motto">
+          <i class="ace-icon glyphicon glyphicon-user"></i>
+          &nbsp;
+          <span class="blue">
+            {{teacher.name}} 【{{teacher.nickname}}】
+          </span>
+        </a>
+
+        <div class="space-6"></div>
+
+          <div class="profile-social-links align-center">
+            <!--按钮 start-->
+            <p>
+              <button class="btn btn-white btn-xs btn-info btn-round"
+                      v-on:click="edit(teacher)">
+                编辑
+              </button>&nbsp;
+              <button class="btn btn-white btn-xs btn-warning btn-round"
+                      v-on:click="del(teacher.id)">
+                删除
+              </button>&nbsp;
+            </p>
+            <!-- 按钮 end -->
+          </div>
+        </div>
+      <div class="hr hr12 dotted"></div>
+     </div>
+    <!--表单内容 end-->
 
     <!--新增内容 start -->
     <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
@@ -155,8 +135,10 @@
                   <div class="form-group">
                     <label for="inputIntro" class="col-sm-2 control-label">简介</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputIntro"
-                             v-model="teacher.intro" >
+                      <textarea v-model="teacher.intro"
+                                class="form-control"
+                                rows="5" id="inputIntro">
+                      </textarea>
                     </div>
                   </div>
               <!-- freemaker生成 end -->

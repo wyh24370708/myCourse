@@ -40,7 +40,7 @@ public class ${Domain}Controller {
 
         //传输数据,通过表单的形式和流的形式,vue是通过流的方式,需要以@requestBody来获取数据
         ${domain}Service.findAll(pageDto);
-        LOG.info("查询大章结果:{}",pageDto);
+        LOG.info("查询${tableNameCN}结果:{}",pageDto);
         //统一返回格式 end
         responseDto.setContent(pageDto);
         return responseDto;
@@ -69,7 +69,7 @@ public class ${Domain}Controller {
         </#list>
 
         ${domain}Service.save(${domain}Dto);
-        LOG.info("保存大章结果:{}",${domain}Dto);
+        LOG.info("保存${tableNameCN}结果:{}",${domain}Dto);
 
         //统一返回格式 end
         responseDto.setContent(${domain}Dto);
@@ -85,7 +85,7 @@ public class ${Domain}Controller {
         //统一返回格式 start
         ResponseDto responseDto = new ResponseDto();
         ${domain}Service.delete(id);
-        LOG.info("删除大章的id:{}",id);
+        LOG.info("删除${tableNameCN}的id:{}",id);
         return responseDto;
     }
 
