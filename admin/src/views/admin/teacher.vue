@@ -118,10 +118,12 @@
                   <div class="form-group">
                     <label for="inputImage" class="col-sm-2 control-label">头像</label>
                     <div class="col-md-10">
+                      <button type="button" v-on:click="selectImage()" >上传头像</button>
+                      <br><br>
                       <input type="file"
+                             class="hidden"
                              id="inputImage"
                              v-on:change="upLoadImage()" >
-                      <br>
                       <div class="row col-md-3">
                         <img :src="teacher.image" class="img-responsive"><!-- 响应式的图片显示 img-responsive -->
                       </div>
@@ -329,6 +331,13 @@
             console.log("头像的地址:{}",image);
             _this.teacher.image = image;
           })
+        },
+
+        /**
+         * 【上传组件】
+         */
+        selectImage() {
+          $("#inputImage").trigger("click");
         }
       }
   }
