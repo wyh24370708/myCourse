@@ -36,7 +36,7 @@
                  v-bind::title="teacher.intro"/>
             <!--数据库存的课程图片-->
             <img v-show="teacher.image"
-                 class="media-object"
+                 class="editable img-responsive editable-click editable-empty"
                  v-bind:src="teacher.image"
                  v-bind::title="teacher.intro"/>
           </span>
@@ -117,11 +117,14 @@
                   </div>
                   <div class="form-group">
                     <label for="inputImage" class="col-sm-2 control-label">头像</label>
-                    <div class="col-sm-10">
+                    <div class="col-md-10">
                       <input type="file"
                              id="inputImage"
                              v-on:change="upLoadImage()" >
-                      <img :src="teacher.image" class="img-responsive"><!-- 响应式的图片显示 img-responsive -->
+                      <br>
+                      <div class="row col-md-3">
+                        <img :src="teacher.image" class="img-responsive"><!-- 响应式的图片显示 img-responsive -->
+                      </div>
                     </div>
                   </div>
                   <div class="form-group">
@@ -143,7 +146,7 @@
                     <div class="col-sm-10">
                       <textarea v-model="teacher.intro"
                                 class="form-control"
-                                rows="5" id="inputIntro">
+                                rows="3" id="inputIntro">
                       </textarea>
                     </div>
                   </div>

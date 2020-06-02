@@ -1,11 +1,18 @@
 package com.course.file.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@Component
 @Configuration
 public class SpringMvcConfig implements WebMvcConfigurer {
+
+    //属性注入
+    @Value("${file_up_path}")
+    private String FILE_UP_PATH;
     /**
      * 静态资源的配置
      * 路径对外暴露
@@ -14,7 +21,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/f/**")
-                .addResourceLocations("file:D:/0-yayuanzi/upload_file/course/");
+                .addResourceLocations("file:" + FILE_UP_PATH);
     }
     //  D:/0-yayuanzi/upload_file/teacher/Yqfm2jaa-man.png//  d盘直接访问
     //  http://127.0.0.1:9003/file/f//teacher/ErBQHwrU-female.png  //路径对外暴露
