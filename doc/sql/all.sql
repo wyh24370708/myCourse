@@ -161,9 +161,9 @@ create table `teacher` (
      primary key (`id`)
 ) engine=innodb default charset=utf8mb4 comment='讲师';
 
+alter table `course` add column (`teacher_id` char(8) comment '讲师id|teacher_id');
 
-
-
+select * from  `course`;
 
 
 

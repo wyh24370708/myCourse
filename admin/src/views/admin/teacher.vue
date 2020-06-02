@@ -25,20 +25,21 @@
 
     <!--表单内容 start-->
     <div class="row">
-      <div class="col-xs-12 col-sm-3 center">
+      <div class="col-md-3 center"
+            v-for="teacher in teachers">
         <div>
-        <span class="profile-picture">
-          <!--课程默认图片-->
-          <img v-show="!teacher.image"
-               class="editable img-responsive editable-click editable-empty"
-               src="/static/image/profile-pic.jpg"
-               v-bind::title="teacher.intro"/>
-          <!--数据库存的课程图片-->
-          <img v-show="teacher.image"
-               class="media-object"
-               v-bind:src="teacher.image"
-               v-bind::title="teacher.intro"/>
-        </span>
+          <span class="profile-picture">
+            <!--课程默认图片-->
+            <img v-show="!teacher.image"
+                 class="editable img-responsive editable-click editable-empty"
+                 src="/static/image/profile-pic.jpg"
+                 v-bind::title="teacher.intro"/>
+            <!--数据库存的课程图片-->
+            <img v-show="teacher.image"
+                 class="media-object"
+                 v-bind:src="teacher.image"
+                 v-bind::title="teacher.intro"/>
+          </span>
 
           <div class="space-4"></div>
 
