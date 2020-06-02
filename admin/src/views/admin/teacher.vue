@@ -110,6 +110,9 @@
                     <div class="col-sm-10">
                       <input type="text" class="form-control" id="inputNickname"
                              v-model="teacher.nickname" >
+                      <span>
+
+                      </span>
                     </div>
                   </div>
                   <div class="form-group">
@@ -118,6 +121,7 @@
                       <input type="file"
                              id="inputImage"
                              v-on:change="upLoadImage()" >
+                      <img :src="teacher.image" class="img-responsive"><!-- 响应式的图片显示 img-responsive -->
                     </div>
                   </div>
                   <div class="form-group">
@@ -317,6 +321,10 @@
           ).then((response) => {
             Loading.hide();
             let resp = response.data;
+            //处理返回结果
+            let image = resp.content;
+            console.log("头像的地址:{}",image);
+            _this.teacher.image = image;
           })
         }
       }

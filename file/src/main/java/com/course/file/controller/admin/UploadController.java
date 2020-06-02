@@ -37,8 +37,11 @@ public class UploadController {
         File dest = new File(fullPath);
         //上传到目标位置
         file.transferTo(dest);
-        LOG.info(dest.getAbsolutePath());
+        LOG.info(dest.getAbsolutePath());//本机中图片存储的路径
 
+        //配置静态资源之后, 路径对外暴露, 返回结果中存入访问地址 头像实时显示
+        String url = "http://127.0.0.1:9003/file/f/teacher/" + uuid + "-" + filename;
+        responseDto.setContent(url);
         return responseDto;
     }
 

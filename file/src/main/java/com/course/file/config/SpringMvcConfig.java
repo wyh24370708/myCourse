@@ -14,9 +14,11 @@ public class SpringMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/f/**")
-                .addResourceLocations("file:D:/0-yayuanzi/upload_file/course");
+                .addResourceLocations("file:D:/0-yayuanzi/upload_file/course/");
     }
     //  D:/0-yayuanzi/upload_file/teacher/Yqfm2jaa-man.png//  d盘直接访问
-    //  http://127.0.0.1:9003/file/f/course/teacher/ErBQHwrU-female.png  //路径对外暴露
+    //  http://127.0.0.1:9003/file/f//teacher/ErBQHwrU-female.png  //路径对外暴露
     //  由于我们是做路由转发 ,  所以使用9000端口也是可以的
+
+    //  访问"/f/"路径后面的资源,用file:D:/0-yayuanzi/upload_file/course/代替,   最后的/和都要写上,前后相互对应
 }
