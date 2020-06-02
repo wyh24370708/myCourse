@@ -122,6 +122,7 @@
                       <br><br>
                       <input type="file"
                              class="hidden"
+                             ref="file"
                              id="inputImage"
                              v-on:change="upLoadImage()" >
                       <div class="row col-md-3">
@@ -317,9 +318,24 @@
           let _this = this;
           Loading.show();
           let formData = new window.FormData;
-          console.log("formData1:{}",formData)
-          formData.append("file", document.querySelector("#inputImage").files[0]);
-          console.log("formData2:{}",formData)
+          //引用子组件
+          let file = _this.$refs.file.files[0];// document.querySelector("#inputImage").files[0]
+          // 判断文件格式
+          let suffixs = ["jpg", "jpeg", "png"];
+          let filename = file.name;
+          let fileSuffix = filename.substring(filename.lastIndexOf(".")+1,filename.length).toLowerCase().toString();
+          let validator_flag = false;
+          for (let i = 0; i < suffixs.length; i++) {
+            if (fileSuffix === suffixs[i].toLowerCase()){
+              validator_flag = true;
+              break;
+            }
+          }
+          if (!validator_flag){
+            Toast.warning("文件格式不正确！只支持上传：" + suffixs.join(","));//?
+            return;
+          }
+          formData.append("file",file);
           // key："file"必须和后端controller参数名一致
           _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/upload",
             formData
