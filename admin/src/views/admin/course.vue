@@ -28,7 +28,7 @@
           <!--课程默认图片-->
           <img v-show="!course.image" class="media-object" src="/static/image/demo-course.jpg" />
           <!--数据库存的课程图片-->
-          <img v-show="course.image" class="media-object" src="course.image" />
+          <img v-show="course.image" class="media-object" v-bind:src="course.image" />
           <div class="caption">
             <div class="clearfix">
               <span class="pull-right label label-grey info-label">
@@ -118,6 +118,24 @@
               <!--zTree end -->
               <!-- freemaker生成 start -->
                 <div class="form-group">
+                  <label class="col-sm-2 control-label">封面</label>
+                  <div class="col-md-10">
+                    <!--上传文件的公共部分-->
+                    <file
+                      :use="PROFILE_USE1.COURSE.key"
+                      :id="'image-upload'"
+                      :suffixs="['jpg', 'jpeg', 'png']"
+                      :text="'上传封面'"
+                      :after-upload="afterUpload">
+                    </file>
+                    <!--头像预览代码,私有-->
+                    <div class="row col-md-6">
+                      <img :src="course.image" class="img-responsive"><!-- 响应式的图片显示 img-responsive -->
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
                   <label for="inputName" class="col-sm-2 control-label">课程名称</label>
                   <div class="col-sm-10">
                     <input type="text" class="form-control" id="inputName"
@@ -152,13 +170,6 @@
                   <div class="col-sm-10">
                     <input type="text" class="form-control" id="inputPrice"
                            v-model="course.price" >
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputImage" class="col-sm-2 control-label">封面</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputImage"
-                           v-model="course.image" >
                   </div>
                 </div>
                 <div class="form-group">
@@ -320,8 +331,9 @@
 
   //引入pagination组件
   import Pagination from '../../components/pagination.vue'
+  import File from '../../components/file.vue'
   export default {
-      components: {Pagination},//引入pagination组件
+      components: {Pagination,File},//引入pagination组件
       name: 'business-course',
       /**
        * 【页面初始化】
@@ -354,6 +366,7 @@
           },
           range: "",//排序范围
           teachers: [],
+          PROFILE_USE1: PROFILE_USE,
         }
       },
       /**
@@ -690,7 +703,16 @@
               console.log("查询所有讲师:{}",resp.content);
               _this.teachers = resp.content;
           })
-        }
+        },
+
+        /**
+         * 调用上传文件组件后,回调函数处理结果
+         */
+        afterUpload(resp) {
+          let _this = this;
+          let image = resp.content.path;
+          _this.course.image = image;
+        },
       }
   }
 </script>

@@ -31,12 +31,12 @@
             <img v-show="!teacher.image"
                  class="editable img-responsive editable-click editable-empty"
                  src="/static/image/profile-pic.jpg"
-                 v-bind::title="teacher.intro"/>
+                 v-bind:title="teacher.intro"/>
             <!--数据库存的课程图片-->
             <img v-show="teacher.image"
                  class="editable img-responsive editable-click editable-empty"
                  v-bind:src="teacher.image"
-                 v-bind::title="teacher.intro"/>
+                 v-bind:title="teacher.intro"/>
           </span>
 
           <div class="space-4"></div>
