@@ -49,4 +49,23 @@ public enum ProfileUseEnum {
         sb.append('}');
         return sb.toString();
     }
+
+
+    /**
+     * 获取单个的枚举类型
+     */
+    public static ProfileUseEnum getEnumByCode(String code){
+        for (ProfileUseEnum em: ProfileUseEnum.values()) {
+            if (code.equals(em.getCode())){
+                return em;
+            }
+        }
+        return null;
+    }
+
+    //测试
+//    public static void main(String[] args) {
+//        ProfileUseEnum useEnum = getEnumByCode("T");
+//        System.out.println(useEnum.name());
+//    }
 }

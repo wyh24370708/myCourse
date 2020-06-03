@@ -16,8 +16,8 @@
       </thead>
 
       <tbody>
-      <tr v-for="profile in profiles">
-          <td>{{profile.id}}</td>
+      <tr v-for="(profile,index) in profiles">
+          <td>{{index+1}}</td>
           <td>{{profile.name}}</td>
           <td>{{profile.path}}</td>
           <td>{{profile.size | formatFileSize}}</td>

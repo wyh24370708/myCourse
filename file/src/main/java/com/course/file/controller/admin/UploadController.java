@@ -32,14 +32,17 @@ public class UploadController {
     private String FILE_SERVER_PATH;
 
     @RequestMapping("/upload")
-    public ResponseDto upload(MultipartFile file) throws IOException {
+    public ResponseDto upload(MultipartFile file,String use) throws IOException {
         ResponseDto responseDto = new ResponseDto();
-        LOG.info("上传文件开始:{}",file);
-        LOG.info(file.getOriginalFilename());
-        LOG.info(String.valueOf(file.getSize()));
+        LOG.info("上传文件开始...");
+        LOG.info("文件名: ", file.getOriginalFilename());
+        LOG.info("文件大小", String.valueOf(file.getSize()));
 
+        //获取枚举类型
+        ProfileUseEnum useEnum = ProfileUseEnum.getEnumByCode(use);
+        String  teacher = useEnum.name().toLowerCase();
         //指定上传的路径
-        String pathDir =  FILE_UP_PATH + "teacher/";
+        String pathDir =  FILE_UP_PATH + teacher + File.separator;
         File fileDir = new File(pathDir);
         if (!fileDir.exists()){
             fileDir.mkdirs();//上传路径不存在就新创建路径
@@ -48,7 +51,7 @@ public class UploadController {
         String filename = file.getOriginalFilename();//文件名
         String uuid = UuidUtil.getShortUuid();//防止文件重复
         String fullPath = pathDir + uuid + "-" + filename;//目标路径
-        String profilePath = "teacher/" + uuid + "-" + filename;
+        String profilePath = teacher + File.separator + uuid + "-" + filename;
         File dest = new File(fullPath);
         //上传到目标位置
         file.transferTo(dest);
@@ -61,7 +64,7 @@ public class UploadController {
         profileDto.setName(filename);
         profileDto.setSize(Integer.parseInt(String.valueOf(file.getSize())));
         profileDto.setSuffix(suffix);
-        profileDto.setUse(ProfileUseEnum.TEACHER.getCode());
+        profileDto.setUse(use);
         profileService.save(profileDto);
         //配置静态资源之后, 路径对外暴露, 返回结果中存入访问地址 头像实时显示
         String url = FILE_SERVER_PATH + profilePath;

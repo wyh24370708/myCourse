@@ -18,19 +18,26 @@
     export default {
       name: 'file',
       props: {
+        //默认按钮的文本
         text: {
           default: "上传文件"
         },
-        //定义一个函数
+        //处理请求的结果的函数
         afterUpload: {
           type: Function,
           default: null,
         },
+        //按钮的id
         inputId: {
           default: "file-upload"
         },
+        //文件的后缀格式
         suffixs: {
           default: []
+        },
+        //用途
+        use:{
+          default: ""
         }
       },
       data: function () {
@@ -62,6 +69,7 @@
             return;
           }
           formData.append("file",file);
+          formData.append("use",_this.use);
           // key："file"必须和后端controller参数名一致
           _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/upload",
             formData

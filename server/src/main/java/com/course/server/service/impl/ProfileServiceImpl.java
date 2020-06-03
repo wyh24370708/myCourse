@@ -35,6 +35,7 @@ public class ProfileServiceImpl implements ProfileService {
 
         //1. 倒叙排列
         ProfileExample profileExample = new ProfileExample();
+        profileExample.setOrderByClause("created_at desc");
         //2. 设置total属性
         List<Profile> profileListDB = profileMapper.selectByExample(profileExample);
         PageInfo<Profile> pageInfo = new PageInfo<>(profileListDB);

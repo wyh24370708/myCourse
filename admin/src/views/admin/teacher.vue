@@ -118,6 +118,7 @@
                     <div class="col-md-10">
                       <!--上传文件的公共部分-->
                       <file
+                        :use="PROFILE_USE1.TEACHER.key"
                         :id="'image-upload'"
                         :suffixs="['jpg', 'jpeg', 'png']"
                         :text="'上传头像'"
@@ -201,7 +202,8 @@
       data: function () {
         return {
             teacher: {}, //前台传入的数据
-            teachers: []//初始化为空数组, 后台查询到的数据
+            teachers: [],//初始化为空数组, 后台查询到的数据
+            PROFILE_USE1: PROFILE_USE,
         }
       },
       methods: {
