@@ -44,11 +44,12 @@
 <!--        <table tableName="province" domainObjectName="Province"/>-->
 <!--        <table tableName="chapter" domainObjectName="Chapter"/>-->
 <!--        <table tableName="section" domainObjectName="Section"/>-->
-        <table tableName="course" domainObjectName="Course"/>
+<!--        <table tableName="course" domainObjectName="Course"/>-->
 <!--        <table tableName="category" domainObjectName="Category"/>-->
 <!--        <table tableName="course_category" domainObjectName="Course_category"/>-->
 <!--        <table tableName="course_content" domainObjectName="Course_content"/>-->
 <!--        <table tableName="teacher" domainObjectName="Teacher"/>-->
+        <table tableName="profile" domainObjectName="Profile"/>
 
     </context>
 </generatorConfiguration>

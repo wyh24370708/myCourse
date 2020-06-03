@@ -166,6 +166,20 @@ alter table `course` add column (`teacher_id` char(8) comment '讲师id|teacher_
 select * from  `course`;
 
 
+-- 业务文件上传
+drop table if exists `profile`;
+create table `profile`(
+    `id` char(8) not null default '' comment 'id',
+    `name` varchar(100) comment '名称',
+    `path` varchar(100) not null comment '相对路径',
+    `size` int comment '大小',
+    `suffix` varchar(10) comment '后缀',
+    `use` char(1) comment '用途|枚举[FileUseEnum]：COURSE("C", "讲师"), TEACHER("T", "课程")',
+    `created_at` datetime comment '创建时间',
+    `updated_at` datetime comment '修改时间',
+    primary key (`id`),
+    unique key `path_unique` (`path`)
+)engine=innodb default charset = utf8mb4 comment '业务文件';
 
 
 
