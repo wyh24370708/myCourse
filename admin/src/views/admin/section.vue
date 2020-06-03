@@ -144,10 +144,20 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="inputVideo" class="col-sm-2 control-label">视频</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputVideo"
-                             v-model="section.video" >
+                    <label class="col-sm-2 control-label">视频</label>
+                    <div class="col-md-10">
+                      <!--上传文件的公共部分-->
+                      <file
+                        :use="PROFILE_USE1.COURSE.key"
+                        :id="'video-upload'"
+                        :suffixs="['mp4', 'avi', 'rmvb','rm']"
+                        :text="'上传视频'"
+                        :after-upload="afterUpload">
+                      </file>
+                      <!--视频预览代码,私有-->
+                      <div class="row col-md-10">
+                        <video :src="section.video" controls="controls"></video><!--视频控件-->
+                      </div>
                     </div>
                   </div>
                   <div class="form-group">
@@ -206,8 +216,9 @@
 <script>
   //引入pagination组件
   import Pagination from '../../components/pagination.vue'
+  import File from '../../components/file.vue'
   export default {
-      components: {Pagination},//引入pagination组件
+      components: {Pagination,File},//引入pagination组件
       name: 'business-section',
       mounted: function () {//页面加载初始化
           //激活样式方法一
@@ -235,6 +246,7 @@
             SECTION_CHARGE: SECTION_CHARGE,
             chapter: {},
             course: {},
+            PROFILE_USE1: PROFILE_USE,
         }
       },
       methods: {
@@ -345,7 +357,23 @@
                     }
                 })
             })
+        },
+
+        /**
+         *
+         */
+        afterUpload(resp){
+          let _this = this;
+          let video = resp.content.path;
+          _this.section.video = video;
         }
       }
   }
 </script>
+
+<style scoped>
+  video{
+    width: 100%;
+    height: auto;
+  }
+</style>
