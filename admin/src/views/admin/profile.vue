@@ -20,9 +20,9 @@
           <td>{{profile.id}}</td>
           <td>{{profile.name}}</td>
           <td>{{profile.path}}</td>
-          <td>{{profile.size}}</td>
+          <td>{{profile.size | formatFileSize}}</td>
           <td>{{profile.suffix}}</td>
-          <td>{{profile.use}}</td>
+          <td>{{PROFILE_USE | optionKV(profile.use)}}</td>
       </tr>
       </tbody>
     </table><!-- /.row -->

@@ -90,14 +90,14 @@ public class ProfileDto {
     }
 
     public String getUse() {
-        switch (use){
-            case "C":
-                use = ProfileUseEnum.COURSE.getDesc();
-                break;
-            case "T":
-                use = ProfileUseEnum.TEACHER.getDesc();
-                break;
-        }
+//        switch (use){
+//            case "C":
+//                use = ProfileUseEnum.COURSE.getDesc();
+//                break;
+//            case "T":
+//                use = ProfileUseEnum.TEACHER.getDesc();
+//                break;
+//        }
         return use;
     }
 

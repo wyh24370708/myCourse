@@ -78,6 +78,27 @@ function PrefixInteger(num, length) {
     return (Array(length).join('0') + num).slice(-length);
 }
 
+/**
+ * 文件字节转换成KB和MB
+ * @param value
+ * @returns {string}
+ */
+let formatFileSize = (value) => {
+    value = value || 0;
+    let result = 0;
+    //判断
+    if (value < 1024 * 100){//1KB
+        result = Math.round(value / 1024 * 100) / 100 + "KB";
+    }else if(value < 1024 * 1024 * 100){//1MB
+        result = Math.round(value / 1024 / 1024 * 100) / 100 + "MB";
+    }else if(value < 1024 * 1024 *  1024 * 100) {//1GB
+        result = Math.round(value / 1024 / 1024  / 1024 * 100) / 100 + "GB";
+    }else{
+        return value;
+    }
+    return result;
+}
+
 
 
 /**
@@ -90,5 +111,6 @@ function PrefixInteger(num, length) {
 
 export default {
     optionKV,
-    formatSecond
+    formatSecond,
+    formatFileSize
 }
