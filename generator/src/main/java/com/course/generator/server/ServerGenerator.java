@@ -25,7 +25,7 @@ import java.util.Set;
  */
 public class ServerGenerator {
 
-    private static String MODULE = "business";
+    private static String MODULE = "file";
     private static String toDtoPath = "server\\src\\main\\java\\com\\course\\server\\dto\\";
     private static String toServicePath = "server\\src\\main\\java\\com\\course\\server\\service\\";
     private static String toServiceImplPath = "server\\src\\main\\java\\com\\course\\server\\service\\impl\\";
