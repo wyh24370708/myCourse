@@ -51,7 +51,7 @@
       name: 'file-profile',
       mounted: function () {//页面加载初始化
           let _this = this;
-          _this.$refs.pagination.size = 5;//默认显示的条数
+          _this.$refs.pagination.size = 10;//默认显示的条数
           _this.list(1);//调用list的方法
       },
       data: function () {

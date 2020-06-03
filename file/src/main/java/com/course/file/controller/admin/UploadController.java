@@ -68,7 +68,8 @@ public class UploadController {
         profileService.save(profileDto);
         //配置静态资源之后, 路径对外暴露, 返回结果中存入访问地址 头像实时显示
         String url = FILE_SERVER_PATH + profilePath;
-        responseDto.setContent(url);
+        profileDto.setPath(url);
+        responseDto.setContent(profileDto);
         return responseDto;
     }
 

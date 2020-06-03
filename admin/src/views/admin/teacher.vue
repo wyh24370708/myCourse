@@ -319,7 +319,7 @@
          */
         afterUpload(resp) {
           let _this = this;
-          let image = resp.content;
+          let image = resp.content.path;
           console.log("头像的地址:{}",image);
           _this.teacher.image = image;
         }
