@@ -52,6 +52,8 @@
           let formData = new window.FormData;
           //引用子组件
           let file = _this.$refs.file.files[0];// document.querySelector("#inputImage").files[0]
+          // let url = URL.createObjectURL(file);
+          // document.getElementById(_this.inputId+"-input").src=url;
           // 判断文件格式
           let suffixs = _this.suffixs;//外面传入
           let filename = file.name;

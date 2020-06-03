@@ -156,7 +156,7 @@
                       </file>
                       <!--视频预览代码,私有-->
                       <div class="row col-md-10">
-                        <video :src="section.video" controls="controls"></video><!--视频控件-->
+                        <video :src="section.video" id="video" controls="controls"></video><!--视频控件-->
                       </div>
                     </div>
                   </div>
@@ -366,6 +366,16 @@
           let _this = this;
           let video = resp.content.path;
           _this.section.video = video;
+          _this.getTime();
+        },
+
+        /**
+         * 获取视频时长
+         */
+        getTime() {
+          let _this = this;
+          let ele = document.getElementById("videoId");
+          _this.section.time = parseInt(ele.duration, 10);//duration是获得当前音频的长度
         }
       }
   }
