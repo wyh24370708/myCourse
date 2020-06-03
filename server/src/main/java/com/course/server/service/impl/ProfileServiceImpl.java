@@ -39,7 +39,7 @@ public class ProfileServiceImpl implements ProfileService {
         List<Profile> profileListDB = profileMapper.selectByExample(profileExample);
         PageInfo<Profile> pageInfo = new PageInfo<>(profileListDB);
         pageDto.setTotalNum(pageInfo.getTotal());
-        
+
         //工具类转换
         List<ProfileDto> profileDtoList = CopyUtil.copyList(profileListDB, ProfileDto.class);
         pageDto.setList(profileDtoList);
@@ -86,5 +86,5 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setUpdatedAt(date);
         profileMapper.updateByPrimaryKey(profile);
     }
-    
+
 }    

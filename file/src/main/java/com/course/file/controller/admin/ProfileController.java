@@ -46,41 +46,4 @@ public class ProfileController {
         return responseDto;
     }
 
-    /**
-     * 新增
-     * @param profileDto
-     * @return
-     */
-    @PostMapping("/save")
-    public ResponseDto save(@RequestBody ProfileDto profileDto) {
-        //统一返回格式 start
-        ResponseDto<ProfileDto> responseDto = new ResponseDto<ProfileDto>();
-
-        //保存校验
-        ValidatorUtil.length(profileDto.getName(), "名称", 1, 100);
-        ValidatorUtil.require(profileDto.getPath(), "相对路径");
-        ValidatorUtil.length(profileDto.getPath(), "相对路径", 1, 100);
-        ValidatorUtil.length(profileDto.getSuffix(), "后缀", 1, 10);
-
-        profileService.save(profileDto);
-        LOG.info("保存业务文件结果:{}",profileDto);
-
-        //统一返回格式 end
-        responseDto.setContent(profileDto);
-        return responseDto;
-    }
-
-    /**
-     * 删除
-     * @param id
-     */
-    @DeleteMapping("/delete/{id}")
-    public ResponseDto delete(@PathVariable String id){
-        //统一返回格式 start
-        ResponseDto responseDto = new ResponseDto();
-        profileService.delete(id);
-        LOG.info("删除业务文件的id:{}",id);
-        return responseDto;
-    }
-
 }
