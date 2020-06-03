@@ -366,17 +366,17 @@
           let _this = this;
           let video = resp.content.path;
           _this.section.video = video;
-          _this.getTime();
+          // _this.getTime();
         },
 
-        /**
-         * 获取视频时长
-         */
-        getTime() {
-          let _this = this;
-          let ele = document.getElementById("videoId");
-          _this.section.time = parseInt(ele.duration, 10);//duration是获得当前音频的长度
-        }
+        // /**
+        //  * 获取视频时长
+        //  */
+        // getTime() {
+        //   let _this = this;
+        //   let ele = document.getElementById("videoId");
+        //   _this.section.time = parseInt(ele.duration, 10);//duration是获得当前音频的长度
+        // }
       }
   }
 </script>
