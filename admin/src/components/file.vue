@@ -58,6 +58,7 @@
           }
           if (!validator_flag){
             Toast.warning("文件格式不正确！只支持上传：" + suffixs.join(","));//?
+            $("#"+ _this.inputId + "-input").val("");
             return;
           }
           formData.append("file",file);
@@ -72,6 +73,8 @@
             // let image = resp.content;
             // console.log("头像的地址:{}",image);
             // _this.teacher.image = image;
+            //清楚上次上传文件的值
+            $("#"+ _this.inputId + "-input").val("");
           })
         },
 
