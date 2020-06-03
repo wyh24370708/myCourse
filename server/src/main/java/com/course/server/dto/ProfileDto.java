@@ -1,6 +1,8 @@
 package com.course.server.dto;
 
 import java.util.Date;
+
+import com.course.server.enums.ProfileUseEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ProfileDto {
@@ -31,7 +33,7 @@ public class ProfileDto {
     private String suffix;
 
     /**
-     * 用途|枚举[FileUseEnum]：COURSE("C", "讲师"), TEACHER("T", "课程")
+     * 用途|枚举[FileUseEnum]：COURSE("C", "课程"), TEACHER("T", "讲师")
      */
     private String use;
 
@@ -88,6 +90,14 @@ public class ProfileDto {
     }
 
     public String getUse() {
+        switch (use){
+            case "C":
+                use = ProfileUseEnum.COURSE.getDesc();
+                break;
+            case "T":
+                use = ProfileUseEnum.TEACHER.getDesc();
+                break;
+        }
         return use;
     }
 
