@@ -1,6 +1,8 @@
 <template>
   <div>
-    <button type="button" v-on:click="selectFile()" >
+    <button type="button" v-on:click="selectFile()"
+            class="btn btn-default btn-purple btn-sm btn-round">
+        <i class="ace-icon fa fa-cloud-upload bigger-100"></i>
       {{text}}
     </button>
     <br><br>
