@@ -5,12 +5,12 @@ package com.course.server.enums;
  * code: 程序中使用(前后端传输数据,到数据库村存储都是使用code)
  * desc: 用户使用
  */
-public enum SectionChargeEnum {
+public enum ProfileUseEnum {
     /**
      * 枚举值
      */
-    CHARGE("C","收费"),
-    FREE("F","免费");
+    COURSE("C","课程"),
+    TEACHER("T","讲师");
 
     private String code;
     private String desc;
@@ -20,7 +20,7 @@ public enum SectionChargeEnum {
      * @param code
      * @param desc
      */
-    SectionChargeEnum(String code, String desc) {
+    ProfileUseEnum(String code, String desc) {
         this.code = code;
         this.desc = desc;
     }
@@ -43,9 +43,10 @@ public enum SectionChargeEnum {
 
     @Override
     public String toString() {
-        return "SectionChargeEnum{" +
-                "code='" + code + '\'' +
-                ", desc='" + desc + '\'' +
-                '}';
+        final StringBuffer sb = new StringBuffer("ProfileUseEnum{");
+        sb.append("code='").append(code).append('\'');
+        sb.append(", desc='").append(desc).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

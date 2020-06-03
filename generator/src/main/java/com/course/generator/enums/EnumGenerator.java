@@ -1,10 +1,7 @@
 package com.course.generator.enums;
 
 import com.course.server.domain.Course;
-import com.course.server.enums.CourseChargeEnum;
-import com.course.server.enums.CourseLevelEnum;
-import com.course.server.enums.CourseStatusEnum;
-import com.course.server.enums.SectionChargeEnum;
+import com.course.server.enums.*;
 import org.apache.tomcat.jni.OS;
 
 import java.io.*;
@@ -27,6 +24,7 @@ public class EnumGenerator {
             toJson(CourseChargeEnum.class, bufferObject, bufferArray);
             toJson(CourseLevelEnum.class, bufferObject, bufferArray);
             toJson(CourseStatusEnum.class, bufferObject, bufferArray);
+            toJson(ProfileUseEnum.class, bufferObject, bufferArray);
 
             StringBuffer buffer = bufferObject.append("\r\n").append(bufferArray);
             System.out.println(buffer);
