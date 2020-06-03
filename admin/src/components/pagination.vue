@@ -45,7 +45,7 @@
 <script>
     export default {
       name: 'pagination',
-      props: {
+      props: {//可暴露出去的属性,父子组件之间的传递数据,组建中可配置的属性
         list: {
             type: Function,
             default: null

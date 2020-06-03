@@ -1,5 +1,3 @@
-
-
 <template>
   <div>
     <!--按钮 Start-->
@@ -116,15 +114,16 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="inputImage" class="col-sm-2 control-label">头像</label>
+                    <label class="col-sm-2 control-label">头像</label>
                     <div class="col-md-10">
-                      <button type="button" v-on:click="selectImage()" >上传头像</button>
-                      <br><br>
-                      <input type="file"
-                             class="hidden"
-                             ref="file"
-                             id="inputImage"
-                             v-on:change="upLoadImage()" >
+                      <!--上传文件的公共部分-->
+                      <file
+                        :id="'image-upload'"
+                        :suffixs="['jpg', 'jpeg', 'png']"
+                        :text="'上传头像'"
+                        :after-upload="afterUpload">
+                      </file>
+                      <!--头像预览代码,私有-->
                       <div class="row col-md-3">
                         <img :src="teacher.image" class="img-responsive"><!-- 响应式的图片显示 img-responsive -->
                       </div>
@@ -186,8 +185,9 @@
 <script>
   //引入pagination组件
   import Pagination from '../../components/pagination.vue'
+  import File from '../../components/file.vue'
   export default {
-      components: {Pagination},//引入pagination组件
+      components: {Pagination,File},//引入pagination组件
       name: 'business-teacher',
       mounted: function () {//页面加载初始化
           //激活样式方法一
@@ -311,50 +311,17 @@
                 })
             })
         },
-        /**
-         * 【上传讲师头像】
-         */
-        upLoadImage() {
-          let _this = this;
-          Loading.show();
-          let formData = new window.FormData;
-          //引用子组件
-          let file = _this.$refs.file.files[0];// document.querySelector("#inputImage").files[0]
-          // 判断文件格式
-          let suffixs = ["jpg", "jpeg", "png"];
-          let filename = file.name;
-          let fileSuffix = filename.substring(filename.lastIndexOf(".")+1,filename.length).toLowerCase().toString();
-          let validator_flag = false;
-          for (let i = 0; i < suffixs.length; i++) {
-            if (fileSuffix === suffixs[i].toLowerCase()){
-              validator_flag = true;
-              break;
-            }
-          }
-          if (!validator_flag){
-            Toast.warning("文件格式不正确！只支持上传：" + suffixs.join(","));//?
-            return;
-          }
-          formData.append("file",file);
-          // key："file"必须和后端controller参数名一致
-          _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/upload",
-            formData
-          ).then((response) => {
-            Loading.hide();
-            let resp = response.data;
-            //处理返回结果
-            let image = resp.content;
-            console.log("头像的地址:{}",image);
-            _this.teacher.image = image;
-          })
-        },
 
         /**
-         * 【上传组件】
+         * 调用上传文件组件后,回调函数处理结果
          */
-        selectImage() {
-          $("#inputImage").trigger("click");
+        afterUpload(resp) {
+          let _this = this;
+          let image = resp.content;
+          console.log("头像的地址:{}",image);
+          _this.teacher.image = image;
         }
+
       }
   }
 </script>
