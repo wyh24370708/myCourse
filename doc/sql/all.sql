@@ -174,7 +174,7 @@ create table `profile`(
     `path` varchar(100) not null comment '相对路径',
     `size` int comment '大小',
     `suffix` varchar(10) comment '后缀',
-    `use` char(1) comment '用途|枚举[FileUseEnum]：COURSE("C", "讲师"), TEACHER("T", "课程")',
+    `use` char(1) comment '用途|枚举[ProfileUseEnum]：COURSE("C", "讲师"), TEACHER("T", "课程")',
     `created_at` datetime comment '创建时间',
     `updated_at` datetime comment '修改时间',
     primary key (`id`),

@@ -26,7 +26,7 @@
       <thead>
       <!--表头-->
       <tr>
-                  <th>id</th>
+          <th>id</th>
           <th>名称</th>
           <th>相对路径</th>
           <th>大小</th>
@@ -142,10 +142,13 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="inputUse" class="col-sm-2 control-label">用途</label>
+                    <label class="col-sm-2 control-label">用途</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputUse"
-                             v-model="profile.use" >
+                      <select type="text" class="form-control" v-model="profile.use">
+                        <option v-for="use in PROFILE_USE" v-bind:value="use.key">
+                          {{use.value}}
+                        </option>
+                      </select>
                     </div>
                   </div>
               <!-- freemaker生成 end -->
@@ -196,7 +199,8 @@
       data: function () {
         return {
             profile: {}, //前台传入的数据
-            profiles: []//初始化为空数组, 后台查询到的数据
+            profiles: [],//初始化为空数组, 后台查询到的数据
+            PROFILE_USE: PROFILE_USE,
         }
       },
       methods: {
@@ -239,10 +243,10 @@
              */
             //校验字段   //?c表示freemaker对字段进行了格式处理,转换成字符串,不然就会出现问题 (2,000 --> 2000)
             if(1 != 1
-                    || !Validator.length(_this.profile.name, "名称", 1, 100?c)
+                    || !Validator.length(_this.profile.name, "名称", 1, 100)
                     || !Validator.require(_this.profile.path, "相对路径")
-                    || !Validator.length(_this.profile.path, "相对路径", 1, 100?c)
-                    || !Validator.length(_this.profile.suffix, "后缀", 1, 10?c)
+                    || !Validator.length(_this.profile.path, "相对路径", 1, 100)
+                    || !Validator.length(_this.profile.suffix, "后缀", 1, 10)
             ){
               return;
             }

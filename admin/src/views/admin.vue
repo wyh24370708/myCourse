@@ -368,7 +368,7 @@
 
             <b class="arrow"></b>
           </li>
-
+          <!--system-->
           <li class="">
             <a href="#" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
@@ -399,8 +399,8 @@
               </li>
             </ul>
           </li>
-
-          <li class="activie open">
+          <!--business-->
+          <li class="activie">
             <a href="#" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
               <span class="menu-text"> 业务管理 </span>
@@ -443,30 +443,30 @@
                 <b class="arrow"></b>
               </li>
               <!--讲师管理 end-->
+            </ul>
+          </li>
+          <!--file-->
+          <li class="activie">
+            <a href="#" class="dropdown-toggle">
+              <i class="menu-icon fa fa-list"></i>
+              <span class="menu-text"> 文件管理 </span>
 
-<!--              &lt;!&ndash;大章管理 start&ndash;&gt;-->
-<!--              <li class="active" id="business-chapter-sidebar">-->
-<!--                <router-link to="/business/chapter">-->
-<!--                  <i class="menu-icon fa fa-caret-right"></i>-->
-<!--                  大章-->
-<!--                </router-link>-->
+              <b class="arrow fa fa-angle-down"></b>
+            </a>
 
-<!--                <b class="arrow"></b>-->
-<!--              </li>-->
-<!--              &lt;!&ndash;大章管理 end&ndash;&gt;-->
+            <b class="arrow"></b>
 
-<!--              &lt;!&ndash;小节管理 start&ndash;&gt;-->
-<!--              <li class="active" id="business-section-sidebar">-->
-<!--                <router-link to="/business/section">-->
-<!--                  <i class="menu-icon fa fa-caret-right"></i>-->
-<!--                  小节-->
-<!--                </router-link>-->
+            <ul class="submenu">
+              <!--文件管理 start-->
+              <li class="active" id="file-profile-sidebar">
+                <router-link to="/file/profile">
+                  <i class="menu-icon fa fa-caret-right"></i>
+                  文件管理
+                </router-link>
 
-<!--                <b class="arrow"></b>-->
-<!--              </li>-->
-<!--              &lt;!&ndash;小节管理 end&ndash;&gt;-->
-
-
+                <b class="arrow"></b>
+              </li>
+              <!--文件管理 end-->
 
             </ul>
           </li>
