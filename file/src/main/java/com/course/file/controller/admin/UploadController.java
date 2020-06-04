@@ -67,9 +67,8 @@ public class UploadController {
             fileDir.mkdirs();//上传路径不存在就新创建路径
         }
         // 保存文件到本地
-        String uuid = UuidUtil.getShortUuid();//防止文件重复
-        String fullPath = pathDir + uuid + "-" + name;//目标路径
-        String profilePath = teacher + File.separator + uuid + "-" + name;
+        String fullPath = pathDir + key + "." + suffix;//目标路径
+        String profilePath = teacher + File.separator + key;
         File dest = new File(fullPath);
         //上传到目标位置
         shard.transferTo(dest);
