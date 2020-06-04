@@ -194,6 +194,12 @@ create table `profile`(
     unique key `path_unique` (`path`)
 )engine=innodb default charset = utf8mb4 comment '业务文件';
 
+#增加列,原有的数据不会被清空
+alter table `profile` add column (`shard_index` int comment '已上传的分片');
+alter table `profile` add column (`shard_size` int comment '分片的大小|B');
+alter table `profile` add column (`shard_total` int comment '分片总数');
+alter table `profile` add column (`key` int comment '文件标识');
+alter table `profile` add unique key key_unique (`key`);
 
 
 
