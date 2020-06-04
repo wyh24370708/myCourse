@@ -74,4 +74,9 @@ public class ProfileDto {
      */
     private String key;
 
+    /**
+     * shard 分片内容
+     */
+    private String shard;
+
 }

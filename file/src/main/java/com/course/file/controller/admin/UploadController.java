@@ -4,15 +4,13 @@ import com.course.server.dto.ProfileDto;
 import com.course.server.dto.ResponseDto;
 import com.course.server.enums.ProfileUseEnum;
 import com.course.server.service.ProfileService;
+import com.course.server.util.Base64ToMultipartFile;
 import com.course.server.util.UuidUtil;
 import org.bouncycastle.jcajce.provider.digest.MD5;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -45,18 +43,16 @@ public class UploadController {
      * @throws IOException
      */
     @RequestMapping("/uploadBigFile")
-    public ResponseDto upload(
-            @RequestParam   MultipartFile shard,
-                            Integer shardIndex,
-                            Integer shardTotal,
-                            Integer shardSize,
-                            Integer size,
-                            String use,
-                            String name,
-                            String suffix,
-                            String key) throws IOException {
+    public ResponseDto upload(@RequestBody ProfileDto profileDto) throws IOException {
         ResponseDto responseDto = new ResponseDto();
         LOG.info("上传文件开始...");
+        //参数转换
+        String use = profileDto.getUse();
+        String key = profileDto.getKey();
+        String suffix = profileDto.getSuffix();
+        String shardBase64 = profileDto.getShard();
+        MultipartFile shard = Base64ToMultipartFile.base64ToMultipart(shardBase64);
+
         //获取枚举类型
         ProfileUseEnum useEnum = ProfileUseEnum.getEnumByCode(use);
         String  teacher = useEnum.name().toLowerCase();
@@ -68,27 +64,16 @@ public class UploadController {
         }
         // 保存文件到本地
         String fullPath = pathDir + key + "." + suffix;//目标路径
-        String profilePath = teacher + File.separator + key;
+        String profilePath = teacher + File.separator + key + "." + suffix;
         File dest = new File(fullPath);
         //上传到目标位置
         shard.transferTo(dest);
 
         LOG.info("文件保存记录开始...");
-        ProfileDto profileDto = new ProfileDto();
-        profileDto.setPath(profilePath)
-                  .setName(name)
-                  .setSize(size)
-                  .setSuffix(suffix)
-                  .setUse(use)
-                  .setShardIndex(shardIndex)
-                  .setShardSize(shardSize)
-                  .setShardTotal(shardTotal)
-                  .setKey(key);
-        LOG.info("文件信息: ",profileDto);
-        profileService.save(profileDto);
         //配置静态资源之后, 路径对外暴露, 返回结果中存入访问地址 头像实时显示
         String url = FILE_SERVER_PATH + profilePath;
         profileDto.setPath(url);
+        profileService.save(profileDto);
         responseDto.setContent(profileDto);
         return responseDto;
     }
