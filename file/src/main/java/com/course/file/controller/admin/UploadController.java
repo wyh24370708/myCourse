@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,7 +33,62 @@ public class UploadController {
     private String FILE_SERVER_PATH;
 
     /**
-     * 上传文件
+     * 上传文件--大文件
+     * @param use
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping("/uploadBigFile")
+    public ResponseDto upload(
+            @RequestParam   MultipartFile shard,
+                            Integer shardIndex,
+                            Integer shardTotal,
+                            Integer shardSize,
+                            Integer size,
+                            String use,
+                            String name,
+                            String suffix) throws IOException {
+        ResponseDto responseDto = new ResponseDto();
+        LOG.info("上传文件开始...");
+        //获取枚举类型
+        ProfileUseEnum useEnum = ProfileUseEnum.getEnumByCode(use);
+        String  teacher = useEnum.name().toLowerCase();
+        //指定上传的路径
+        String pathDir =  FILE_UP_PATH + teacher + File.separator;
+        File fileDir = new File(pathDir);
+        if (!fileDir.exists()){
+            fileDir.mkdirs();//上传路径不存在就新创建路径
+        }
+        // 保存文件到本地
+        String uuid = UuidUtil.getShortUuid();//防止文件重复
+        String fullPath = pathDir + uuid + "-" + name;//目标路径
+        String profilePath = teacher + File.separator + uuid + "-" + name;
+        File dest = new File(fullPath);
+        //上传到目标位置
+        shard.transferTo(dest);
+        LOG.info(dest.getAbsolutePath());//本机中图片存储的路径
+
+        LOG.info("文件保存记录开始...");
+        ProfileDto profileDto = new ProfileDto();
+        profileDto.setPath(profilePath)
+                  .setName(name)
+                  .setSize(size)
+                  .setSuffix(suffix)
+                  .setUse(use)
+                  .setShardIndex(shardIndex)
+                  .setShardSize(shardSize)
+                  .setShardTotal(shardTotal)
+                  .setKey(uuid);
+        profileService.save(profileDto);
+        //配置静态资源之后, 路径对外暴露, 返回结果中存入访问地址 头像实时显示
+        String url = FILE_SERVER_PATH + profilePath;
+        profileDto.setPath(url);
+        responseDto.setContent(profileDto);
+        return responseDto;
+    }
+
+    /**
+     * 上传文件 ---图片
      * @param file
      * @param use
      * @return

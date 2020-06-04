@@ -71,17 +71,27 @@
             return;
           }
 
-          //分片上传
+          /**
+           * 分片上传,数据库的四个字段都是由前端提供,服务端的压力
+           */
           let shardSize = 20 * 1024 * 1024;   //20M为一个分片
-          let shardIndex = 1;                 //分片的索引
+          let shardIndex = 0;                 //分片的索引
           let start = shardIndex * shardSize; //分片起始位置
           let end = Math.min(file.size, start + shardSize); //当前分片的结束位置
           let fileShard = file.slice(start,end); //文件的分片内容
+          console.log("start,end:", start,end);
+          let shardTotal = Math.ceil(file.size / shardSize);//计算分片总数
 
-          formData.append("file",fileShard);
-          formData.append("use",_this.use);
           // key："file"必须和后端controller参数名一致
-          _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/upload",
+          formData.append("shard",fileShard);
+          formData.append("use",_this.use);
+          formData.append("shardSize",shardSize);
+          formData.append("shardIndex",shardIndex);
+          formData.append("shardTotal",shardTotal);
+          formData.append("size",file.size);
+          formData.append("name",file.name);
+          formData.append("suffix",fileSuffix);
+          _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/uploadBigFile",
             formData
           ).then((response) => {
             let resp = response.data;
