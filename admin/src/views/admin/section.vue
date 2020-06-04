@@ -147,13 +147,13 @@
                     <label class="col-sm-2 control-label">视频</label>
                     <div class="col-md-10">
                       <!--上传文件的公共部分-->
-                      <file
+                      <BigFile
                         :use="PROFILE_USE1.COURSE.key"
                         :input-id="'video-upload'"
-                        :suffixs="['mp4', 'avi', 'rmvb','rm']"
-                        :text="'上传视频'"
+                        :suffixs="['mp4']"
+                        :text="'上传大视频'"
                         :after-upload="afterUpload">
-                      </file>
+                      </BigFile>
                       <!--视频预览代码,私有-->
                       <div class="row col-md-10">
                         <video :src="section.video" id="video" controls="controls"></video><!--视频控件-->
@@ -216,9 +216,9 @@
 <script>
   //引入pagination组件
   import Pagination from '../../components/pagination.vue'
-  import File from '../../components/file.vue'
+  import BigFile from "../../components/bigFile.vue";
   export default {
-      components: {Pagination,File},//引入pagination组件
+      components: {BigFile, Pagination},//引入pagination组件
       name: 'business-section',
       mounted: function () {//页面加载初始化
           //激活样式方法一
