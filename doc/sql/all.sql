@@ -200,6 +200,8 @@ alter table `profile` add column (`shard_size` int comment '分片的大小|B');
 alter table `profile` add column (`shard_total` int comment '分片总数');
 alter table `profile` add column (`key` int comment '文件标识');
 alter table `profile` add unique key key_unique (`key`);
+#修改列类型
+alter table `profile` change `key` `key` varchar(32) comment '文件标识';
 
 
 

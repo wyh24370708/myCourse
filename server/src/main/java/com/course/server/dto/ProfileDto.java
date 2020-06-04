@@ -4,7 +4,12 @@ import java.util.Date;
 
 import com.course.server.enums.ProfileUseEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
+import lombok.Data;
+import lombok.ToString;
+import lombok.experimental.Accessors;
+@Data
+@Accessors(chain = true)
+@ToString
 public class ProfileDto {
 
     /**
@@ -49,95 +54,24 @@ public class ProfileDto {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatedAt;
 
-    public String getId() {
-        return id;
-    }
+    /**
+     * 分片索引 | 已上传的分片
+     */
+    private Integer shardIndex;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    /**
+     * 分片大小|B
+     */
+    private Integer shardSize;
 
-    public String getName() {
-        return name;
-    }
+    /**
+     * 分片总数
+     */
+    private Integer shardTotal;
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public Integer getSize() {
-        return size;
-    }
-
-    public void setSize(Integer size) {
-        this.size = size;
-    }
-
-    public String getSuffix() {
-        return suffix;
-    }
-
-    public void setSuffix(String suffix) {
-        this.suffix = suffix;
-    }
-
-    public String getUse() {
-//        switch (use){
-//            case "C":
-//                use = ProfileUseEnum.COURSE.getDesc();
-//                break;
-//            case "T":
-//                use = ProfileUseEnum.TEACHER.getDesc();
-//                break;
-//        }
-        return use;
-    }
-
-    public void setUse(String use) {
-        this.use = use;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", name=").append(name);
-        sb.append(", path=").append(path);
-        sb.append(", size=").append(size);
-        sb.append(", suffix=").append(suffix);
-        sb.append(", use=").append(use);
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", updatedAt=").append(updatedAt);
-        sb.append("]");
-        return sb.toString();
-    }
+    /**
+     * 文件标识
+     */
+    private String key;
 
 }
