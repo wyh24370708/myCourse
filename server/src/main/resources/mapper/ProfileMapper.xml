@@ -13,7 +13,7 @@
     <result column="shard_index" jdbcType="INTEGER" property="shardIndex" />
     <result column="shard_size" jdbcType="INTEGER" property="shardSize" />
     <result column="shard_total" jdbcType="INTEGER" property="shardTotal" />
-    <result column="key" jdbcType="INTEGER" property="key" />
+    <result column="key" jdbcType="VARCHAR" property="key" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -115,7 +115,7 @@
     values (#{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
       #{size,jdbcType=INTEGER}, #{suffix,jdbcType=VARCHAR}, #{use,jdbcType=CHAR}, #{createdAt,jdbcType=TIMESTAMP}, 
       #{updatedAt,jdbcType=TIMESTAMP}, #{shardIndex,jdbcType=INTEGER}, #{shardSize,jdbcType=INTEGER}, 
-      #{shardTotal,jdbcType=INTEGER}, #{key,jdbcType=INTEGER})
+      #{shardTotal,jdbcType=INTEGER}, #{key,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.course.server.domain.Profile">
     insert into profile
@@ -192,7 +192,7 @@
         #{shardTotal,jdbcType=INTEGER},
       </if>
       <if test="key != null">
-        #{key,jdbcType=INTEGER},
+        #{key,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -239,7 +239,7 @@
         shard_total = #{record.shardTotal,jdbcType=INTEGER},
       </if>
       <if test="record.key != null">
-        `key` = #{record.key,jdbcType=INTEGER},
+        `key` = #{record.key,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -259,7 +259,7 @@
       shard_index = #{record.shardIndex,jdbcType=INTEGER},
       shard_size = #{record.shardSize,jdbcType=INTEGER},
       shard_total = #{record.shardTotal,jdbcType=INTEGER},
-      `key` = #{record.key,jdbcType=INTEGER}
+      `key` = #{record.key,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -298,7 +298,7 @@
         shard_total = #{shardTotal,jdbcType=INTEGER},
       </if>
       <if test="key != null">
-        `key` = #{key,jdbcType=INTEGER},
+        `key` = #{key,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=CHAR}
@@ -315,7 +315,7 @@
       shard_index = #{shardIndex,jdbcType=INTEGER},
       shard_size = #{shardSize,jdbcType=INTEGER},
       shard_total = #{shardTotal,jdbcType=INTEGER},
-      `key` = #{key,jdbcType=INTEGER}
+      `key` = #{key,jdbcType=VARCHAR}
     where id = #{id,jdbcType=CHAR}
   </update>
 </mapper>

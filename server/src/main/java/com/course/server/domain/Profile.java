@@ -1,7 +1,6 @@
 package com.course.server.domain;
 
 import lombok.Data;
-import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.util.Date;

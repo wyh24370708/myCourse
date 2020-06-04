@@ -11,9 +11,11 @@ import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 import java.util.Date;
 
@@ -57,11 +59,13 @@ public class ProfileServiceImpl implements ProfileService {
         // BeanUtils.copyProperties(profileDto,profile);
         //工具类转换
         Profile profile = CopyUtil.copy(profileDto, Profile.class);
-        if (StringUtils.isEmpty(profileDto.getId())){
+        Profile profileDB = selectByKey(profileDto.getKey());
+        if (profileDB == null){
             //插入
             this.insert(profile);
         }else{
-            this.update(profile);
+            profileDB.setShardIndex(profileDto.getShardIndex());
+            this.update(profileDB);
         }
     }
 
@@ -86,6 +90,16 @@ public class ProfileServiceImpl implements ProfileService {
         Date date = new Date();
         profile.setUpdatedAt(date);
         profileMapper.updateByPrimaryKey(profile);
+    }
+
+    private Profile selectByKey(String key){
+        ProfileExample example = new ProfileExample();
+        example.createCriteria().andKeyEqualTo(key);
+        List<Profile> profileListDB = profileMapper.selectByExample(example);
+        if (!CollectionUtils.isEmpty(profileListDB)){
+            return profileListDB.get(0);
+        }
+        return null;
     }
 
 }    

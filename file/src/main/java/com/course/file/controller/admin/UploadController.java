@@ -73,7 +73,6 @@ public class UploadController {
         File dest = new File(fullPath);
         //上传到目标位置
         shard.transferTo(dest);
-        LOG.info(dest.getAbsolutePath());//本机中图片存储的路径
 
         LOG.info("文件保存记录开始...");
         ProfileDto profileDto = new ProfileDto();
@@ -86,7 +85,7 @@ public class UploadController {
                   .setShardSize(shardSize)
                   .setShardTotal(shardTotal)
                   .setKey(key);
-
+        LOG.info("文件信息: ",profileDto);
         profileService.save(profileDto);
         //配置静态资源之后, 路径对外暴露, 返回结果中存入访问地址 头像实时显示
         String url = FILE_SERVER_PATH + profilePath;

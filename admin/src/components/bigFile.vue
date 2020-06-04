@@ -89,8 +89,8 @@
            * 分片上传,数据库的四个字段都是由前端提供,服务端的压力
            */
           let shardSize = 20 * 1024 * 1024;   //20M为一个分片
-          let shardIndex = 0;                 //分片的索引
-          let start = shardIndex * shardSize; //分片起始位置
+          let shardIndex = 2;                 //分片的索引
+          let start = (shardIndex-1) * shardSize; //分片起始位置
           let end = Math.min(file.size, start + shardSize); //当前分片的结束位置
           let fileShard = file.slice(start,end); //文件的分片内容
           console.log("start,end:", start,end);
