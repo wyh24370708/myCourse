@@ -9,6 +9,7 @@ import Course from "./views/admin/course.vue"
 import Category from "./views/admin/category.vue"
 import Teacher from "./views/admin/teacher.vue"
 import Profile from "./views/admin/profile.vue"
+import Course_content from "./views/admin/course_content.vue"
 
 /**
  * 1.router是VueRouter的一个对象，通过Vue.use(VueRouter)和VueRouter构造函数得到一个router的实例对象，
@@ -51,6 +52,10 @@ export default new Router({
             path: "business/course",
             name: "business/course",
             component: Course
+        },{
+            path: "business/course_content",
+            name: "business/course_content",
+            component: Course_content
         },{
             path: "business/category",
             name: "business/category",
