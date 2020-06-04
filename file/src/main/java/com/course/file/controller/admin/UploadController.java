@@ -8,13 +8,13 @@ import com.course.server.util.UuidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 @RestController
 @RequestMapping("/admin")
@@ -31,6 +31,13 @@ public class UploadController {
     @Value("${file_server_path}")
     private String FILE_SERVER_PATH;
 
+    /**
+     * 上传文件
+     * @param file
+     * @param use
+     * @return
+     * @throws IOException
+     */
     @RequestMapping("/upload")
     public ResponseDto upload(MultipartFile file,String use) throws IOException {
         ResponseDto responseDto = new ResponseDto();
@@ -73,4 +80,46 @@ public class UploadController {
         return responseDto;
     }
 
+    /**
+     * 分片测试
+     */
+    @GetMapping("/merge")
+    public ResponseDto merge() throws IOException {
+        ResponseDto responseDto = new ResponseDto();
+        //文件输出的目标位置
+        File file = new File(FILE_UP_PATH + "/course/test123.mp4");
+        FileOutputStream fos = new FileOutputStream(file, true);
+        FileInputStream fis = null;
+        byte[] bytes = new byte[10 * 1024 * 1024];
+        int len = 0;
+
+        try {
+            //第一个分片
+            fis = new FileInputStream(new File(FILE_UP_PATH + "/course/2FHFqA8v-blob"));
+            while ((len = fis.read(bytes))!= -1){
+                fos.write(bytes,0, len);
+            }
+            //第二个分片
+            fis = new FileInputStream(new File(FILE_UP_PATH + "/course/AAyu8Tn8-blob"));
+            while ((len = fis.read(bytes))!= -1){
+                fos.write(bytes,0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            LOG.error("分片合并异常", e);
+        }finally {
+            try {
+                if (fis != null){
+                    fos.close();
+                    fis.close();
+                }
+                LOG.info("IO流关闭");
+            } catch (IOException e) {
+                e.printStackTrace();
+                LOG.error("IO流关闭错误");
+            }
+        }
+
+        return responseDto;
+    }
 }
