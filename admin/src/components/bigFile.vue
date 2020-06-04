@@ -57,7 +57,7 @@
 
           //文件标识key--MD5
           console.log("file: ",file);
-          let key = hex_md5(file);
+          let key = hex_md5(file);//可以直接使用这个32位数据
           let key_10 = parseInt(key,16);
           let key_62 = Tool._10to62(key_10);
           console.log(key,key_10,key_62);
@@ -89,72 +89,64 @@
            * 分片上传,数据库的四个字段都是由前端提供,服务端的压力
            */
           let shardSize = 20 * 1024 * 1024;   //20M为一个分片
-          let shardIndex = 2;                 //分片的索引
-          let start = (shardIndex-1) * shardSize; //分片起始位置
-          let end = Math.min(file.size, start + shardSize); //当前分片的结束位置
-          let fileShard = file.slice(start,end); //文件的分片内容
-          console.log("start,end:", start,end);
+          let shardIndex = 1;                 //分片的索引
           let shardTotal = Math.ceil(file.size / shardSize);//计算分片总数
+          //分片参数
+          let formParam = {
+            "shard": "",
+            "use":_this.use,
+            "shardSize":shardSize,
+            "shardIndex":shardIndex,
+            "shardTotal":shardTotal,
+            "size":file.size,
+            "name":file.name,
+            "suffix":fileSuffix,
+            "key":key_62,
+          }
+          _this.uploadBigfile(formParam);//递归上传分片
+        },
+
+        uploadBigfile: function (formParam) {
+          let _this = this;
+          let shardIndex = formParam.shardIndex;
+          let shardTotal = formParam.shardTotal;
+          let shardSize = formParam.shardSize;
+          let fileShard = _this.getFileShard(shardIndex, shardSize);
 
           // 将图片转为base64进行传输
           let fileReader = new FileReader();
           //事件监听
-          fileReader.onload = function(event){
+          fileReader.onload = function (event) {
             let base64 = event.target.result;
             // console.log("base64:",base64);
-
-            let formParam = {
-              "shard": base64,
-              "use":_this.use,
-              "shardSize":shardSize,
-              "shardIndex":shardIndex,
-              "shardTotal":shardTotal,
-              "size":file.size,
-              "name":file.name,
-              "suffix":fileSuffix,
-              "key":key_62,
-            }
+            formParam.shard = base64;
 
             _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/uploadBigFile",
               formParam
             ).then((response) => {
               let resp = response.data;
-              console.log("上传大文件成功: ",resp);
-              //处理返回结果
-              _this.afterUpload(resp);//回调函数
-              // let image = resp.content;
-              // console.log("头像的地址:{}",image);
-              // _this.teacher.image = image;
-              //清楚上次上传文件的值
-              $("#"+ _this.inputId + "-input").val("");
+              //递归调用
+              if (shardIndex < shardTotal){
+                formParam.shardIndex = formParam.shardIndex + 1;
+                _this.uploadBigfile(formParam);
+              }else{
+                console.log("上传大文件成功: ", resp);
+                _this.afterUpload(resp);//回调函数 //处理返回结果
+                $("#" + _this.inputId + "-input").val("");//清除上次上传文件的值
+              }
             })
           };
           fileReader.readAsDataURL(fileShard);
+        },
 
-          // // key："file"必须和后端controller参数名一致
-          // formData.append("shard",fileShard);
-          // formData.append("use",_this.use);
-          // formData.append("shardSize",shardSize);
-          // formData.append("shardIndex",shardIndex);
-          // formData.append("shardTotal",shardTotal);
-          // formData.append("size",file.size);
-          // formData.append("name",file.name);
-          // formData.append("suffix",fileSuffix);
-          // formData.append("key",key_62);
-          //
-          // _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/uploadBigFile",
-          //   formData
-          // ).then((response) => {
-          //   let resp = response.data;
-          //   console.log("上传大文件成功: ",resp);
-          //   //处理返回结果
-          //   _this.afterUpload(resp);//回调函数
-          //   // let image = resp.content;
-          //   // console.log("头像的地址:{}",image);
-          //   // _this.teacher.image = image;
-          //   //清楚上次上传文件的值
-          //   $("#"+ _this.inputId + "-input").val("");
-          // })
+        getFileShard: function (shardIndex, shardSize) {
+          let _this = this;
+          let file = _this.$refs.file.files[0];
+          let start = (shardIndex - 1) * shardSize; //分片起始位置
+          let end = Math.min(file.size, start + shardSize); //当前分片的结束位置
+          let fileShard = file.slice(start, end); //文件的分片内容
+          console.log("start,end:", start, end);
+          return fileShard;
         },
 
         /**
