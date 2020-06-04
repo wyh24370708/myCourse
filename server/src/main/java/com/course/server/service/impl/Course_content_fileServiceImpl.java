@@ -27,21 +27,15 @@ public class Course_content_fileServiceImpl implements Course_content_fileServic
      * @return
      */
     @Override
-    public void findAll(PageDto pageDto) {
-        //分页
-        PageHelper.startPage(pageDto.getPageNum(), pageDto.getPageSize());
+    public List<Course_content_fileDto> findAll(String courseId) {
         //查询数据库
+        Course_content_fileExample example = new Course_content_fileExample();
+        example.createCriteria().andCourseIdEqualTo(courseId);
+        List<Course_content_file> fileListDB = course_content_fileMapper.selectByExample(example);
 
-        //1. 倒叙排列
-        Course_content_fileExample course_content_fileExample = new Course_content_fileExample();
-        //2. 设置total属性
-        List<Course_content_file> course_content_fileListDB = course_content_fileMapper.selectByExample(course_content_fileExample);
-        PageInfo<Course_content_file> pageInfo = new PageInfo<>(course_content_fileListDB);
-        pageDto.setTotalNum(pageInfo.getTotal());
-        
         //工具类转换
-        List<Course_content_fileDto> course_content_fileDtoList = CopyUtil.copyList(course_content_fileListDB, Course_content_fileDto.class);
-        pageDto.setList(course_content_fileDtoList);
+        List<Course_content_fileDto> fileDtoList = CopyUtil.copyList(fileListDB, Course_content_fileDto.class);
+        return fileDtoList;
     }
 
     /**

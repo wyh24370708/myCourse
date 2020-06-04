@@ -30,19 +30,17 @@ public class Course_content_fileController {
 
     /**
      * 查询所有
-     * @param pageDto
+     * @param courseId
      * @return
      */
-    @PostMapping("/list")
-    public ResponseDto findAll(@RequestBody PageDto pageDto) {
+    @GetMapping("/list/{courseId}")
+    public ResponseDto findAll(@PathVariable("courseId") String courseId) {
         //统一返回格式 start
-        ResponseDto<PageDto> responseDto = new ResponseDto<PageDto>();
-
-        //传输数据,通过表单的形式和流的形式,vue是通过流的方式,需要以@requestBody来获取数据
-        course_content_fileService.findAll(pageDto);
-        LOG.info("查询课程内容文件结果:{}",pageDto);
+        ResponseDto responseDto = new ResponseDto();
+        LOG.info("查询课程内容文件结果:{}",courseId);
+        List<Course_content_fileDto> course_content_fileDtoList = course_content_fileService.findAll(courseId);
         //统一返回格式 end
-        responseDto.setContent(pageDto);
+        responseDto.setContent(course_content_fileDtoList);
         return responseDto;
     }
 

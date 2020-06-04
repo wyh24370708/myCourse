@@ -119,7 +119,7 @@
                       <!--上传文件的公共部分-->
                       <file
                         :use="PROFILE_USE1.TEACHER.key"
-                        :id="'image-upload'"
+                        :input-id="'image-upload'"
                         :suffixs="['jpg', 'jpeg', 'png']"
                         :text="'上传头像'"
                         :after-upload="afterUpload">

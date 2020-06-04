@@ -149,7 +149,7 @@
                       <!--上传文件的公共部分-->
                       <file
                         :use="PROFILE_USE1.COURSE.key"
-                        :id="'video-upload'"
+                        :input-id="'video-upload'"
                         :suffixs="['mp4', 'avi', 'rmvb','rm']"
                         :text="'上传视频'"
                         :after-upload="afterUpload">

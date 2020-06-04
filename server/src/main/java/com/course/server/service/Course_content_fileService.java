@@ -12,7 +12,7 @@ public interface Course_content_fileService {
      * 查询所有
      * @return
      */
-    void findAll(PageDto<Course_content_file> pageDto);
+    List<Course_content_fileDto> findAll(String courseId);
 
     /**
      * 新增
