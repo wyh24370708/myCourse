@@ -71,8 +71,14 @@
             return;
           }
 
+          //分片上传
+          let shardSize = 20 * 1024 * 1024;   //20M为一个分片
+          let shardIndex = 1;                 //分片的索引
+          let start = shardIndex * shardSize; //分片起始位置
+          let end = Math.min(file.size, start + shardSize); //当前分片的结束位置
+          let fileShard = file.slice(start,end); //文件的分片内容
 
-          formData.append("file",file);
+          formData.append("file",fileShard);
           formData.append("use",_this.use);
           // key："file"必须和后端controller参数名一致
           _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/upload",

@@ -147,13 +147,13 @@
                     <label class="col-sm-2 control-label">视频</label>
                     <div class="col-md-10">
                       <!--上传文件的公共部分-->
-                      <BigFile
+                      <bigFile
                         :use="PROFILE_USE1.COURSE.key"
                         :input-id="'video-upload'"
                         :suffixs="['mp4']"
                         :text="'上传大视频'"
                         :after-upload="afterUpload">
-                      </BigFile>
+                      </bigFile>
                       <!--视频预览代码,私有-->
                       <div class="row col-md-10">
                         <video :src="section.video" id="video" controls="controls"></video><!--视频控件-->
