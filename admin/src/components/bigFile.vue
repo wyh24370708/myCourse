@@ -54,6 +54,20 @@
           let file = _this.$refs.file.files[0];// document.querySelector("#inputImage").files[0]
           // let url = URL.createObjectURL(file);
           // document.getElementById(_this.inputId+"-input").src=url;
+
+          //文件标识key--MD5
+          console.log("file: ",file);
+          let key = hex_md5(file);
+          let key_10 = parseInt(key,16);
+          let key_62 = Tool._10to62(key_10);
+          console.log(key,key_10,key_62);
+          /*
+           *  key = d41d8cd98f00b204e9800998ecf8427e
+           *  key_10 = 2.8194976848941264e+38
+           *  key_62 = 6sfSqfOwzmik4A4icMYuUe
+           */
+
+
           // 判断文件格式
           let suffixs = _this.suffixs;//外面传入
           let filename = file.name;
@@ -91,6 +105,7 @@
           formData.append("size",file.size);
           formData.append("name",file.name);
           formData.append("suffix",fileSuffix);
+          formData.append("key",key_62);
           _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/uploadBigFile",
             formData
           ).then((response) => {

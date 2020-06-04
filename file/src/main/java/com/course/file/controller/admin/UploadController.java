@@ -5,6 +5,7 @@ import com.course.server.dto.ResponseDto;
 import com.course.server.enums.ProfileUseEnum;
 import com.course.server.service.ProfileService;
 import com.course.server.util.UuidUtil;
+import org.bouncycastle.jcajce.provider.digest.MD5;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,7 +35,12 @@ public class UploadController {
 
     /**
      * 上传文件--大文件
-     * @param use
+     * 对于分片上传,上传第一次后,后面都是针对同一条记录进行更新,
+     *  shardIndex更新的字段,其他不变
+     *  什么时候上传完成? shardIndex==shardTotal时,就是全部上传完成了
+     *  每一步上传都要进行合并
+     *
+     *  如何定位是一个文件?  key作为文件的标志位
      * @return
      * @throws IOException
      */
@@ -47,7 +53,8 @@ public class UploadController {
                             Integer size,
                             String use,
                             String name,
-                            String suffix) throws IOException {
+                            String suffix,
+                            String key) throws IOException {
         ResponseDto responseDto = new ResponseDto();
         LOG.info("上传文件开始...");
         //获取枚举类型
@@ -78,7 +85,8 @@ public class UploadController {
                   .setShardIndex(shardIndex)
                   .setShardSize(shardSize)
                   .setShardTotal(shardTotal)
-                  .setKey(uuid);
+                  .setKey(key);
+
         profileService.save(profileDto);
         //配置静态资源之后, 路径对外暴露, 返回结果中存入访问地址 头像实时显示
         String url = FILE_SERVER_PATH + profilePath;
@@ -178,4 +186,5 @@ public class UploadController {
 
         return responseDto;
     }
+
 }
