@@ -88,7 +88,7 @@
           /**
            * 分片上传,数据库的四个字段都是由前端提供,服务端的压力
            */
-          let shardSize = 20 * 1024 * 1024;   //20M为一个分片
+          let shardSize = 5 * 1024 * 1024;   //20M为一个分片
           let shardIndex = 1;                 //分片的索引
           let shardTotal = Math.ceil(file.size / shardSize);//计算分片总数
           //分片参数

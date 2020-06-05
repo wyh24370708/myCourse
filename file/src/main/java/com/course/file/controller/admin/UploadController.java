@@ -101,6 +101,7 @@ public class UploadController {
      */
     public void merge(ProfileDto profileDto) throws IOException {
         LOG.info("合并分片开始......");
+        Integer shardTotal = profileDto.getShardTotal();
         File file = new File(PATH_MAP.get("PATH"));//文件输出的目标位置
         FileOutputStream fos = new FileOutputStream(file, true);//true表示文件追加输出
         FileInputStream fis = null;//声明输入流
@@ -108,7 +109,7 @@ public class UploadController {
         int len = 0;
         try {
             //循环合并
-            for (int i = 1, LEN = profileDto.getShardTotal(); i <= LEN; i++){
+            for (int i = 1, LEN = shardTotal; i <= LEN; i++){
                 fis = new FileInputStream(new File(PATH_MAP.get("PATH_"+i)));//分片
                 while ((len = fis.read(bytes))!= -1){
                     fos.write(bytes,0, len);
@@ -130,6 +131,24 @@ public class UploadController {
             }
         }
         LOG.info("合并分片结束......");
+
+        //删除分片
+        LOG.info("删除分片开始...");
+        /*
+           删除之前,调用System.gc();
+           流不论是否关闭,垃圾不回收,堆里面还是存放了占用文件的信息,文件一直被占用
+           System.gc();告诉虚拟机进行垃圾回收,解除文件的占用
+         */
+        System.gc();
+        for (int i = 1; i <= shardTotal; i++){
+            System.gc();
+            File shardFile = new File(PATH_MAP.get("PATH_" + i));
+            if (shardFile.exists()){
+                boolean result = shardFile.delete();
+                LOG.info("删除{},{}", PATH_MAP.get("PATH_" + i), result? "成功":"失败");
+            }
+        }
+        LOG.info("删除分片结束...");
     }
 
     /**
