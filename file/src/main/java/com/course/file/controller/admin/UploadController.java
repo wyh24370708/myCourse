@@ -57,7 +57,7 @@ public class UploadController {
      * @throws IOException
      */
     @RequestMapping("/uploadBigFile")
-    public ResponseDto upload(@RequestBody ProfileDto profileDto) throws IOException {
+    public ResponseDto upload(@RequestBody ProfileDto profileDto) throws Exception {
         ResponseDto responseDto = new ResponseDto();
         LOG.info("上传文件开始...");
         //参数转换
@@ -111,7 +111,7 @@ public class UploadController {
     /**
      * 分片合并
      */
-    public void merge(ProfileDto profileDto) throws IOException {
+    public void merge(ProfileDto profileDto) throws IOException, InterruptedException {
         LOG.info("合并分片开始......");
         Integer shardTotal = profileDto.getShardTotal();
         File file = new File(PATH_MAP.get("PATH"));//文件输出的目标位置
@@ -153,6 +153,7 @@ public class UploadController {
            System.gc();告诉虚拟机进行垃圾回收,解除文件的占用
          */
         System.gc();
+        Thread.sleep(100);
         for (int i = 1; i <= shardTotal; i++){
             File shardFile = new File(PATH_MAP.get("PATH_" + i));
             if (shardFile.exists()){

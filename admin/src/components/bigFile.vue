@@ -117,11 +117,16 @@
             let resp = response.data;
             if (resp.success){
               let content = resp.content;
-              if (!content){//检查到没有分片,从第一个分片开始上传
+              if (!content){
                 console.log("检查到没有分片,从第一个分片开始上传...");
                 formParam.shardIndex = 1;
                 _this.uploadBigfile(formParam);
-              }else{//检查到有分片, 继续下一个分片的上传
+              } else if(content.shardIndex == content.shardTotal){
+                //已上传分片 = 分片总数，说明已全部上传完，不需要再上传
+                Toast.success("文件极速秒传");
+                _this.afterUpload(resp);
+                $("#" + _this.inputId + "-input").val("");//清除上次上传文件的值
+              } else{//检查到有分片, 继续下一个分片的上传
                 formParam.shardIndex = content.shardIndex + 1 ;
                 console.log("找到文件记录，从分片" + formParam.shardIndex + "开始上传...");
                 _this.uploadBigfile(formParam);
@@ -163,6 +168,7 @@
                 _this.uploadBigfile(formParam);
               }else{
                 console.log("上传大文件成功: ", resp);
+                Toast.success("文件上传成功!");
                 _this.afterUpload(resp);//回调函数 //处理返回结果
                 $("#" + _this.inputId + "-input").val("");//清除上次上传文件的值
               }
