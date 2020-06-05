@@ -114,16 +114,17 @@ public class UploadController {
                 while ((len = fis.read(bytes))!= -1){
                     fos.write(bytes,0, len);
                 }
+                //之前的代码只在finally里close掉了最后一个分片文件的输入流，每个分片输入流需要关闭一下。
+                //这里每个分片的输入流都要关闭一下
+                //transferTo方法也是使用输入输出字节流来完成传输的
+                fis.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
             LOG.error("分片合并异常", e);
         }finally {
             try {
-                if (fis != null){
-                    fos.close();
-                    fis.close();
-                }
+                fos.close();
                 LOG.info("IO流关闭");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -141,7 +142,6 @@ public class UploadController {
          */
         System.gc();
         for (int i = 1; i <= shardTotal; i++){
-            System.gc();
             File shardFile = new File(PATH_MAP.get("PATH_" + i));
             if (shardFile.exists()){
                 boolean result = shardFile.delete();
