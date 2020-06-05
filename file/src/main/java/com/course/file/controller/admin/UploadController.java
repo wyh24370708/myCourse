@@ -41,6 +41,7 @@ public class UploadController {
     public ResponseDto shardCheck(@PathVariable("key") String key){
         ResponseDto responseDto = new ResponseDto();
         ProfileDto profileDto = profileService.findByKey(key);
+        profileDto.setPath(FILE_SERVER_PATH + profileDto.getPath());
         responseDto.setContent(profileDto);
         return responseDto;
     }
@@ -93,10 +94,12 @@ public class UploadController {
 
         LOG.info("文件保存记录开始...");
         //配置静态资源之后, 路径对外暴露, 返回结果中存入访问地址 头像实时显示
-        String url = new StringBuffer(FILE_SERVER_PATH).append(teacher).append("/").append(key)
+        String absolutePath = new StringBuffer(teacher).append("/").append(key)
                 .append(".").append(suffix).toString();
-        profileDto.setPath(url);
+        String server_url = FILE_SERVER_PATH + absolutePath;
+        profileDto.setPath(absolutePath);
         profileService.save(profileDto);
+        profileDto.setPath(server_url);
         responseDto.setContent(profileDto);
 
         //校验并合并分片
