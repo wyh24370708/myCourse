@@ -41,7 +41,9 @@ public class UploadController {
     public ResponseDto shardCheck(@PathVariable("key") String key){
         ResponseDto responseDto = new ResponseDto();
         ProfileDto profileDto = profileService.findByKey(key);
-        profileDto.setPath(FILE_SERVER_PATH + profileDto.getPath());
+        if (profileDto!=null){
+            profileDto.setPath(FILE_SERVER_PATH + profileDto.getPath());
+        }
         responseDto.setContent(profileDto);
         return responseDto;
     }
@@ -103,7 +105,7 @@ public class UploadController {
         responseDto.setContent(profileDto);
 
         //校验并合并分片
-        if (profileDto.getShardIndex() == profileDto.getShardTotal()){
+        if (profileDto.getShardIndex().equals(profileDto.getShardTotal())){
             this.merge(profileDto);
         }
 

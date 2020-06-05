@@ -145,7 +145,7 @@
           let shardTotal = formParam.shardTotal;
           let shardSize = formParam.shardSize;
           let fileShard = _this.getFileShard(shardIndex, shardSize);
-
+          Progress.show(parseInt((shardIndex-1)*100 / shardTotal));
           // 将图片转为base64进行传输
           let fileReader = new FileReader();
           //事件监听
@@ -158,6 +158,7 @@
               formParam
             ).then((response) => {
               let resp = response.data;
+              Progress.show(parseInt(shardIndex * 100 / shardTotal));
               //递归调用
               if (shardIndex < shardTotal){
                 formParam.shardIndex = formParam.shardIndex + 1;
@@ -167,6 +168,7 @@
                 // }
                 _this.uploadBigfile(formParam);
               }else{
+                Progress.hide();
                 console.log("上传大文件成功: ", resp);
                 Toast.success("文件上传成功!");
                 _this.afterUpload(resp);//回调函数 //处理返回结果

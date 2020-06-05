@@ -154,9 +154,20 @@
                         :text="'上传大视频'"
                         :after-upload="afterUpload">
                       </bigFile>
+                      <!--我的进度条-->
+<!--                      <div class="col-sm-6">-->
+<!--                        <div id="progressbar"-->
+<!--                             class="ui-progressbar ui-widget ui-widget-content ui-corner-all progress progress-striped active"-->
+<!--                             role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="37">-->
+<!--                          <div class="ui-progressbar-value ui-widget-header ui-corner-left progress-bar progress-bar-success"-->
+<!--                               style="width: 10%;">-->
+<!--                          </div>-->
+<!--                        </div>-->
+<!--                      </div>-->
+
                       <!--视频预览代码,私有-->
                       <div class="row col-md-10">
-                        <video :src="section.video" id="video" controls="controls"></video><!--视频控件-->
+                        <video :src="section.video" id="videoId" controls="controls"></video><!--视频控件-->
                       </div>
                     </div>
                   </div>
@@ -366,17 +377,17 @@
           let _this = this;
           let video = resp.content.path;
           _this.section.video = video;
-          // _this.getTime();
+          _this.getTime();
         },
 
-        // /**
-        //  * 获取视频时长
-        //  */
-        // getTime() {
-        //   let _this = this;
-        //   let ele = document.getElementById("videoId");
-        //   _this.section.time = parseInt(ele.duration, 10);//duration是获得当前音频的长度
-        // }
+        /**
+         * 获取视频时长
+         */
+        getTime() {
+          let _this = this;
+          let ele = document.getElementById("videoId");
+          _this.section.time = parseInt(ele.duration, 10);//duration是获得当前音频的长度
+        }
       }
   }
 </script>
