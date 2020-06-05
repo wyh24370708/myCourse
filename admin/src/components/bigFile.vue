@@ -57,10 +57,12 @@
 
           //文件标识key--MD5
           console.log("file: ",file);
-          let key = hex_md5(file);//可以直接使用这个32位数据
+          console.log(JSON.stringify(file));
+          let key = hex_md5(file.name + file.size + file.type);//可以直接使用这个32位数据
           let key_10 = parseInt(key,16);
           let key_62 = Tool._10to62(key_10);
           console.log(key,key_10,key_62);
+          console.log(hex_md5(Array()));
           /*
            *  key = d41d8cd98f00b204e9800998ecf8427e
            *  key_10 = 2.8194976848941264e+38
