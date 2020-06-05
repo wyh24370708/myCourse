@@ -78,6 +78,14 @@ public class ProfileServiceImpl implements ProfileService {
         profileMapper.deleteByPrimaryKey(id);
     }
 
+    /**
+     * 分片检查 上传
+     */
+    @Override
+    public ProfileDto findByKey(String key) {
+        return CopyUtil.copy(selectByKey(key),ProfileDto.class);
+    }
+
     private void insert(Profile profile) {
         Date date = new Date();
         profile.setCreatedAt(date);

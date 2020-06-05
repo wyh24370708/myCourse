@@ -87,8 +87,10 @@
 
           /**
            * 分片上传,数据库的四个字段都是由前端提供,服务端的压力
+           * 分片大小,分片初始索引,//设定为默认值
+           * 分片的数量,分片的内容
            */
-          let shardSize = 5 * 1024 * 1024;   //20M为一个分片
+          let shardSize = 10 * 1024 * 1024;  //20M为一个分片
           let shardIndex = 1;                 //分片的索引
           let shardTotal = Math.ceil(file.size / shardSize);//计算分片总数
           //分片参数
@@ -103,9 +105,35 @@
             "suffix":fileSuffix,
             "key":key_62,
           }
-          _this.uploadBigfile(formParam);//递归上传分片
+          _this.shardCheck(formParam);//先分片检查,再上传分片 //递归上传分片
         },
 
+        //分片检查,,,上到第几个分片
+        shardCheck(formParam){
+          let _this = this;
+          _this.$ajax.get(process.env.VUE_APP_SERVER + "/file/admin/shardCheck/"+
+            formParam.key
+          ).then((response)=>{
+            let resp = response.data;
+            if (resp.success){
+              let content = resp.content;
+              if (!content){//检查到没有分片,从第一个分片开始上传
+                console.log("检查到没有分片,从第一个分片开始上传...");
+                formParam.shardIndex = 1;
+                _this.uploadBigfile(formParam);
+              }else{//检查到有分片, 继续下一个分片的上传
+                formParam.shardIndex = content.shardIndex + 1 ;
+                console.log("找到文件记录，从分片" + formParam.shardIndex + "开始上传...");
+                _this.uploadBigfile(formParam);
+              }
+            }else{
+              Toast.warning("文件上传失败");
+              $("#" + _this.inputId + "-input").val("");//清除上次上传文件的值
+            }
+          })
+        },
+
+        //上传文件
         uploadBigfile: function (formParam) {
           let _this = this;
           let shardIndex = formParam.shardIndex;
@@ -128,6 +156,10 @@
               //递归调用
               if (shardIndex < shardTotal){
                 formParam.shardIndex = formParam.shardIndex + 1;
+                // 分片断点续传的测试
+                // if (formParam.shardIndex === 3){
+                //   return;
+                // }
                 _this.uploadBigfile(formParam);
               }else{
                 console.log("上传大文件成功: ", resp);

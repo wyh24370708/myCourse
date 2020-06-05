@@ -33,6 +33,18 @@ public class UploadController {
     @Value("${file_server_path}")
     private String FILE_SERVER_PATH;
 
+
+    /**
+     * 分片检查 上传
+     */
+    @GetMapping("/shardCheck/{key}")
+    public ResponseDto shardCheck(@PathVariable("key") String key){
+        ResponseDto responseDto = new ResponseDto();
+        ProfileDto profileDto = profileService.findByKey(key);
+        responseDto.setContent(profileDto);
+        return responseDto;
+    }
+
     /**
      * 上传文件--大文件
      * 对于分片上传,上传第一次后,后面都是针对同一条记录进行更新,
@@ -150,6 +162,8 @@ public class UploadController {
         }
         LOG.info("删除分片结束...");
     }
+
+
 
     /**
      * 上传文件 ---图片

@@ -24,5 +24,9 @@ public interface ProfileService {
      * @param id
      */
     void delete(String id);
-    
+
+    /**
+     * 分片检查 上传
+     */
+    ProfileDto findByKey(String key);
 }
