@@ -117,13 +117,13 @@
                     <label class="col-sm-2 control-label">头像</label>
                     <div class="col-md-10">
                       <!--上传文件的公共部分-->
-                      <file
+                      <bigFile
                         :use="PROFILE_USE1.TEACHER.key"
                         :input-id="'image-upload'"
                         :suffixs="['jpg', 'jpeg', 'png']"
                         :text="'上传头像'"
                         :after-upload="afterUpload">
-                      </file>
+                      </bigFile>
                       <!--头像预览代码,私有-->
                       <div class="row col-md-3">
                         <img :src="teacher.image" class="img-responsive"><!-- 响应式的图片显示 img-responsive -->
@@ -187,8 +187,9 @@
   //引入pagination组件
   import Pagination from '../../components/pagination.vue'
   import File from '../../components/file.vue'
+  import BigFile from "../../components/bigFile";
   export default {
-      components: {Pagination,File},//引入pagination组件
+      components: {BigFile, Pagination,File},//引入pagination组件
       name: 'business-teacher',
       mounted: function () {//页面加载初始化
           //激活样式方法一

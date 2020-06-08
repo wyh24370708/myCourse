@@ -121,13 +121,13 @@
                   <label class="col-sm-2 control-label">封面</label>
                   <div class="col-md-10">
                     <!--上传文件的公共部分-->
-                    <file
+                    <bigFile
                       :use="PROFILE_USE1.COURSE.key"
                       :input-id="'image-upload'"
                       :suffixs="['jpg', 'jpeg', 'png']"
                       :text="'上传封面'"
                       :after-upload="afterUpload">
-                    </file>
+                    </bigFile>
                     <!--头像预览代码,私有-->
                     <div class="row col-md-6">
                       <img :src="course.image" class="img-responsive"><!-- 响应式的图片显示 img-responsive -->
@@ -292,8 +292,9 @@
   //引入pagination组件
   import Pagination from '../../components/pagination.vue'
   import File from '../../components/file.vue'
+  import BigFile from "../../components/bigFile";
   export default {
-      components: {Pagination,File},//引入pagination组件
+      components: {Pagination,File,BigFile},//引入pagination组件
       name: 'business-course',
       /**
        * 【页面初始化】
