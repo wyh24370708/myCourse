@@ -541,6 +541,7 @@
             $("body").attr('class','no-skin'); //设置admin的body页面的的样式
             //激活样式方法二
             // _this.activeSidebar(_this.$route.name.replace('/','-') + "-sidebar");
+            $.getScript('/ace/assets/js/ace.min.js');
         },
         watch: {
             //激活样式方法三
