@@ -8,6 +8,7 @@ import com.course.server.util.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -55,6 +56,8 @@ public class UserController {
     public ResponseDto save(@RequestBody UserDto userDto) {
         //统一返回格式 start
         ResponseDto<UserDto> responseDto = new ResponseDto<UserDto>();
+        //密码二次md5加密
+        userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
 
         //保存校验
         ValidatorUtil.require(userDto.getLoginName(), "登录名");
