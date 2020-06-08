@@ -204,7 +204,22 @@ alter table `profile` add unique key key_unique (`key`);
 alter table `profile` change `key` `key` varchar(32) comment '文件标识';
 
 
+-- 用户表
+drop table if exists `user`;
+create table `user`(
+  `id` char(8) not null default '' comment 'id',
+  `login_name` varchar(50) not null comment '登录名',
+  `name` varchar(50) comment '昵称',
+  `password` varchar(50) comment '密码',
+  `created_at` datetime comment '创建时间',
+  `updated_at` datetime comment '修改时间',
+  primary key (`id`),
+  unique key `login_name_unique` (`login_name`)
+)engine=innodb default charset = utf8mb4 comment '用户';
 
+insert into `user` values('10000001','test','测试','123456',now(),now());
+
+select * from user;
 
 
 
