@@ -4,6 +4,8 @@ import com.course.server.domain.User;
 import com.course.server.domain.UserExample;
 import com.course.server.dto.UserDto;
 import com.course.server.dto.PageDto;
+import com.course.server.exception.BusinessException;
+import com.course.server.exception.BusinessExceptionCode;
 import com.course.server.mapper.UserMapper;
 import com.course.server.service.UserService;
 import com.course.server.util.CopyUtil;
@@ -11,6 +13,7 @@ import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -73,11 +76,30 @@ public class UserServiceImpl implements UserService {
         userMapper.deleteByPrimaryKey(id);
     }
 
+    /**
+     * 查询单个用户
+     */
+    @Override
+    public User selectByLoginName(User user) {
+        UserExample example = new UserExample();
+        example.createCriteria().andLoginNameEqualTo(user.getLoginName());
+        List<User> userListDB = userMapper.selectByExample(example);
+        if (!CollectionUtils.isEmpty(userListDB)){
+            return userListDB.get(0);
+        }else{
+            return null;
+        }
+    }
+
     private void insert(User user) {
         Date date = new Date();
         user.setCreatedAt(date);
         //设定新增的id的uuid值
         user.setId(UuidUtil.getShortUuid());
+        User userDB = this.selectByLoginName(user);
+        if (userDB!=null){
+            throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST.getDesc());
+        }
         userMapper.insert(user);
     }
 

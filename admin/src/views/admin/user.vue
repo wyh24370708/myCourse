@@ -113,7 +113,8 @@
                     <label for="inputLoginName" class="col-sm-2 control-label">登录名</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control" id="inputLoginName"
-                             v-model="user.loginName" >
+                             v-model="user.loginName"
+                               v-bind:disabled="user.id">
                     </div>
                   </div>
                   <div class="form-group">

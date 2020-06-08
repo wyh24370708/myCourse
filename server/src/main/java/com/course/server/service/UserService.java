@@ -24,5 +24,10 @@ public interface UserService {
      * @param id
      */
     void delete(String id);
-    
+
+    /**
+     * 查询单个用户
+     */
+    User selectByLoginName(User user);
+
 }
