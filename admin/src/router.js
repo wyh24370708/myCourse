@@ -28,6 +28,9 @@ export default new Router({
         path: "*",//访问任何路径都会跳转到/login路径
         redirect: "/login",
     },{
+        path: "",//访问任何路径都会跳转到/login路径
+        redirect: "/login",
+    },{
         path: "/login",
         component: Login //如果访问/login路径会加载login组件,显示登陆页面的内容
     },{
