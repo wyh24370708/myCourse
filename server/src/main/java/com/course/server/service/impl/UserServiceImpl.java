@@ -2,6 +2,7 @@ package com.course.server.service.impl;
 
 import com.course.server.domain.User;
 import com.course.server.domain.UserExample;
+import com.course.server.dto.LoginUserDto;
 import com.course.server.dto.UserDto;
 import com.course.server.dto.PageDto;
 import com.course.server.exception.BusinessException;
@@ -12,6 +13,8 @@ import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -23,8 +26,29 @@ import java.util.Date;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
     @Resource
     private UserMapper userMapper;
+
+    /**
+     * 【登录】
+     */
+    @Override
+    public LoginUserDto login(UserDto userDto) {
+        User userDB = this.selectByLoginName(userDto.getLoginName());
+        if(userDB!=null){
+            if (userDto.getPassword().equals(userDB.getPassword())){
+                LOG.info("登陆成功");
+                return CopyUtil.copy(userDB,LoginUserDto.class);
+            }else{
+                LOG.info("密码错误=>输入密码:{},数据库密码:{}", userDto.getPassword(), userDB.getPassword());
+                throw new BusinessException(BusinessExceptionCode.LOGIN_ERROR.getDesc());
+            }
+        }else{
+            LOG.info("用户名不存在:{}",userDto.getLoginName());
+            throw new BusinessException(BusinessExceptionCode.LOGIN_ERROR.getDesc());
+        }
+    }
 
     /**
      * 查询所有
@@ -79,10 +103,9 @@ public class UserServiceImpl implements UserService {
     /**
      * 查询单个用户
      */
-    @Override
-    public User selectByLoginName(User user) {
+    public User selectByLoginName(String loginName) {
         UserExample example = new UserExample();
-        example.createCriteria().andLoginNameEqualTo(user.getLoginName());
+        example.createCriteria().andLoginNameEqualTo(loginName);
         List<User> userListDB = userMapper.selectByExample(example);
         if (!CollectionUtils.isEmpty(userListDB)){
             return userListDB.get(0);
@@ -108,7 +131,7 @@ public class UserServiceImpl implements UserService {
         user.setCreatedAt(date);
         //设定新增的id的uuid值
         user.setId(UuidUtil.getShortUuid());
-        User userDB = this.selectByLoginName(user);
+        User userDB = this.selectByLoginName(user.getLoginName());
         if (userDB!=null){
             throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST.getDesc());
         }
