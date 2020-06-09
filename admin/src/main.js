@@ -12,6 +12,9 @@ Vue.config.productionTip = false
 //理解为全局变量,在任意vue组件使用,this.$ajax获取值  $表示Vue全局属性的一个约定
 Vue.prototype.$ajax = Axios;
 
+// 解决每次ajax请求，对应的sessionId不一致的问题
+Axios.defaults.withCredentials = true;
+
 // 全局过滤器???
 Object.keys(filter).forEach(key => {
   Vue.filter(key, filter[key])
