@@ -81,7 +81,7 @@
     data:function(){
       return{
         user:{},
-        remember: false,
+        remember: true,
       }
     },
     mounted: function () {//mounted初始化样式
@@ -90,15 +90,25 @@
       $("body").attr('class', 'login-layout blur-login'); //设置admin的body页面的的样式
 
       //页面初始化,回显记住的登陆用户信息
-      _this.user = LocalStorage.get(LOCAL_KEY_REMEMBER_USER) || {};
+      let rememberUser = LocalStorage.get(LOCAL_KEY_REMEMBER_USER);
+      if (rememberUser){
+        _this.user = rememberUser;
+      }
     },
     methods: {
       login() {
         let _this = this;
         // 将明文存储到缓存中
-        let InputPassword = _this.user.password;
-        //md5密码加密
-        _this.user.password = hex_md5(InputPassword + KEY);
+        // let InputPassword = _this.user.password;
+
+        // 先判断密码是否缓存带出来的| 是:不加密  否:加密
+        let md5_pwd = hex_md5(_this.user.password);
+        let rememberUser = LocalStorage.get(LOCAL_KEY_REMEMBER_USER) || {};
+        if (rememberUser.md5 !== md5_pwd){//缓存没有,说明没有被加密过
+          //md5密码加密
+          _this.user.password = hex_md5(_this.user.password + KEY);
+        }
+
         _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/user/login',
           _this.user
         ).then(function (response) {
@@ -109,10 +119,12 @@
             Tool.setLoginUser(loginUser)//保存用户登陆信息
             //判断"记住我"
             if (_this.remember){
+              let md5= hex_md5(_this.user.password);
               // 如果勾选记住我，则将用户名密码保存到本地缓存，这里需要保存密码明文，否则登录时又会再加一层密
               LocalStorage.set(LOCAL_KEY_REMEMBER_USER,{
                 loginName: loginUser.loginName,
-                password: InputPassword,
+                password: _this.user.password,
+                md5: md5,
               })
             }else{
               // 没有勾选“记住我”时，要把本地缓存清空，否则按照mounted的逻辑，下次打开时会自动显示用户名密码
