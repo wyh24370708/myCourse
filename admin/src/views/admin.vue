@@ -295,23 +295,23 @@
                 <li>
                   <a href="#">
                     <i class="ace-icon fa fa-cog"></i>
-                    Settings
+                    系统设置
                   </a>
                 </li>
 
                 <li>
                   <a href="profile.html">
                     <i class="ace-icon fa fa-user"></i>
-                    Profile
+                    个人信息
                   </a>
                 </li>
 
                 <li class="divider"></li>
 
                 <li>
-                  <a href="#">
+                  <a href="#" @click="logout()">
                     <i class="ace-icon fa fa-power-off"></i>
-                    Logout
+                    退出登陆
                   </a>
                 </li>
               </ul>
@@ -583,7 +583,25 @@
                     parentLi.siblings().find("li").removeClass("active");
                     parentLi.addClass("active open");
                 }
-            }
+            },
+
+          /**
+           * 退出登陆
+           */
+          logout(){
+            let _this = this;
+            _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/user/logout'
+            ).then((response)=>{
+              let resp = response.data;
+              if (resp.success){//true
+                console.log("退出登陆成功");
+                Tool.setLoginUser(null);//清除前端登陆用户的会话缓存
+                _this.$router.push("/login");//跳转到登陆页面
+              }else{
+                Toast.warning(resp.message);
+              }
+            })
+          }
         }
 
     }
