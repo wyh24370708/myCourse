@@ -26,7 +26,7 @@
       <thead>
       <!--表头-->
       <tr>
-                  <th>id</th>
+          <th>id</th>
           <th>登录名</th>
           <th>昵称</th>
           <th>密码</th>
@@ -42,12 +42,18 @@
           <td>{{user.password}}</td>
         <td>
           <div class="hidden-sm hidden-xs btn-group">
+            <!--重置密码 start-->
+            <button class="btn btn-xs btn-info" v-on:click="editPwd(user)">
+              <i class="ace-icon fa fa-key bigger-120"></i>
+            </button>
+            <!--重置密码 end-->
+            &nbsp;
             <!--修改按钮 start-->
             <button class="btn btn-xs btn-info" v-on:click="edit(user)">
               <i class="ace-icon fa fa-pencil bigger-120"></i>
             </button>
             <!--修改按钮 end-->
-
+            &nbsp;
             <!--删除按钮 start-->
             <button class="btn btn-xs btn-danger" v-on:click="del(user.id)">
               <i class="ace-icon fa fa-trash-o bigger-120"></i>
@@ -124,10 +130,10 @@
                              v-model="user.name" >
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group" v-show="!user.id"><!--新增,id没有值,显示出来-->
                     <label for="inputPassword" class="col-sm-2 control-label">密码</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputPassword"
+                      <input type="password" class="form-control" id="inputPassword"
                              v-model="user.password" >
                     </div>
                   </div>
@@ -145,6 +151,36 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <!--新增内容 end -->
+
+    <!--重置密码 start -->
+    <div id="password-form-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">密码重置</h4>
+          </div>
+          <div class="modal-body">
+            <!--模态框内容 Start -->
+            <form class="form-horizontal">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">新密码</label>
+                    <div class="col-sm-10">
+                      <input type="password" class="form-control" v-model="user.password">
+                    </div>
+                  </div>
+            </form>
+            <!--模态框内容 End -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary"
+                    v-on:click="savePwd()">保存</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!--重置密码 end -->
 
     <!--分页内容 start-->
     <!--v-bind:xxx是组件中props设置的属性 list表示函数 itemCount表示显示最多显示几个按钮-->
@@ -285,6 +321,40 @@
                     }
                 })
             })
+        },
+
+        /**
+         * 【重置密码与保存】
+         */
+        editPwd(user){
+          let _this = this;
+          //传参user复制一个到{}里面,不影响_this.user,即不会修改页面的user内容
+          _this.user = $.extend({},user);
+          _this.user.password = null;
+          $("#password-form-modal").modal("show");
+        },
+
+        savePwd(){
+          let _this = this;
+          if(1 != 1
+            || !Validator.require(_this.user.password, "新密码")
+            || !Validator.length(_this.user.password, "新密码", 1, 50)
+          ){
+            return;
+          }
+          _this.user.password = hex_md5(_this.user.password + KEY);
+          _this.$ajax.post(process.env.VUE_APP_SERVER + "/system/admin/user/savePwd",
+            _this.user
+          ).then((response)=>{
+            let resp = response.data;
+            if (resp.success){
+              $("#password-form-modal").modal("hide");
+              Toast.success("密码重置成功!");
+              _this.list(1);
+            }else{
+              Toast.warning(resp.message);
+            }
+          })
         }
       }
   }

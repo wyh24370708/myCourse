@@ -91,6 +91,18 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * 【密码重置保存】
+     */
+    @Override
+    public void savePwd(UserDto userDto) {
+        User user = new User();
+        user.setId(userDto.getId())
+            .setPassword(userDto.getPassword())
+            .setUpdatedAt(new Date());
+        userMapper.updateByPrimaryKeySelective(user);
+    }
+
     private void insert(User user) {
         Date date = new Date();
         user.setCreatedAt(date);
@@ -106,7 +118,8 @@ public class UserServiceImpl implements UserService {
     private void update(User user) {
         Date date = new Date();
         user.setUpdatedAt(date);
-        userMapper.updateByPrimaryKey(user);
+        user.setPassword(null);
+        userMapper.updateByPrimaryKeySelective(user);//对于空的字段值,更新不作处理,也可以查询出来重新赋同样的值
     }
     
 }    

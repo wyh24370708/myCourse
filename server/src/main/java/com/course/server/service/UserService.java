@@ -30,4 +30,8 @@ public interface UserService {
      */
     User selectByLoginName(User user);
 
+    /**
+     * 【密码重置保存】
+     */
+    void savePwd(UserDto userDto);
 }
