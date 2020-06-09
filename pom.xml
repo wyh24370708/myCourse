@@ -110,6 +110,12 @@
 				<artifactId>aliyun-sdk-oss</artifactId>
 				<version>3.8.0</version>
 			</dependency>
+			<!--图形验证码-->
+			<dependency>
+				<groupId>com.github.whvcse</groupId>
+				<artifactId>easy-captcha</artifactId>
+				<version>1.6.2</version>
+			</dependency>
 
 
 		</dependencies>
