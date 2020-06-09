@@ -1,5 +1,17 @@
 Tool = {
-    /**
+  /**
+   * 保存登陆用户
+   */
+  setLoginUser: function(loginUser){
+    SessionStorage.set(SESSION_KEY_LOGIN_USER,loginUser);
+  },
+  /**
+   * 获取的登陆用户
+   */
+  getLoginUser: function(){
+    return SessionStorage.get(SESSION_KEY_LOGIN_USER) || {};
+  },
+  /**
      * 空校验 null或者''后者undefined都返回true
      */
     isEmpty: function (obj) {
@@ -65,5 +77,5 @@ Tool = {
              arr.unshift(chars[mod]);
         } while (number);
         return arr.join('');
-    }
+    },
 }

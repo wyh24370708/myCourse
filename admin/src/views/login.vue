@@ -95,8 +95,10 @@
           _this.user
         ).then(function (response) {
           let resp = response.data;
-          console.log("保存的结果:{}",resp.content);
           if (resp.success){//true
+            let loginUser = resp.content;
+            console.log("登陆成功:{}",loginUser);
+            Tool.setLoginUser(loginUser)//保存用户登陆信息
             _this.$router.push("/welcome");
           }else{//校验字段, 字段有问题
             Toast.warning(resp.message);

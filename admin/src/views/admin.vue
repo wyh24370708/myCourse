@@ -285,8 +285,7 @@
               <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                 <img class="nav-user-photo" src="../../public/ace/assets/images/avatars/user.jpg" alt="Jason's Photo" />
                 <span class="user-info">
-									<small>Welcome,</small>
-									Jason
+									{{loginUser.name}}
 								</span>
 
                 <i class="ace-icon fa fa-caret-down"></i>
@@ -361,9 +360,9 @@
 
         <ul class="nav nav-list">
           <li class="" id="welcome-sidebar">
-            <router-link to="/admin/welcome">
+            <router-link to="/welcome">
               <i class="menu-icon fa fa-tachometer"></i>
-              <span class="menu-text"> 欢迎 </span>
+              <span class="menu-text"> 欢迎:  </span>
             </router-link>
 
             <b class="arrow"></b>
@@ -534,6 +533,11 @@
 <script>
     export default {
         name: 'admin',
+        data:function(){
+          return{
+            loginUser:{},
+          }
+        },
         mounted: function () {
             let _this = this;
             //组件每次加载,mounted都会被执行
@@ -542,6 +546,8 @@
             //激活样式方法二
             // _this.activeSidebar(_this.$route.name.replace('/','-') + "-sidebar");
             $.getScript('/ace/assets/js/ace.min.js');
+
+            _this.loginUser = Tool.getLoginUser();
         },
         watch: {
             //激活样式方法三
