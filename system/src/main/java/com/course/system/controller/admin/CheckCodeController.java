@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 public class CheckCodeController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+    public static final String BUSINESS_NAME = "图形验证码";
 
     @Autowired
     private HttpServletRequest request;

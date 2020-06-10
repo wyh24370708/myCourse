@@ -1,7 +1,9 @@
 package com.course.system.controller.admin;
 
+import com.alibaba.fastjson.JSON;
 import com.course.server.dto.*;
 import com.course.server.service.UserService;
+import com.course.server.util.UuidUtil;
 import com.course.server.util.ValidatorUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @GetMapping  get请求
@@ -25,7 +28,7 @@ import java.util.List;
 public class UserController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
-    public static final String BUSINESS_NAME = "";
+    public static final String BUSINESS_NAME = "用户";
 
     @Resource
     private UserService userService;
@@ -59,12 +62,17 @@ public class UserController {
             return responseDto;
         }else{
             //验证通过后，移除验证码
-            request.getSession().removeAttribute(userDto.getImageCodeToken());
+//            request.getSession().removeAttribute(userDto.getImageCodeToken());
+            //从redis中移除验证码
+            redisTemplate.delete(userDto.getImageCodeToken());
         }
         //登陆
         LoginUserDto loginUserDto = userService.login(userDto);
-        //后端保存用户登陆信息
-        request.getSession().setAttribute(Constans.LOGIN_USER,loginUserDto);
+        //后端保存用户登陆信息  存储位置session转为redis
+//        request.getSession().setAttribute(Constans.LOGIN_USER,loginUserDto);
+        String token = UuidUtil.getShortUuid();
+        loginUserDto.setToken(token);
+        redisTemplate.opsForValue().set(token, JSON.toJSONString(loginUserDto),300, TimeUnit.SECONDS);
         responseDto.setContent(loginUserDto);
         return responseDto;
     }
@@ -72,10 +80,14 @@ public class UserController {
     /**
      * 【退出登陆】
      */
-    @PostMapping("/logout")
-    public ResponseDto logout(HttpServletRequest request){
+    @PostMapping("/logout/{token}")
+    public ResponseDto logout(@PathVariable("token") String token){
         ResponseDto responseDto = new ResponseDto();
-        request.getSession().removeAttribute(Constans.LOGIN_USER);
+        //session中删除
+//        request.getSession().removeAttribute(Constans.LOGIN_USER);
+        //redis中删除
+        redisTemplate.delete(token);
+        LOG.info("退出登陆,redis中删除登陆信息:{}",token);
         return responseDto;
     }
 

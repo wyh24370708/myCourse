@@ -24,4 +24,10 @@ public class LoginUserDto {
      */
     private String name;
 
+    /**
+     * 登陆凭证
+     */
+    private String token;
+
+
 }

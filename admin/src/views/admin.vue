@@ -590,7 +590,7 @@
            */
           logout(){
             let _this = this;
-            _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/user/logout'
+            _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/user/logout/'+ _this.loginUser.token
             ).then((response)=>{
               let resp = response.data;
               if (resp.success){//true
