@@ -39,16 +39,18 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public LoginUserDto login(UserDto userDto) {
+        Boolean hasKey = redisTemplate.hasKey(userDto.getLoginName());
+        if (hasKey){
+            int count = (int) redisTemplate.opsForValue().get(userDto.getLoginName());
+            if (count==5){
+                throw new BusinessException(BusinessExceptionCode.LOGIN_USER_FREEZE.getDesc());
+            }
+        }
         User userDB = this.selectByLoginName(userDto.getLoginName());
         if(userDB!=null){
             if (userDto.getPassword().equals(userDB.getPassword())){
                 LOG.info("登陆成功");
-                Boolean hasKey = redisTemplate.hasKey(userDto.getLoginName());
                 if (hasKey){
-                    int count = (int) redisTemplate.opsForValue().get(userDto.getLoginName());
-                    if (count==5){
-                        throw new BusinessException(BusinessExceptionCode.LOGIN_USER_FREEZE.getDesc());
-                    }
                     redisTemplate.delete(userDto.getLoginName());
                 }
                 return CopyUtil.copy(userDB,LoginUserDto.class);

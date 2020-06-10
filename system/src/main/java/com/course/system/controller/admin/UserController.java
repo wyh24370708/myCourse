@@ -2,6 +2,7 @@ package com.course.system.controller.admin;
 
 import com.alibaba.fastjson.JSON;
 import com.course.server.dto.*;
+import com.course.server.exception.BusinessExceptionCode;
 import com.course.server.service.UserService;
 import com.course.server.util.UuidUtil;
 import com.course.server.util.ValidatorUtil;
@@ -52,12 +53,13 @@ public class UserController {
         // 判断验证码
         if (StringUtils.isEmpty(imageCodeCache)){
             responseDto.setSuccess(false);
-            responseDto.setMessage("验证码已过期");
+            responseDto.setMessage(BusinessExceptionCode.IMAGE_CODE_EXPIRE.getDesc());
             LOG.info("用户登录失败，验证码已过期");
+            return responseDto;
         }
         if (userDto.getImageCode()==null || !imageCodeCache.equals(userDto.getImageCode().trim().toLowerCase())) {
             responseDto.setSuccess(false);
-            responseDto.setMessage("验证码输入错误");
+            responseDto.setMessage(BusinessExceptionCode.IMAGE_CODE_ERROR.getDesc());
             LOG.info("用户登录失败，验证码输入错误");
             return responseDto;
         }else{
