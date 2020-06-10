@@ -6,6 +6,7 @@ import com.course.server.util.ValidatorUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,8 @@ public class UserController {
 
     @Resource
     private UserService userService;
-
+    @Resource
+    private RedisTemplate redisTemplate;
 
     /**
      * 【登录】
@@ -40,15 +42,17 @@ public class UserController {
         //登陆前,前判断验证码
         //      根据验证码token去获取缓存中的验证码，和用户输入的验证码是否一致
         //      前后端分离的项目中,每次的ajax请求,后端的sessionId是不一样的.main.js中存解决办法,前后端每次ajax是不同的sessionId
-        String sessionCode = (String) request.getSession().getAttribute(userDto.getImageCodeToken());
+//        String sessionCode = (String) request.getSession().getAttribute(userDto.getImageCodeToken());
+        //redis中获取imageCodeToken
+        String imageCodeCache = (String) redisTemplate.opsForValue().get(userDto.getImageCodeToken());
+        LOG.info("redis中获取到验证码:{}",imageCodeCache);
         // 判断验证码
-        if (StringUtils.isEmpty(sessionCode)){
+        if (StringUtils.isEmpty(imageCodeCache)){
             responseDto.setSuccess(false);
             responseDto.setMessage("验证码已过期");
             LOG.info("用户登录失败，验证码已过期");
-            return responseDto;
         }
-        if (userDto.getImageCode()==null || !sessionCode.equals(userDto.getImageCode().trim().toLowerCase())) {
+        if (userDto.getImageCode()==null || !imageCodeCache.equals(userDto.getImageCode().trim().toLowerCase())) {
             responseDto.setSuccess(false);
             responseDto.setMessage("验证码输入错误");
             LOG.info("用户登录失败，验证码输入错误");
