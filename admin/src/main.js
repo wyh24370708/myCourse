@@ -20,6 +20,21 @@ Object.keys(filter).forEach(key => {
   Vue.filter(key, filter[key])
 });
 
+//路由登陆拦截
+router.beforeEach((to,from,next) =>{
+  if (to.matched.some(function (item) {
+    return item.meta.loginRequire
+  })) {
+    let loginUser = Tool.getLoginUser();
+    if (Tool.isEmpty(loginUser)) {
+      next('/login');
+    } else {
+      next();
+    }
+  }else{
+    next();
+  }
+});
 
 //渲染id为app的样式
 new Vue({
