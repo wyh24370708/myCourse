@@ -15,6 +15,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -22,6 +23,7 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -29,6 +31,8 @@ public class UserServiceImpl implements UserService {
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private RedisTemplate redisTemplate;
 
     /**
      * 【登录】
@@ -39,15 +43,53 @@ public class UserServiceImpl implements UserService {
         if(userDB!=null){
             if (userDto.getPassword().equals(userDB.getPassword())){
                 LOG.info("登陆成功");
+                Boolean hasKey = redisTemplate.hasKey(userDto.getLoginName());
+                if (hasKey){
+                    int count = (int) redisTemplate.opsForValue().get(userDto.getLoginName());
+                    if (count==5){
+                        throw new BusinessException(BusinessExceptionCode.LOGIN_USER_FREEZE.getDesc());
+                    }
+                    redisTemplate.delete(userDto.getLoginName());
+                }
                 return CopyUtil.copy(userDB,LoginUserDto.class);
             }else{
                 LOG.info("密码错误=>输入密码:{},数据库密码:{}", userDto.getPassword(), userDB.getPassword());
-                throw new BusinessException(BusinessExceptionCode.LOGIN_ERROR.getDesc());
+                //密码输入错误五次后,冻结账户
+                freezeCheck(userDto);
+                return null;
             }
         }else{
             LOG.info("用户名不存在:{}",userDto.getLoginName());
             throw new BusinessException(BusinessExceptionCode.LOGIN_ERROR.getDesc());
         }
+    }
+
+    //密码次数校验
+    private void freezeCheck(UserDto userDto) {
+//        boolean flag = false;//账户冻结标志位
+        int count;
+        Boolean hasKey = redisTemplate.hasKey(userDto.getLoginName());
+        if (!hasKey){
+            count = 1;
+            redisTemplate.opsForValue().set(userDto.getLoginName(),count,300, TimeUnit.SECONDS);
+            throw new BusinessException(BusinessExceptionCode.LOGIN_ERROR.getDesc()+"_"+count);
+        }else{
+            count = (int) redisTemplate.opsForValue().get(userDto.getLoginName());
+        }
+        if (count>=5) {
+            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_FREEZE.getDesc());
+        }
+        if (count < 5){
+            count = count + 1;
+            redisTemplate.opsForValue().set(userDto.getLoginName(),count,300, TimeUnit.SECONDS);
+            if(count==5){
+                //账户冻结,设置冻结时间
+                redisTemplate.opsForValue().set(userDto.getLoginName(),count,300, TimeUnit.SECONDS);
+                throw new BusinessException(BusinessExceptionCode.LOGIN_USER_FREEZE.getDesc());
+            }
+            throw new BusinessException(BusinessExceptionCode.LOGIN_ERROR.getDesc()+"_"+count);
+        }
+
     }
 
     /**

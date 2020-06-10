@@ -86,6 +86,7 @@ public class UserController {
         //session中删除
 //        request.getSession().removeAttribute(Constans.LOGIN_USER);
         //redis中删除
+        LOG.info("redis中的登陆信息:{}",redisTemplate.opsForValue().get(token));
         redisTemplate.delete(token);
         LOG.info("退出登陆,redis中删除登陆信息:{}",token);
         return responseDto;
