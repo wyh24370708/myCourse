@@ -12,7 +12,7 @@ public interface ResourceService {
      * 查询所有
      * @return
      */
-    void findAll(PageDto<Resource> pageDto);
+    List<ResourceDto> findAll();
 
     /**
      * 新增
@@ -29,4 +29,5 @@ public interface ResourceService {
      * 保存资源json
      */
     void saveJson(String resource_json);
+
 }

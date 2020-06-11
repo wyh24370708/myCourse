@@ -33,16 +33,15 @@ public class ResourceController {
      * @param pageDto
      * @return
      */
-    @PostMapping("/list")
-    public ResponseDto findAll(@RequestBody PageDto pageDto) {
+    @PostMapping("/all")
+    public ResponseDto findAll() {
         //统一返回格式 start
-        ResponseDto<PageDto> responseDto = new ResponseDto<PageDto>();
-
+        ResponseDto responseDto = new ResponseDto();
         //传输数据,通过表单的形式和流的形式,vue是通过流的方式,需要以@requestBody来获取数据
-        resourceService.findAll(pageDto);
-        LOG.info("查询资源结果:{}",pageDto);
+        List<ResourceDto> resourceDtoList = resourceService.findAll();
+        LOG.info("查询资源结果:{}",resourceDtoList);
         //统一返回格式 end
-        responseDto.setContent(pageDto);
+        responseDto.setContent(resourceDtoList);
         return responseDto;
     }
 

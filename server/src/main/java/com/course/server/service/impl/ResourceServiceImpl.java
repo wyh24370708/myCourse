@@ -34,21 +34,14 @@ public class ResourceServiceImpl implements ResourceService {
      * @return
      */
     @Override
-    public void findAll(PageDto pageDto) {
-        //分页
-        PageHelper.startPage(pageDto.getPageNum(), pageDto.getPageSize());
+    public List<ResourceDto> findAll() {
         //查询数据库
-
-        //1. 倒叙排列
         ResourceExample resourceExample = new ResourceExample();
         //2. 设置total属性
         List<Resource> resourceListDB = resourceMapper.selectByExample(resourceExample);
-        PageInfo<Resource> pageInfo = new PageInfo<>(resourceListDB);
-        pageDto.setTotalNum(pageInfo.getTotal());
-        
         //工具类转换
         List<ResourceDto> resourceDtoList = CopyUtil.copyList(resourceListDB, ResourceDto.class);
-        pageDto.setList(resourceDtoList);
+        return resourceDtoList;
     }
 
     /**
