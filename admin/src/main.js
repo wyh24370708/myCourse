@@ -29,6 +29,10 @@ Axios.interceptors.request.use(function (config) {
 //response拦截
 Axios.interceptors.response.use(function (response) {
   console.log("返回结果:", response);
+  //未授权,跳转到登陆页面
+  if (response.data.status === 401) {
+    router.push("/login");
+  }
   return response;
 },error => {});
 
