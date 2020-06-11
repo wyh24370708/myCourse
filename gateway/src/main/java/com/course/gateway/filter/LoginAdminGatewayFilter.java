@@ -58,10 +58,14 @@ public class LoginAdminGatewayFilter implements GatewayFilter, Ordered {
             LOG.info("token无效,请求被拦截");
             //token过期,无法查询数据,不需要报错,应该跳转到login页面,
             HttpHeaders headers = exchange.getResponse().getHeaders();
-            headers.set("Access-Control-Allow-Origin", exchange.getRequest().getHeaders().getOrigin());
-            headers.set("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
-            headers.set("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-            headers.set("Access-Control-Allow-Credentials","true");
+//            Access-Control-Allow-Credentials: true
+//            Access-Control-Allow-Headers: Content-Type,Content-Length, Authorization, Accept,X-Requested-With
+//            Access-Control-Allow-Methods: PUT,POST,GET,DELETE,OPTIONS
+//            Access-Control-Allow-Origin: http://localhost:8080
+//            headers.set("Access-Control-Allow-Origin", exchange.getRequest().getHeaders().getOrigin());
+//            headers.set("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+//            headers.set("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+//            headers.set("Access-Control-Allow-Credentials","true");
             JSONObject message = new JSONObject();
             message.put("status",401);
             message.put("msg", "error");
