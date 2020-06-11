@@ -15,12 +15,29 @@ Vue.prototype.$ajax = Axios;
 // 解决每次ajax请求，对应的sessionId不一致的问题
 Axios.defaults.withCredentials = true;
 
+//Axios拦截器
+//request拦截
+Axios.interceptors.request.use(function (config) {
+  console.log("请求:", config);
+
+  return config;
+},error => {});
+//response拦截
+Axios.interceptors.response.use(function (response) {
+  console.log("返回结果:", response);
+  return response;
+},error => {});
+
+
+
+
 // 全局过滤器???
 Object.keys(filter).forEach(key => {
   Vue.filter(key, filter[key])
 });
 
 //路由登陆拦截
+//使用 router.beforeEach 注册一个全局前置守卫，判断用户是否登陆
 router.beforeEach((to,from,next) =>{
   if (to.matched.some(function (item) {
     return item.meta.loginRequire

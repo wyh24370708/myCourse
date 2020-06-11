@@ -16,13 +16,13 @@
     <div class="row">
       <div class="col-md-3">
         <!--上传文件按钮 start-->
-        <file
+        <bigFile
           :use="PROFILE_USE1.COURSE.key"
           :input-id="'content-file-upload'"
           :suffixs="['jpg', 'jpeg', 'png', 'mp4']"
           :text="'富文本上传文件'"
           :after-upload="afterUploadContentFile">
-        </file>
+        </bigFile>
         <!--上传文件按钮 end-->
       </div>
       <div class="col-md-9">
@@ -84,9 +84,10 @@
 </template>
 <script>
   import File from '../../components/file.vue'
+  import BigFile from '../../components/bigFile.vue'
   export default {
     name: "business-course_content",
-    components:{File},
+    components:{File,BigFile},
     /**
      * 【页面初始化】
      */

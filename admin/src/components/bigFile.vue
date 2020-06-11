@@ -156,7 +156,8 @@
             // console.log("base64:",base64);
             formParam.shard = base64;
 
-            _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/oss-append",
+            // _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/oss-append",
+            _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/uploadBigFile",
               formParam
             ).then((response) => {
               let resp = response.data;

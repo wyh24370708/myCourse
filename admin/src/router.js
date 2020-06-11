@@ -38,7 +38,7 @@ export default new Router({
         name: "admin",
         component: Admin,
         meta:{
-          loginRequire: true,
+          loginRequire: true,//使用 router.beforeEach 注册一个全局前置守卫，判断用户是否登陆
         },
         children: [{//子路由的路径不要加 /
             path: "welcome",
