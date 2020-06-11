@@ -3,7 +3,7 @@
     <!--按钮 Start-->
     <p>
       <button class="btn btn-white btn-default btn-round"
-              v-on:click="list(1)">
+              v-on:click="allResource()">
         <i class="ace-icon fa fa-refresh"></i>
         刷新
       </button>
@@ -121,14 +121,8 @@
                 //打印日志
                 console.log("保存资源的结果:{}",resp.content);
                 if (resp.success){//true
-                    //清楚模态框的内容-->更改到add()方法内部
-                    // _this.resource.courseId = "";
-                    // _this.resource.name = "";
-
-                    //关闭模态框
-                    $("#form-modal").modal("hide");
-                    //调用list方法
-                    _this.list(1);
+                    //加载资源树
+                    _this.allResource();
                     //保存成功的提示框
                     Toast.success("保存成功!");
                 }else{//校验字段, 字段有问题
