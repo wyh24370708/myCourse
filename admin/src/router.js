@@ -12,6 +12,7 @@ import Profile from "./views/admin/profile.vue"
 import Course_content from "./views/admin/course_content.vue"
 import User from "./views/admin/user.vue"
 import Resource from "./views/admin/resource.vue"
+import Role from "./views/admin/role.vue"
 
 /**
  * 1.router是VueRouter的一个对象，通过Vue.use(VueRouter)和VueRouter构造函数得到一个router的实例对象，
@@ -84,6 +85,10 @@ export default new Router({
           path: "system/resource",
           name: "system/resource",
           component: Resource
+        },{
+            path: "system/role",
+            name: "system/role",
+            component: Role
         }]
 
     }]
