@@ -74,7 +74,7 @@ public class UserController {
 //        request.getSession().setAttribute(Constans.LOGIN_USER,loginUserDto);
         String token = UuidUtil.getShortUuid();
         loginUserDto.setToken(token);
-        redisTemplate.opsForValue().set(token, JSON.toJSONString(loginUserDto),300, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(token, JSON.toJSONString(loginUserDto),3600, TimeUnit.SECONDS);
         responseDto.setContent(loginUserDto);
         return responseDto;
     }
