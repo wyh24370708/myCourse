@@ -1,5 +1,6 @@
 package com.course.server.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.course.server.domain.Resource;
 import com.course.server.domain.ResourceExample;
 import com.course.server.dto.ResourceDto;
@@ -10,14 +11,20 @@ import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ResourceServiceImpl implements ResourceService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ResourceServiceImpl.class);
 
     @javax.annotation.Resource
     private ResourceMapper resourceMapper;
@@ -63,6 +70,14 @@ public class ResourceServiceImpl implements ResourceService {
         }
     }
 
+    private void insert(Resource resource) {
+        resourceMapper.insert(resource);
+    }
+
+    private void update(Resource resource) {
+        resourceMapper.updateByPrimaryKey(resource);
+    }
+
     /**
      * 删除
      * @param id
@@ -72,14 +87,42 @@ public class ResourceServiceImpl implements ResourceService {
         resourceMapper.deleteByPrimaryKey(id);
     }
 
-    private void insert(Resource resource) {
-        //设定新增的id的uuid值
-        resource.setId(UuidUtil.getShortUuid());
-        resourceMapper.insert(resource);
+    /**
+     * 保存资源json树
+     */
+    @Override
+    public void saveJson(String resource_json) {
+        //解析接送数组为list
+        List<ResourceDto> jsonList = JSON.parseArray(resource_json, ResourceDto.class);
+        //创建一个新的list
+        List<ResourceDto> list = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(jsonList)){
+            for (ResourceDto dto : jsonList) {
+                dto.setParent("");
+                add(list,dto);
+            }
+        }
+        LOG.info("共{}条", list.size());
+        resourceMapper.deleteByExample(null);//全部删除
+        for (int i = 0, LEN = list.size(); i < LEN; i++){
+            Resource resource = CopyUtil.copy(list.get(i), Resource.class);
+            resourceMapper.insert(resource);
+        }
     }
 
-    private void update(Resource resource) {
-        resourceMapper.updateByPrimaryKey(resource);
+    /**
+     * 递归，将树型结构的节点全部取出来，放到list
+     * @param list
+     * @param dto
+     */
+    private void add(List<ResourceDto> list, ResourceDto dto) {
+        list.add(dto);
+        if(!CollectionUtils.isEmpty(dto.getChildren())){
+            for (ResourceDto childDto : dto.getChildren()) {
+                childDto.setParent(dto.getId());
+                add(list,childDto);
+            }
+        }
     }
-    
-}    
+
+}

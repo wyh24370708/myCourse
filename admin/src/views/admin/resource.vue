@@ -3,24 +3,23 @@
     <!--按钮 Start-->
     <p>
       <button class="btn btn-white btn-default btn-round"
-              v-on:click="add()">
-        <i class="ace-icon fa fa-edit"></i>
-        新增
-      </button>
-      &nbsp;
-      <!--刷新按钮
-      idea vue中的v-on爆红解决办法:
-        seettings – 》 Editor --》 Inspections 进到具体页面
-        XML -- Unbound XML namespace prefix
-      -->
-      <button class="btn btn-white btn-default btn-round"
               v-on:click="list(1)">
         <i class="ace-icon fa fa-refresh"></i>
         刷新
       </button>
+      &nbsp;
+      <button v-on:click="save()"  class="btn btn-default btn-success btn-round" >
+        <i class="ace-icon fa fa-floppy-o bigger-120"></i>
+        保存
+      </button>
     </p>
     <!--按钮 end -->
-
+    <div class="row">
+      <div class="col-md-6">
+        <textarea id="resource-textarea" class="form-control" v-model="resourceStr" name="resource" rows="15"></textarea>
+        <br>
+      </div>
+    </div>
     <!--表单内容 start-->
     <table id="simple-table" class="table  table-bordered table-hover">
       <thead>
@@ -31,7 +30,7 @@
           <th>页面</th>
           <th>请求</th>
           <th>父id</th>
-        <th>操作</th>
+          <th>操作</th>
       </tr>
       </thead>
 
@@ -44,18 +43,11 @@
           <td>{{resource.parent}}</td>
         <td>
           <div class="hidden-sm hidden-xs btn-group">
-            <!--修改按钮 start-->
-            <button class="btn btn-xs btn-info" v-on:click="edit(resource)">
-              <i class="ace-icon fa fa-pencil bigger-120"></i>
-            </button>
-            <!--修改按钮 end-->
-
             <!--删除按钮 start-->
             <button class="btn btn-xs btn-danger" v-on:click="del(resource.id)">
               <i class="ace-icon fa fa-trash-o bigger-120"></i>
             </button>
             <!--删除按钮 end-->
-
           </div>
 
           <div class="hidden-md hidden-lg">
@@ -98,62 +90,6 @@
     </table><!-- /.row -->
     <!--表单内容 end -->
 
-    <!--新增内容 start -->
-    <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">新增资源</h4>
-          </div>
-          <div class="modal-body">
-            <!--模态框内容 Start -->
-            <form class="form-horizontal">
-
-              <!-- freemaker生成 start -->
-                  <div class="form-group">
-                    <label for="inputName" class="col-sm-2 control-label">名称</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputName"
-                             v-model="resource.name" >
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputPage" class="col-sm-2 control-label">页面</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputPage"
-                             v-model="resource.page" >
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputRequest" class="col-sm-2 control-label">请求</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputRequest"
-                             v-model="resource.request" >
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputParent" class="col-sm-2 control-label">父id</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputParent"
-                             v-model="resource.parent" >
-                    </div>
-                  </div>
-              <!-- freemaker生成 end -->
-
-            </form>
-            <!--模态框内容 End -->
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-            <button type="button" class="btn btn-primary"
-                    v-on:click="save()">保存</button>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    <!--新增内容 end -->
-
     <!--分页内容 start-->
     <!--v-bind:xxx是组件中props设置的属性 list表示函数 itemCount表示显示最多显示几个按钮-->
     <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
@@ -181,13 +117,14 @@
           let _this = this;
           //_this.list();//没有使用分页组件
           //使用分页组件
-          _this.$refs.pagination.size = 5;//默认显示的条数
+          _this.$refs.pagination.size = 10;//默认显示的条数
           _this.list(1);//调用list的方法
       },
       data: function () {
         return {
             resource: {}, //前台传入的数据
-            resources: []//初始化为空数组, 后台查询到的数据
+            resources: [],//初始化为空数组, 后台查询到的数据
+            resourceStr: "",
         }
       },
       methods: {
@@ -214,35 +151,18 @@
             })
         },
 
-        //弹出新增的模态框
-        add() {
-            let _this = this;
-            _this.resource = {};//清除上次编辑的内容
-            $("#form-modal").modal({backdrop:'static'});//点击模态框以外的地方,模态框不关闭
-            $("#form-modal").modal("show");//显示模态框
-        },
-
         //新增资源
         save() {
             let _this = this;
-            /**
-             * 前后都要做作校验,如果使用postman直接访问后台接口,就会出现问题
-             */
-            //校验字段   //?c表示freemaker对字段进行了格式处理,转换成字符串,不然就会出现问题 (2,000 --> 2000)
-            if(1 != 1
-                    || !Validator.require(_this.resource.name, "名称")
-                    || !Validator.length(_this.resource.name, "名称", 1, 100)
-                    || !Validator.length(_this.resource.page, "页面", 1, 50)
-                    || !Validator.length(_this.resource.request, "请求", 1, 200)
-            ){
+            if(Tool.isEmpty(_this.resourceStr)){
+              Toast.warning("资源不能为空！");
               return;
             }
+            let resource_json = JSON.parse(_this.resourceStr);
 
-            Loading.show();
             _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/resource/save',
-              _this.resource
+              resource_json
             ).then(function (response) {
-                Loading.hide();
                 //返回的数据
                 let resp = response.data;
                 //打印日志
@@ -262,14 +182,6 @@
                     Toast.warning(resp.message);
                 }
             })
-        },
-
-        //修改
-        edit(resource) {
-            let _this = this;
-            //传参resource复制一个到{}里面,不影响_this.resource,即不会修改页面的resource内容
-            _this.resource = $.extend({},resource);
-            $("#form-modal").modal("show");
         },
 
         //删除

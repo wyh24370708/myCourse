@@ -24,5 +24,9 @@ public interface ResourceService {
      * @param id
      */
     void delete(String id);
-    
+
+    /**
+     * 保存资源json
+     */
+    void saveJson(String resource_json);
 }

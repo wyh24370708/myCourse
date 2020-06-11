@@ -47,26 +47,23 @@ public class ResourceController {
     }
 
     /**
-     * 新增
-     * @param resourceDto
+     * 保存资源json
+     * @param resource_json
      * @return
      */
     @PostMapping("/save")
-    public ResponseDto save(@RequestBody ResourceDto resourceDto) {
+    public ResponseDto save(@RequestBody String resource_json) {
         //统一返回格式 start
-        ResponseDto<ResourceDto> responseDto = new ResponseDto<ResourceDto>();
+        ResponseDto responseDto = new ResponseDto();
 
         //保存校验
-        ValidatorUtil.require(resourceDto.getName(), "名称");
-        ValidatorUtil.length(resourceDto.getName(), "名称", 1, 100);
-        ValidatorUtil.length(resourceDto.getPage(), "页面", 1, 50);
-        ValidatorUtil.length(resourceDto.getRequest(), "请求", 1, 200);
+        ValidatorUtil.require(resource_json,"资源");
 
-        resourceService.save(resourceDto);
-        LOG.info("保存资源结果:{}",resourceDto);
+        resourceService.saveJson(resource_json);
+        LOG.info("保存资源结果:{}",resource_json);
 
         //统一返回格式 end
-        responseDto.setContent(resourceDto);
+        responseDto.setContent(resource_json);
         return responseDto;
     }
 
