@@ -19,7 +19,11 @@ Axios.defaults.withCredentials = true;
 //request拦截
 Axios.interceptors.request.use(function (config) {
   console.log("请求:", config);
-
+  let token = Tool.getLoginUser().token;
+  if (Tool.isNotEmpty(token)){
+    config.headers.token = token;
+    console.log("请求headers增加token:", token);
+  }
   return config;
 },error => {});
 //response拦截
