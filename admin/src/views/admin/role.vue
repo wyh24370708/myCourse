@@ -26,9 +26,9 @@
       <thead>
       <!--表头-->
       <tr>
-                  <th>id</th>
-          <th>角色</th>
-          <th>描述</th>
+        <th>id</th>
+        <th>角色</th>
+        <th>描述</th>
         <th>操作</th>
       </tr>
       </thead>
@@ -40,12 +40,18 @@
           <td>{{role.desc}}</td>
         <td>
           <div class="hidden-sm hidden-xs btn-group">
+            <!--资源按钮 start-->
+            <button class="btn btn-xs btn-info" v-on:click="edit(role)">
+              <i class="ace-icon fa fa-list-ul bigger-120"></i>
+            </button>
+            <!--资源按钮 end-->
+            &nbsp;
             <!--修改按钮 start-->
             <button class="btn btn-xs btn-info" v-on:click="edit(role)">
               <i class="ace-icon fa fa-pencil bigger-120"></i>
             </button>
             <!--修改按钮 end-->
-
+            &nbsp;
             <!--删除按钮 start-->
             <button class="btn btn-xs btn-danger" v-on:click="del(role.id)">
               <i class="ace-icon fa fa-trash-o bigger-120"></i>
