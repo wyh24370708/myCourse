@@ -41,8 +41,8 @@
         <td>
           <div class="hidden-sm hidden-xs btn-group">
             <!--资源按钮 start-->
-            <button class="btn btn-xs btn-info" v-on:click="edit(role)">
-              <i class="ace-icon fa fa-list-ul bigger-120"></i>
+            <button class="btn btn-xs btn-info" v-on:click="editResource(role)">
+              <i class="ace-icon fa fa-list bigger-120"></i>
             </button>
             <!--资源按钮 end-->
             &nbsp;
@@ -142,6 +142,37 @@
     </div><!-- /.modal -->
     <!--新增内容 end -->
 
+    <!--角色关联资源 start -->
+    <div id="resource-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">角色资源关联</h4>
+          </div>
+          <div class="modal-body">
+            <!--模态框内容 Start -->
+            <form class="form-horizontal">
+              <!--zTree start -->
+              <div class="form-group">
+                <div class="col-md-10">
+                  <ul id="resourceTree" class="ztree"></ul>
+                </div>
+              </div>
+              <!--zTree end -->
+            </form>
+            <!--模态框内容 End -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary"
+                    v-on:click="save()">保存</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!--角色关联资源 end -->
+
     <!--分页内容 start-->
     <!--v-bind:xxx是组件中props设置的属性 list表示函数 itemCount表示显示最多显示几个按钮-->
     <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
@@ -171,14 +202,69 @@
           //使用分页组件
           _this.$refs.pagination.size = 5;//默认显示的条数
           _this.list(1);//调用list的方法
+          _this.allResource();//初始化加载资源树
       },
       data: function () {
         return {
             role: {}, //前台传入的数据
-            roles: []//初始化为空数组, 后台查询到的数据
+            roles: [],//初始化为空数组, 后台查询到的数据
+            resources: [],
+            tree: {},
         }
       },
       methods: {
+        /**
+         * 【编辑 角色资源】
+         */
+        editResource(role){
+          let _this = this;
+          _this.role = $.extend({},role);
+          _this.allResource();
+          $("#resource-modal").modal({backdrop: 'static'});//点击模态框以外的地方,模态框不关闭
+          $("#resource-modal").modal('show');
+        },
+        /**
+         * 【所有资源】
+         * @param page
+         */
+        allResource(){
+          let _this = this;
+          Loading.show();
+          _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/resource/all', {}
+          ).then(function (response) {
+            Loading.hide();
+            let resp = response.data;
+            //then异步执行,当.then()前的方法执行完后再执行then()内部的程序，这样就避免了，数据没获取到等的问题。
+            console.log("查询资源结果:", resp.content);
+            _this.resources = resp.content;//返回真实数据
+            _this.initResourceTree();//初始化树形结构
+          })
+        },
+
+        /**
+         * 【资源树】
+         */
+        initResourceTree(){
+          let _this = this;
+          let setting = {
+            check: {
+              enable: true
+            },
+            data: {
+              simpleData: {
+                //三行配置数据, 左侧key是固定格式, 具体看zTree API文档
+                idKey: "id",
+                pIdKey: "parent",
+                rootPId: "",
+                enable: true
+              }
+            }
+          };
+          let zNodes = _this.resources;//树形结构的数据
+          _this.tree = $.fn.zTree.init($("#resourceTree"), setting, zNodes);
+          _this.tree.expandAll(true);//默认展开
+        },
+
         list(page) {
             let _this = this;
             Loading.show();
