@@ -41,61 +41,32 @@
           <td>{{user.name}}</td>
           <td>{{user.password}}</td>
         <td>
-          <div class="hidden-sm hidden-xs btn-group">
+            <!--编辑角色 start-->
+            <button type="button" v-on:click="editRole(user)"
+                    class="btn btn-default btn-primary btn-round">
+              编辑角色
+            </button>&nbsp;
+            <!--编辑角色 end-->
             <!--重置密码 start-->
-            <button class="btn btn-xs btn-info" v-on:click="editPwd(user)">
-              <i class="ace-icon fa fa-key bigger-120"></i>
-            </button>
+            <button type="button" v-on:click="editPwd(user)"
+                  class="btn btn-default btn-primary btn-round">
+              重置密码
+            </button>&nbsp;
             <!--重置密码 end-->
             &nbsp;
             <!--修改按钮 start-->
-            <button class="btn btn-xs btn-info" v-on:click="edit(user)">
-              <i class="ace-icon fa fa-pencil bigger-120"></i>
-            </button>
+            <button type="button" v-on:click="edit(user)"
+                    class="btn btn-default btn-primary btn-round">
+              编辑用户
+            </button>&nbsp;
             <!--修改按钮 end-->
             &nbsp;
             <!--删除按钮 start-->
-            <button class="btn btn-xs btn-danger" v-on:click="del(user.id)">
-              <i class="ace-icon fa fa-trash-o bigger-120"></i>
-            </button>
+            <button type="button" v-on:click="del(user.id)"
+                    class="btn btn-default btn-danger btn-round">
+              删除
+            </button>&nbsp;
             <!--删除按钮 end-->
-
-          </div>
-
-          <div class="hidden-md hidden-lg">
-            <div class="inline pos-rel">
-              <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-              </button>
-
-              <ul
-                      class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                <li>
-                  <a href="#" class="tooltip-info" data-rel="tooltip" title="View">
-                                        <span class="blue">
-                                          <i class="ace-icon fa fa-search-plus bigger-120"></i>
-                                        </span>
-                  </a>
-                </li>
-
-                <li>
-                  <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
-                                        <span class="green">
-                                          <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-                                        </span>
-                  </a>
-                </li>
-
-                <li>
-                  <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
-                                        <span class="red">
-                                          <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                        </span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
         </td>
       </tr>
       </tbody>
@@ -151,6 +122,67 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <!--新增内容 end -->
+
+    <!--编辑角色 start -->
+    <div id="role-form-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">编辑角色</h4>
+          </div>
+          <div class="modal-body">
+            <!--模态框内容 Start -->
+            <form class="form-horizontal">
+              <div class="form-group">
+                <div class="row select">
+                  <!--未分配的角色 start-->
+                  <div class="col-md-5 select-item" style="height: 266px;" >
+                    <div>
+                      <h4>未分配角色</h4>
+                    </div>
+                    <select multiple="multiple" v-model="ungrantedSelected">
+                      <option v-for="role in ungrantedRoles"
+                              :key="role.id"
+                              :value="role">
+                        {{role.name}}
+                      </option>
+                    </select>
+                  </div>
+                  <!--未分配的角色 end-->
+
+                  <div class="col-md-2 btn-item">
+                    <p><span v-on:click="moveRight()">添加</span></p>
+                    <p><span v-on:click="moveLeft()">取消</span></p>
+                  </div>
+
+                  <!--已分配的角色 start-->
+                  <div class="col-md-5 select-item">
+                    <div>
+                      <h4>已分配角色</h4>
+                    </div>
+                    <select multiple="multiple" v-model="grantedSelected">
+                      <option v-for="role in grantedRoles" :key="role.id"
+                              :value="role">
+                        {{role.name}}
+                      </option>
+                    </select>
+                  </div>
+                  <!--已分配的角色 end-->
+                </div>
+              </div>
+            </form>
+            <!--模态框内容 End -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary"
+                    v-on:click="saveGrantedRole()">保存</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!--编辑角色 end -->
 
     <!--重置密码 start -->
     <div id="password-form-modal" class="modal fade" tabindex="-1" role="dialog">
@@ -211,11 +243,23 @@
           //使用分页组件
           _this.$refs.pagination.size = 5;//默认显示的条数
           _this.list(1);//调用list的方法
+
+          //移除数组中的一个元素
+          Array.prototype.remove = function(val) {
+            var index = this.indexOf(val);
+            if (index > -1) {
+              this.splice(index, 1);
+            }
+          };
       },
       data: function () {
         return {
             user: {}, //前台传入的数据
-            users: []//初始化为空数组, 后台查询到的数据
+            users: [],//初始化为空数组, 后台查询到的数据
+            grantedRoles: [],//已分配
+            ungrantedRoles: [],//未分配
+            grantedSelected: [],//选中
+            ungrantedSelected: [],//未选中
         }
       },
       methods: {
@@ -355,7 +399,122 @@
               Toast.warning(resp.message);
             }
           })
-        }
+        },
+
+        /**
+         * 编辑角色
+         */
+        editRole(user){
+          let _this = this;
+          _this.user = $.extend({},user);
+          _this.allRoles(user.id);//加载所有角色
+          $("#role-form-modal").modal({backdrop: 'static'});
+          $("#role-form-modal").modal("show");
+        },
+
+        /**
+         * 加载分配角色和未分配角色
+         */
+        allRoles(id){
+          let _this = this;
+          _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/admin/user/selectRole/'+id
+          ).then((response)=>{
+            let resp = response.data;
+            if (resp.success){
+              _this.grantedRoles = resp.content.grantedRoles;//已分配的角色
+              _this.ungrantedRoles = resp.content.ungrantedRoles;//未分配的角色
+            }else{
+              Toast.error(resp.message);
+            }
+          })
+        },
+
+        /**
+         * 分配角色
+         */
+        moveRight(){
+          let _this = this;
+          _this.ungrantedSelected.forEach(item => {
+            _this.grantedRoles.push(item);
+            _this.ungrantedRoles.remove(item)
+          });
+
+          _this.ungrantedSelected = [];
+        },
+        /**
+         * 取消角色
+         */
+        moveLeft(){
+          let _this = this;
+          _this.grantedSelected.forEach(item => {
+            _this.ungrantedRoles.push(item);
+            _this.grantedRoles.remove(item);
+          });
+
+          _this.grantedSelected = [];
+        },
+
+        /**
+         * 保存分配的角色
+         */
+        saveGrantedRole(){
+          let _this = this;
+          _this.user.grantedRoles = _this.grantedRoles;
+          _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/user/saveGrantedRole',
+             _this.user
+          ).then((response)=>{
+            let resp = response.data;
+            if (resp.success){
+              $("#role-form-modal").modal("hide");
+              Toast.success("用户角色保存成功");
+            }else{
+              Toast.error(resp.message);
+            }
+          })
+        },
+
       }
   }
 </script>
+
+<style>
+  .select {
+    width: 600px;
+    height: 340px;
+  }
+
+  .select div {
+    float: left;
+  }
+
+  .select .select-item {
+    padding: 5px 20px;
+  }
+
+  .select .select-item select {
+    width: 220px;
+    height: 300px;
+    border: 1px #bbb solid;
+    padding: 4px;
+    font-size: 14px;
+  }
+
+  .btn-item {
+    margin-top: 75px;
+  }
+
+  .btn-item p {
+    margin-top: 16px;
+  }
+
+  .btn-item p span {
+    display: block;
+    text-align: center;
+    width: 50px;
+    height: 30px;
+    cursor: pointer;
+    border: 1px solid #bbb;
+    line-height: 30px;
+    font-size: 20px;
+  }
+</style>

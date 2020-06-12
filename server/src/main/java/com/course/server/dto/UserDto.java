@@ -1,6 +1,8 @@
 package com.course.server.dto;
 
 import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -48,6 +50,18 @@ public class UserDto {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatedAt;
 
+    /**
+     * 已分配的角色集合
+     * @return
+     */
+    private List<RoleDto> grantedRoles;
+
+    /**
+     * 未分配的角色集合
+     * @return
+     */
+    private List<RoleDto> ungrantedRoles;
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("UserDto{");
@@ -59,6 +73,8 @@ public class UserDto {
         sb.append(", password='").append(password).append('\'');
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", grantedRoles=").append(grantedRoles);
+        sb.append(", ungrantedRoles=").append(ungrantedRoles);
         sb.append('}');
         return sb.toString();
     }

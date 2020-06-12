@@ -36,4 +36,13 @@ public interface UserService {
      */
     void savePwd(UserDto userDto);
 
+    /**
+     * 【基于用户查询角色(已分配和未分配)】
+     */
+    UserDto selectRole(String userId);
+
+    /**
+     * 【保存用户分配的角色】
+     */
+    void saveGrantedRole(UserDto userDto);
 }

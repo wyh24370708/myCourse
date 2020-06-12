@@ -1,13 +1,16 @@
 package com.course.server.service.impl;
 
-import com.course.server.domain.User;
-import com.course.server.domain.UserExample;
+import com.course.server.domain.*;
 import com.course.server.dto.LoginUserDto;
+import com.course.server.dto.RoleDto;
 import com.course.server.dto.UserDto;
 import com.course.server.dto.PageDto;
 import com.course.server.exception.BusinessException;
 import com.course.server.exception.BusinessExceptionCode;
+import com.course.server.mapper.RoleMapper;
+import com.course.server.mapper.Role_UserMapper;
 import com.course.server.mapper.UserMapper;
+import com.course.server.service.RoleService;
 import com.course.server.service.UserService;
 import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
@@ -21,6 +24,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -33,6 +37,10 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Resource
     private RedisTemplate redisTemplate;
+    @Resource
+    private Role_UserMapper role_userMapper;
+    @Resource
+    private RoleMapper roleMapper;
 
     /**
      * 【登录】
@@ -168,6 +176,65 @@ public class UserServiceImpl implements UserService {
             .setPassword(userDto.getPassword())
             .setUpdatedAt(new Date());
         userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    /**
+     * 【基于用户查询角色(已分配和未分配)】
+     */
+    @Override
+    public UserDto selectRole(String userId) {
+        // 查询所有角色
+        List<Role> roleList = roleMapper.selectByExample(null);
+        //查询用户已经分配的角色
+        Role_UserExample example = new Role_UserExample();
+        example.createCriteria().andUserIdEqualTo(userId);
+        List<Role_User> role_userList = role_userMapper.selectByExample(example);
+        //封装到userDto
+        UserDto userDto = new UserDto();
+        userDto.setId(userId);
+        List<RoleDto> grantedRoles = new ArrayList<>();//已分配
+        List<RoleDto> ungrantedRoles = new ArrayList<>();//未分配
+        //存入list
+        for (Role role : roleList) {
+            RoleDto roleDto = CopyUtil.copy(role, RoleDto.class);
+            boolean flag= false;
+            for (Role_User role_user : role_userList) {
+                if (role.getId().equals(role_user.getRoleId())) {//表示已分配
+                    grantedRoles.add(roleDto);
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag){
+                ungrantedRoles.add(roleDto);
+            }
+
+        }
+        userDto.setGrantedRoles(grantedRoles);
+        userDto.setUngrantedRoles(ungrantedRoles);
+        LOG.info("分配角色信息:{}",userDto);
+        return userDto;
+    }
+
+    /**
+     * 【保存用户分配的角色】
+     */
+    @Override
+    public void saveGrantedRole(UserDto userDto) {
+        String userId = userDto.getId();
+        //先清除
+        Role_UserExample example = new Role_UserExample();
+        example.createCriteria().andUserIdEqualTo(userId);
+        role_userMapper.deleteByExample(example);
+        //保存分配角色
+        Role_User role_user = new Role_User();
+        List<RoleDto> grantedRoles = userDto.getGrantedRoles();
+        for (RoleDto roleDto : grantedRoles) {
+            role_user.setId(UuidUtil.getShortUuid());
+            role_user.setRoleId(roleDto.getId());
+            role_user.setUserId(userId);
+            role_userMapper.insert(role_user);
+        }
     }
 
     private void insert(User user) {

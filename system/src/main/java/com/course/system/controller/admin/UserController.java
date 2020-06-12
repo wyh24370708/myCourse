@@ -10,13 +10,11 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -162,5 +160,28 @@ public class UserController {
         return responseDto;
     }
 
+    /**
+     * 【基于用户查询角色(已分配和未分配)】
+     */
+    @GetMapping("/selectRole/{id}")
+    public ResponseDto selectRole(@PathVariable("id") String userId){
+        LOG.info("查询分配角色开始:{}",userId);
+        ResponseDto responseDto = new ResponseDto();
+        UserDto userDto = userService.selectRole(userId);
+        responseDto.setContent(userDto);
+        return responseDto;
+    }
+
+    /**
+     * 【保存用户分配的角色】
+     */
+    @PostMapping("/saveGrantedRole")
+    public ResponseDto saveGrantedRole(@RequestBody UserDto userDto){
+        LOG.info("保存用户分配的角色开始:{}",userDto);
+        ResponseDto responseDto = new ResponseDto();
+        userService.saveGrantedRole(userDto);
+        responseDto.setContent(userDto);
+        return responseDto;
+    }
 
 }
