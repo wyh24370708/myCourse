@@ -166,7 +166,7 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             <button type="button" class="btn btn-primary"
-                    v-on:click="save()">保存</button>
+                    v-on:click="savResource()">保存</button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -223,16 +223,15 @@
           $("#resource-modal").modal({backdrop: 'static'});//点击模态框以外的地方,模态框不关闭
           $("#resource-modal").modal('show');
         },
+
         /**
          * 【所有资源】
          * @param page
          */
         allResource(){
           let _this = this;
-          Loading.show();
           _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/resource/all', {}
           ).then(function (response) {
-            Loading.hide();
             let resp = response.data;
             //then异步执行,当.then()前的方法执行完后再执行then()内部的程序，这样就避免了，数据没获取到等的问题。
             console.log("查询资源结果:", resp.content);
@@ -263,6 +262,42 @@
           let zNodes = _this.resources;//树形结构的数据
           _this.tree = $.fn.zTree.init($("#resourceTree"), setting, zNodes);
           _this.tree.expandAll(true);//默认展开
+        },
+
+        /**
+         * 保存角色资源
+         */
+        savResource(){
+          let _this = this;
+
+          //树形结构选中的数据
+          let resource_checked = _this.tree.getCheckedNodes(true);
+          if (Tool.isEmpty(resource_checked)) {
+            Toast.warning(" 请选择资源！");
+            return;
+          }
+          console.log("选中的资源数据:{}", resource_checked);
+          //保存角色资源.只需要resource_id ,当然我们也可以传递所有的节点的数据
+          _this.role.resourceIds = [];
+          for (let i = 0, LEN =resource_checked.length; i < LEN; i++){
+            _this.role.resourceIds.push(resource_checked[i].id);
+          }
+
+          _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/role/saveResource',
+            _this.role
+          ).then((response)=>{
+            //返回的数据
+            let resp = response.data;
+            //打印日志
+            console.log("保存角色资源的结果:{}", resp.content);
+            if (resp.success) {//true
+              $("#resource-modal").modal("hide");
+              //保存成功的提示框
+              Toast.success("保存成功!");
+            } else {//校验字段, 字段有问题
+              Toast.warning(resp.message);
+            }
+          })
         },
 
         list(page) {

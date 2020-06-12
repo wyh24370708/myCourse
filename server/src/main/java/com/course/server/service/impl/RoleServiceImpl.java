@@ -2,15 +2,21 @@ package com.course.server.service.impl;
 
 import com.course.server.domain.Role;
 import com.course.server.domain.RoleExample;
+import com.course.server.domain.Role_resource;
+import com.course.server.domain.Role_resourceExample;
 import com.course.server.dto.RoleDto;
 import com.course.server.dto.PageDto;
 import com.course.server.mapper.RoleMapper;
+import com.course.server.mapper.Role_resourceMapper;
 import com.course.server.service.RoleService;
 import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -19,8 +25,12 @@ import java.util.List;
 @Service
 public class RoleServiceImpl implements RoleService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(RoleServiceImpl.class);
+
     @Resource
     private RoleMapper roleMapper;
+    @Resource
+    private Role_resourceMapper role_resourceMapper;
 
     /**
      * 查询所有
@@ -61,6 +71,31 @@ public class RoleServiceImpl implements RoleService {
         }else{
             this.update(role);
         }
+    }
+
+    /**
+     * [批量]保存角色资源
+     * @param roleDto
+     */
+    @Override
+    @Transactional
+    public void saveResource(RoleDto roleDto) {
+        LOG.info("批量保存角色资源开始:{}",roleDto);
+        //先清空,在保存
+        String roleId = roleDto.getId();
+        Role_resourceExample example = new Role_resourceExample();
+        example.createCriteria().andRoleIdEqualTo(roleId);
+        role_resourceMapper.deleteByExample(example);
+        //保存角色资源
+        List<String> resourceIds = roleDto.getResourceIds();
+        for (String resourceId : resourceIds) {
+            Role_resource roleResource = new Role_resource();
+            roleResource.setId(UuidUtil.getShortUuid());
+            roleResource.setRoleId(roleId);
+            roleResource.setResourceId(resourceId);
+            role_resourceMapper.insert(roleResource);
+        }
+        LOG.info("批量保存角色资源结束");
     }
 
     /**

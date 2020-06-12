@@ -71,6 +71,19 @@ public class RoleController {
     }
 
     /**
+     * 保存角色资源
+     * @param roleDto
+     * @return
+     */
+    @PostMapping("/saveResource")
+    public ResponseDto saveResource(@RequestBody RoleDto roleDto){
+        ResponseDto responseDto = new ResponseDto();
+        roleService.saveResource(roleDto);
+        responseDto.setContent(roleDto);
+        return responseDto;
+    }
+
+    /**
      * 删除
      * @param id
      */

@@ -20,9 +20,15 @@ public interface RoleService {
     void save(RoleDto RoleDto);
 
     /**
+     * 保存角色资源
+     * @param roleDto
+     */
+    void saveResource(RoleDto roleDto);
+    /**
      * 删除
      * @param id
      */
     void delete(String id);
-    
+
+
 }
