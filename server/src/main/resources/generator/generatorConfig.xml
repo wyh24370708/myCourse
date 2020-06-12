@@ -55,7 +55,8 @@
 <!--        <table tableName="user" domainObjectName="User"/>-->
 <!--        <table tableName="resource" domainObjectName="Resource"/>-->
 <!--        <table tableName="role" domainObjectName="Role"/>-->
-        <table tableName="role_resource" domainObjectName="Role_resource"/>
+<!--        <table tableName="role_resource" domainObjectName="Role_resource"/>-->
+        <table tableName="role_user" domainObjectName="Role_User"/>
 
     </context>
 </generatorConfiguration>
