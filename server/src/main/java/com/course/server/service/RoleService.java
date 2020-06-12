@@ -24,6 +24,14 @@ public interface RoleService {
      * @param roleDto
      */
     void saveResource(RoleDto roleDto);
+
+    /**
+     * 查询已勾选的角色资源
+     * @param roleId
+     * @return
+     */
+    List<String> findCheckResource(String roleId);
+
     /**
      * 删除
      * @param id

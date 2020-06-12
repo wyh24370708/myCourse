@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -96,6 +97,23 @@ public class RoleServiceImpl implements RoleService {
             role_resourceMapper.insert(roleResource);
         }
         LOG.info("批量保存角色资源结束");
+    }
+
+    /**
+     * 查询已勾选的角色资源
+     * @param roleId
+     * @return
+     */
+    @Override
+    public List<String> findCheckResource(String roleId) {
+        Role_resourceExample example = new Role_resourceExample();
+        example.createCriteria().andRoleIdEqualTo(roleId);
+        List<Role_resource> role_resourceList = role_resourceMapper.selectByExample(example);
+        List<String> resourceIds = new ArrayList<>();
+        for (Role_resource role_resource : role_resourceList) {
+            resourceIds.add(role_resource.getResourceId());
+        }
+        return resourceIds;
     }
 
     /**

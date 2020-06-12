@@ -219,7 +219,8 @@
         editResource(role){
           let _this = this;
           _this.role = $.extend({},role);
-          _this.allResource();
+          _this.allResource();//加载所有资源
+          _this.checkResource(role.id);//加载已经勾选过的资源
           $("#resource-modal").modal({backdrop: 'static'});//点击模态框以外的地方,模态框不关闭
           $("#resource-modal").modal('show');
         },
@@ -296,6 +297,24 @@
               Toast.success("保存成功!");
             } else {//校验字段, 字段有问题
               Toast.warning(resp.message);
+            }
+          })
+        },
+
+        /**
+         * 加载已勾选的角色资源
+         * 批量操作,先清除所有,在加载
+         */
+        checkResource(id){
+          let _this = this;
+          _this.$ajax.post(process.env.VUE_APP_SERVER + "/system/admin/role/checkResourceList/" + id
+          ).then(function (response) {
+            let resourceIds = response.data.content;
+            //查询已勾选,显示出来
+            _this.tree.checkAllNodes(false);
+            for (let i = 0, LEN = resourceIds.length; i < LEN; i++) {
+              let node = _this.tree.getNodeByParam("id", resourceIds[i]);
+              _this.tree.checkNode(node, true);
             }
           })
         },

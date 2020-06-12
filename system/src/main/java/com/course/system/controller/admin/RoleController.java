@@ -84,6 +84,22 @@ public class RoleController {
     }
 
     /**
+     * 查询已勾选的角色资源
+     * @param roleId
+     * @return
+     */
+    @PostMapping("/checkResourceList/{id}")
+    public ResponseDto findCheckResource(@PathVariable("id") String roleId){
+        LOG.info("查询已勾选的资源开始:{}",roleId);
+        ResponseDto responseDto = new ResponseDto();
+        List<String> resourceIds  = roleService.findCheckResource(roleId);
+        responseDto.setContent(resourceIds);
+        return responseDto;
+    }
+
+
+
+    /**
      * 删除
      * @param id
      */
