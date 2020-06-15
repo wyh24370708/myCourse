@@ -407,7 +407,7 @@
             </ul>
           </li>
           <!--business-->
-          <li class="">
+          <li class="" v-show="hasResource('02')">
             <a href="#" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
               <span class="menu-text"> 业务管理 </span>
@@ -419,7 +419,7 @@
 
             <ul class="submenu">
               <!--分类管理 start-->
-              <li class="" id="business-category-sidebar">
+              <li class="" id="business-category-sidebar" v-show="hasResource('0201')">
                 <router-link to="/business/category">
                   <i class="menu-icon fa fa-caret-right"></i>
                   分类管理
@@ -430,7 +430,7 @@
               <!--分类管理 end-->
 
               <!--课程管理 start-->
-              <li class="" id="business-course-sidebar">
+              <li class="" id="business-course-sidebar" v-show="hasResource('0202')">
                 <router-link to="/business/course">
                   <i class="menu-icon fa fa-caret-right"></i>
                   课程管理
@@ -441,7 +441,7 @@
               <!--课程管理 end-->
 
               <!--讲师管理 start-->
-              <li class="" id="business-teacher-sidebar">
+              <li class="" id="business-teacher-sidebar" v-show="hasResource('0203')">
                 <router-link to="/business/teacher">
                   <i class="menu-icon fa fa-caret-right"></i>
                   讲师管理
@@ -453,7 +453,7 @@
             </ul>
           </li>
           <!--file-->
-          <li class="">
+          <li class=""  v-show="hasResource('03')">
             <a href="#" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
               <span class="menu-text"> 文件管理 </span>
@@ -465,7 +465,7 @@
 
             <ul class="submenu">
               <!--文件管理 start-->
-              <li class="active" id="file-profile-sidebar">
+              <li class="active" id="file-profile-sidebar" v-show="hasResource('0301')">
                 <router-link to="/file/profile">
                   <i class="menu-icon fa fa-caret-right"></i>
                   文件管理
