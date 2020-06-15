@@ -3,7 +3,7 @@
     <!--按钮 Start-->
     <p>
       <button class="btn btn-white btn-default btn-round"
-              v-on:click="add()">
+              v-on:click="add()" v-show="hasResource('010101')">
         <i class="ace-icon fa fa-edit"></i>
         新增
       </button>
@@ -49,21 +49,24 @@
             <!--编辑角色 end-->
             <!--重置密码 start-->
             <button type="button" v-on:click="editPwd(user)"
-                  class="btn btn-default btn-primary btn-round">
+                  class="btn btn-default btn-primary btn-round"
+                    v-show="hasResource('010103')">
               重置密码
             </button>&nbsp;
             <!--重置密码 end-->
             &nbsp;
             <!--修改按钮 start-->
             <button type="button" v-on:click="edit(user)"
-                    class="btn btn-default btn-primary btn-round">
+                    class="btn btn-default btn-primary btn-round"
+                    v-show="hasResource('010101')">
               编辑用户
             </button>&nbsp;
             <!--修改按钮 end-->
             &nbsp;
             <!--删除按钮 start-->
             <button type="button" v-on:click="del(user.id)"
-                    class="btn btn-default btn-danger btn-round">
+                    class="btn btn-default btn-danger btn-round"
+                    v-show="hasResource('010102')">
               删除
             </button>&nbsp;
             <!--删除按钮 end-->
@@ -263,6 +266,15 @@
         }
       },
       methods: {
+
+        /**
+         * 权限判断
+         */
+        hasResource(id){
+          return Tool.hasResource(id);
+        },
+
+
         list(page) {
             let _this = this;
             Loading.show();

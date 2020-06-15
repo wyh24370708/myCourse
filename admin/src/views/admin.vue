@@ -368,7 +368,7 @@
             <b class="arrow"></b>
           </li>
           <!--system-->
-          <li class="">
+          <li class="" v-show="hasResource('01')">
             <a href="#" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
               <span class="menu-text"> 系统管理 </span>
@@ -379,7 +379,7 @@
             <b class="arrow"></b>
 
             <ul class="submenu">
-              <li class="" id="system-user-sidebar">
+              <li class="" id="system-user-sidebar" v-show="hasResource('0101')">
                 <router-link to="/system/user">
                   <i class="menu-icon fa fa-caret-right"></i>
                   用户管理
@@ -388,7 +388,7 @@
                 <b class="arrow"></b>
               </li>
 
-              <li class="" id="system-resource-sidebar">
+              <li class="" id="system-resource-sidebar" v-show="hasResource('0102')">
                 <router-link to="/system/resource">
                   <i class="menu-icon fa fa-caret-right"></i>
                   资源管理
@@ -396,7 +396,7 @@
                 <b class="arrow"></b>
               </li>
 
-              <li class="" id="system-role-sidebar">
+              <li class="" id="system-role-sidebar" v-show="hasResource('0103')">
                 <router-link to="/system/role">
                   <i class="menu-icon fa fa-caret-right"></i>
                   角色管理
@@ -573,25 +573,33 @@
             }
         },
         methods: {
-            /**
-             * 菜单激活样式.id是当前点击菜单的id
-             */
-            activeSidebar: function (id) {
-                //二级菜单
-                //兄弟菜单去掉active样式,自身增加active样式
-                $("#" + id).siblings().removeClass("active");
-                $("#" + id).siblings().find("li").removeClass("active");
-                $("#" + id).addClass("active");
 
-                //一级菜单
-                //如果有父菜单, 父菜单的兄弟菜单去掉active open, 父菜单增加active open
-                var parentLi = $("#" + id).parents("li");
-                if (parentLi){
-                    parentLi.siblings().removeClass("active open");
-                    parentLi.siblings().find("li").removeClass("active");
-                    parentLi.addClass("active open");
-                }
-            },
+          /**
+           * 权限判断
+           */
+          hasResource(id){
+            return Tool.hasResource(id);
+          },
+
+          /**
+           * 菜单激活样式.id是当前点击菜单的id
+           */
+          activeSidebar: function (id) {
+              //二级菜单
+              //兄弟菜单去掉active样式,自身增加active样式
+              $("#" + id).siblings().removeClass("active");
+              $("#" + id).siblings().find("li").removeClass("active");
+              $("#" + id).addClass("active");
+
+              //一级菜单
+              //如果有父菜单, 父菜单的兄弟菜单去掉active open, 父菜单增加active open
+              var parentLi = $("#" + id).parents("li");
+              if (parentLi){
+                  parentLi.siblings().removeClass("active open");
+                  parentLi.siblings().find("li").removeClass("active");
+                  parentLi.addClass("active open");
+              }
+          },
 
           /**
            * 退出登陆
@@ -609,7 +617,8 @@
                 Toast.warning(resp.message);
               }
             })
-          }
+          },
+
         }
 
     }
