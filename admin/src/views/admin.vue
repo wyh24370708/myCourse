@@ -539,6 +539,8 @@
 </template>
 
 <script>
+    import resource from "./admin/resource";
+
     export default {
         name: 'admin',
         data:function(){
@@ -548,6 +550,7 @@
         },
         mounted: function () {
             let _this = this;
+
             //组件每次加载,mounted都会被执行
             $("body").removeClass('login-layout blur-login');//删除登陆页面的body样式
             $("body").attr('class','no-skin'); //设置admin的body页面的的样式
@@ -556,6 +559,10 @@
             $.getScript('/ace/assets/js/ace.min.js');
 
             _this.loginUser = Tool.getLoginUser();
+            //判断路由
+            if (!_this.hasResourceRouter(_this.$route.name)){
+              _this.$router.push("/login");
+            }
         },
         watch: {
             //激活样式方法三
@@ -563,6 +570,11 @@
                 handler: function (val, oldVal) {
                     console.log("---->页面跳转:", val,oldVal);
                     let _this = this;
+                    //判断路由
+                    if (!_this.hasResourceRouter(val.name)){
+                      _this.$router.push("/login");
+                      return;
+                    }
                     _this.$nextTick(function () {//页面加载完成后执行
                         console.log("==>"+_this.$route.name);
                         _this.activeSidebar(_this.$route.name.replace('/','-') + "-sidebar");
@@ -573,6 +585,23 @@
             }
         },
         methods: {
+
+          /**
+           * 路由判断
+           */
+          hasResourceRouter(routerName){
+            let _this = this;
+            let resources = Tool.getLoginUser().resources;
+            if (Tool.isEmpty(resources)){
+              return false;
+            }
+            for (let i = 0, LEN =resources.length; i < LEN; i++){
+              if (resources[i].page === routerName){
+                return true;
+              }
+            }
+            return false;
+          },
 
           /**
            * 权限判断
