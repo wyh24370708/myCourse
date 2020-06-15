@@ -4,6 +4,9 @@ import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.HashSet;
+import java.util.List;
+
 @Data
 @Accessors(chain = true)
 @ToString
@@ -28,6 +31,15 @@ public class LoginUserDto {
      * 登陆凭证
      */
     private String token;
+
+    /**
+     * 所有资源 用于前端界面控制
+     */
+    private List<ResourceDto> resources;
+    /**
+     * 所有资源的请求, 用于后端接口的拦截
+     */
+    private HashSet<String> requests;
 
 
 }

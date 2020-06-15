@@ -1,21 +1,22 @@
 package com.course.server.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.course.server.domain.*;
-import com.course.server.dto.LoginUserDto;
-import com.course.server.dto.RoleDto;
-import com.course.server.dto.UserDto;
-import com.course.server.dto.PageDto;
+import com.course.server.dto.*;
 import com.course.server.exception.BusinessException;
 import com.course.server.exception.BusinessExceptionCode;
 import com.course.server.mapper.RoleMapper;
 import com.course.server.mapper.Role_UserMapper;
 import com.course.server.mapper.UserMapper;
+import com.course.server.mapper.my.MyUserMapper;
 import com.course.server.service.RoleService;
 import com.course.server.service.UserService;
 import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.zaxxer.hikari.util.ClockSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,6 +26,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -41,6 +43,8 @@ public class UserServiceImpl implements UserService {
     private Role_UserMapper role_userMapper;
     @Resource
     private RoleMapper roleMapper;
+    @Resource
+    private MyUserMapper myUserMapper;
 
     /**
      * 【登录】
@@ -61,7 +65,9 @@ public class UserServiceImpl implements UserService {
                 if (hasKey){
                     redisTemplate.delete(userDto.getLoginName());
                 }
-                return CopyUtil.copy(userDB,LoginUserDto.class);
+                LoginUserDto loginUserDto = CopyUtil.copy(userDB, LoginUserDto.class);
+                setAuth(loginUserDto);
+                return loginUserDto;
             }else{
                 LOG.info("密码错误=>输入密码:{},数据库密码:{}", userDto.getPassword(), userDB.getPassword());
                 //密码输入错误五次后,冻结账户
@@ -73,6 +79,7 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(BusinessExceptionCode.LOGIN_ERROR.getDesc());
         }
     }
+
 
     //密码次数校验
     private void freezeCheck(UserDto userDto) {
@@ -100,6 +107,26 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(BusinessExceptionCode.LOGIN_ERROR.getDesc()+"_"+count);
         }
 
+    }
+
+    //为登录用户读取权限
+    private void setAuth(LoginUserDto loginUserDto) {
+        List<ResourceDto> resourceList = myUserMapper.findResources(loginUserDto.getId());
+        loginUserDto.setResources(resourceList);
+
+        // 整理所有有权限的请求，用于接口拦截
+        HashSet<String> requestSet = new HashSet<>();
+        if (!CollectionUtils.isEmpty(resourceList)){
+            for (ResourceDto resourceDto : resourceList) {
+                String requestArray = resourceDto.getRequest();
+                List<String> requestList = JSON.parseArray(requestArray, String.class);
+                if (!CollectionUtils.isEmpty(requestList)){
+                    requestSet.addAll(requestList);
+                }
+            }
+        }
+        LOG.info("有权限的请求：{}", requestSet);
+        loginUserDto.setRequests(requestSet);
     }
 
     /**
