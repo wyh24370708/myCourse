@@ -13,7 +13,8 @@ import java.util.regex.Pattern;
 
 public class EnumGenerator {
     //文件生成的地址
-    static String toEnumsPath = "admin\\public\\static\\js\\enums.js";
+//    static String toEnumsPath = "admin\\public\\static\\js\\enums.js";
+    static String toEnumsPath = "web\\public\\static\\js\\enums.js";
 
     public static void main(String[] args) throws Exception {
         StringBuffer bufferObject = new StringBuffer();
