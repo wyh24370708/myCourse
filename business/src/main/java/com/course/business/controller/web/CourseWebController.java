@@ -6,9 +6,7 @@ import com.course.server.dto.ResponseDto;
 import com.course.server.service.CourseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -35,6 +33,18 @@ public class CourseWebController {
         pageDto.setPageSize(3);
         List<CourseDto> courseDtoList = courseService.listNew(pageDto);
         responseDto.setContent(courseDtoList);
+        return responseDto;
+    }
+
+    /**
+     * 全部课程
+     * @return
+     */
+    @PostMapping("/list")
+    public ResponseDto listCourse(@RequestBody PageDto pageDto){
+        ResponseDto responseDto = new ResponseDto();
+        courseService.findAll(pageDto);
+        responseDto.setContent(pageDto);
         return responseDto;
     }
 

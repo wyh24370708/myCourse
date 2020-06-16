@@ -26,25 +26,29 @@
     },
     mounted() {
       let _this = this;
-      _this.listCourse();
+      _this.listCourse(1);
     },
     methods:{
       /**
-       * 获取新上好课,最近的三门
+       * 全部课程
        */
-      listCourse(){
+      listCourse(page){
         let _this = this;
-        // _this.$ajax.get(process.env.VUE_APP_SERVER + "/business/web/course/list-new").then((response)=>{
-        //   let resp = response.data;
-        //   console.log("查询新上好课的结果:{}",resp.content);
-        //   if (resp.success) {
-        //     _this.listNew = resp.content;
-        //   }
-        // }).catch((response)=>{
-        //   console.log("error:{}",response);
-        // })
+        _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/web/course/list", {
+            pageNum: page,
+            pageSize: 3
+        }).then((response)=>{
+          let resp = response.data;
+          console.log("web查询所有课程的结果:{}",resp.content);
+          if (resp.success) {
+            _this.courses = resp.content.list;
+          }else{
+            Toast.warning(resp.message);
+          }
+        }).catch((response)=>{
+          console.log("error:{}",response);
+        })
       }
-
     }
   }
 </script>
