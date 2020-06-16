@@ -36,7 +36,7 @@ public class CourseController {
      * @return
      */
     @PostMapping("/list")
-    public ResponseDto findAll(@RequestBody PageDto pageDto) {
+    public ResponseDto findAll(@RequestBody CoursePageDto pageDto) {
         //统一返回格式 start
         ResponseDto<PageDto> responseDto = new ResponseDto<PageDto>();
 

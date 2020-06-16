@@ -1,10 +1,7 @@
 package com.course.server.service;
 
 import com.course.server.domain.Course;
-import com.course.server.dto.CourseDto;
-import com.course.server.dto.Course_contentDto;
-import com.course.server.dto.PageDto;
-import com.course.server.dto.SortDto;
+import com.course.server.dto.*;
 
 import java.util.List;
 
@@ -14,7 +11,7 @@ public interface CourseService {
      * 查询所有
      * @return
      */
-    void findAll(PageDto<Course> pageDto);
+    void findAll(CoursePageDto pageDto);
 
     /**
      * 新增

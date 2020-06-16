@@ -3,10 +3,7 @@ package com.course.server.service.impl;
 import com.course.server.domain.Course;
 import com.course.server.domain.CourseExample;
 import com.course.server.domain.Course_content;
-import com.course.server.dto.CourseDto;
-import com.course.server.dto.Course_contentDto;
-import com.course.server.dto.PageDto;
-import com.course.server.dto.SortDto;
+import com.course.server.dto.*;
 import com.course.server.enums.CourseStatusEnum;
 import com.course.server.mapper.CourseMapper;
 import com.course.server.mapper.Course_contentMapper;
@@ -45,14 +42,19 @@ public class CourseServiceImpl implements CourseService {
      * @return
      */
     @Override
-    public void findAll(PageDto pageDto) {
+    public void findAll(CoursePageDto pageDto) {
         //分页
         PageHelper.startPage(pageDto.getPageNum(), pageDto.getPageSize());
         //查询数据库
 
         //1. 倒叙排列
         CourseExample courseExample = new CourseExample();
+        CourseExample.Criteria criteria = courseExample.createCriteria();
         courseExample.setOrderByClause("sort asc");
+        //判断发布状态
+        if (!StringUtils.isEmpty(pageDto.getStatus())){
+            criteria.andStatusEqualTo(pageDto.getStatus());
+        }
         //2. 设置total属性
         List<Course> courseListDB = courseMapper.selectByExample(courseExample);
         PageInfo<Course> pageInfo = new PageInfo<>(courseListDB);
@@ -161,7 +163,7 @@ public class CourseServiceImpl implements CourseService {
     public List<CourseDto> listNew(PageDto pageDto) {
         PageHelper.startPage(pageDto.getPageNum(),pageDto.getPageSize());
         CourseExample example = new CourseExample();
-        example.createCriteria().andStatusEqualTo(CourseStatusEnum.PUBLISH.getCode());
+        example.createCriteria().andStatusEqualTo(CourseStatusEnum.PUBLISH.getCode());//已发布的课程
         example.setOrderByClause("created_at desc");
         List<Course> courseList = courseMapper.selectByExample(example);
         List<CourseDto> courseDtoList = CopyUtil.copyList(courseList, CourseDto.class);
