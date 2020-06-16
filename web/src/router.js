@@ -1,6 +1,7 @@
 import Vue from "vue"
 import Router from "vue-router"
 import Index from "./views/index.vue"
+import List from "./views/list.vue"
 
 /**
  * 1.router是VueRouter的一个对象，通过Vue.use(VueRouter)和VueRouter构造函数得到一个router的实例对象，
@@ -20,6 +21,9 @@ export default new Router({
     },{
         path: "/index",
         component: Index
+    },{
+        path: "/list",
+        component: List
     }]
 
 })

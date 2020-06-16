@@ -13,10 +13,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">主页 <span class="sr-only">(current)</span></a>
+              <router-link to="/" class="nav-link">主页</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">全部课程</a>
+              <router-link to="/list" class="nav-link">全部课程</router-link>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
