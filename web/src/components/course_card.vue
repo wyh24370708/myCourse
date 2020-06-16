@@ -41,7 +41,7 @@
   }
   /*文字描述高度相同*/
   .course p{
-    height: 100px;
+    height: 110px;
   }
 
   .course h4 {
