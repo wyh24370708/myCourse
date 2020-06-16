@@ -46,4 +46,12 @@ public interface CourseService {
      * 【更新排序】
      */
     void uodateSort(SortDto sortDto);
+
+    /**
+     * web
+     * 列表查询，查询最新的3门已发布的课程
+     * @param pageDto
+     * @return
+     */
+    List<CourseDto> listNew(PageDto pageDto);
 }

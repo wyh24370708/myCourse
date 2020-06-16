@@ -9,7 +9,7 @@
           一步一步搭建一个完整的企业级开发架构。不讲废话，只讲干货.
         </p>
         <p>
-          <a href="#" class="btn btn-success my-auto">进入所有课程</a>
+          <button type="button" class="btn btn-success btn-lg my-auto ">进入所有课程</button>
         </p>
       </div>
     </section>

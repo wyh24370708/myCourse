@@ -7,6 +7,7 @@ import com.course.server.dto.CourseDto;
 import com.course.server.dto.Course_contentDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.SortDto;
+import com.course.server.enums.CourseStatusEnum;
 import com.course.server.mapper.CourseMapper;
 import com.course.server.mapper.Course_contentMapper;
 import com.course.server.mapper.my.MyCourseMapper;
@@ -148,6 +149,23 @@ public class CourseServiceImpl implements CourseService {
                myCourseMapper.moveSortBackward(sortDto);//顺序组后移
                break;
        }
+    }
+
+    /**
+     * web
+     * 列表查询，查询最新的3门已发布的课程
+     * @param pageDto
+     * @return
+     */
+    @Override
+    public List<CourseDto> listNew(PageDto pageDto) {
+        PageHelper.startPage(pageDto.getPageNum(),pageDto.getPageSize());
+        CourseExample example = new CourseExample();
+        example.createCriteria().andStatusEqualTo(CourseStatusEnum.PUBLISH.getCode());
+        example.setOrderByClause("created_at desc");
+        List<Course> courseList = courseMapper.selectByExample(example);
+        List<CourseDto> courseDtoList = CopyUtil.copyList(courseList, CourseDto.class);
+        return courseDtoList;
     }
 
     //插入
