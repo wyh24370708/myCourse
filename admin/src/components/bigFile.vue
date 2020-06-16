@@ -113,7 +113,7 @@
         //分片检查,,,上到第几个分片
         shardCheck(formParam){
           let _this = this;
-          _this.$ajax.get(process.env.VUE_APP_SERVER + "/file/admin/shardCheck/"+
+          _this.$ajax.get(process.env.VUE_APP_SERVER + "/file/admin/loadfile/shardCheck/"+
             formParam.key
           ).then((response)=>{
             let resp = response.data;
@@ -157,7 +157,7 @@
             formParam.shard = base64;
 
             // _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/oss-append",
-            _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/uploadBigFile",
+            _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/loadfile/uploadBigFile",
               formParam
             ).then((response) => {
               let resp = response.data;

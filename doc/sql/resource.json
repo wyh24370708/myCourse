@@ -10,7 +10,8 @@
                 "children": [
                     {"id": "010101", "name": "保存", "request": ["/system/admin/user/list", "/system/admin/user/save"]},
                     {"id": "010102", "name": "删除", "request": ["/system/admin/user/delete"]},
-                    {"id": "010103", "name": "重置密码", "request": ["/system/admin/user/save-password"]}
+                    {"id": "010103", "name": "重置密码", "request": ["/system/admin/user/savePwd"]},
+                    {"id": "010104", "name": "编辑角色", "request": ["/system/admin/user/selectRole","/system/admin/user/saveGrantedRole"]}
                 ]
             },
             {
@@ -53,9 +54,10 @@
     {
         "id": "03", "name": "文件管理",
         "children": [{
-            "id": "0301", "name": "文件管理", "page": "file/file",
+            "id": "0301", "name": "文件管理", "page": "file/profile",
             "children": [
-                {"id": "030101", "name": "文件管理", "request": ["/file/admin/file"]}
+                {"id": "030101", "name": "文件管理", "request": ["/file/admin/profile"]},
+                {"id": "030102", "name": "上传文件", "request": ["/file/admin/loadfile"]}
             ]
         }]
     }

@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/loadfile")
 public class UploadController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UploadController.class);

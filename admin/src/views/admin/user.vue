@@ -43,7 +43,8 @@
         <td>
             <!--编辑角色 start-->
             <button type="button" v-on:click="editRole(user)"
-                    class="btn btn-default btn-primary btn-round">
+                    class="btn btn-default btn-primary btn-round"
+                    v-show="hasResource('010104')">
               编辑角色
             </button>&nbsp;
             <!--编辑角色 end-->
