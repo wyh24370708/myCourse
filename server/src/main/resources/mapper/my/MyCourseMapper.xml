@@ -2,6 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.course.server.mapper.my.MyCourseMapper">
+
+    <!--查询所有课程-->
+    <select id="list" resultType="com.course.server.dto.CourseDto">
+        select
+            c.id, c.name, c.summary, c.time, c.price, c.image,c.enroll,
+            c.level, c.charge, c.status, c.sort, c.created_at, c.updated_at, c.teacher_id
+        from course c
+        <if test="pageDto.categoryId != null and pageDto.categoryId != '' ">
+            , course_category cc
+        </if>
+        where 1=1
+        <if test="pageDto.status != null and pageDto.status != '' ">
+            and c.status = #{pageDto.status}
+        </if>
+        <if test="pageDto.categoryId != null and pageDto.categoryId != '' ">
+            and c.id = cc.course_id
+            and cc.category_id = #{pageDto.categoryId}
+        </if>
+        order by sort desc
+</select>
+
+
+
     <!--更新保存时间-->
     <update id="updateTime" >
         UPDATE course c SET `time` =(

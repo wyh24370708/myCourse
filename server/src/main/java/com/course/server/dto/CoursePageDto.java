@@ -7,10 +7,13 @@ public class CoursePageDto extends PageDto {
 
     private String status;
 
+    private String categoryId;
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("CoursePageDto{");
         sb.append("status='").append(status).append('\'');
+        sb.append(", categoryId='").append(categoryId).append('\'');
         sb.append(", pageNum=").append(pageNum);
         sb.append(", PageSize=").append(PageSize);
         sb.append(", totalNum=").append(totalNum);

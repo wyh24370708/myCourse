@@ -65,6 +65,8 @@
         level_1: [],//一级分类
         level_2: [],//二级分类
         categorys: [],
+        level_id_1: "",
+        level_id_2: "",
       }
     },
     mounted() {
@@ -84,6 +86,7 @@
         _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/web/course/list", {
           pageNum: page,
           pageSize: _this.$refs.pagination.size,
+          categoryId: _this.level_id_2 || _this.level_id_1 || "", // 优先取level2Id
         }).then((response) => {
           let resp = response.data;
           console.log("web查询所有课程的结果:{}", resp.content);
@@ -131,6 +134,11 @@
        */
       onClickLevel1(id_1){
         let _this = this;
+        //点击【全部】
+        if (id_1 === "00000000"){
+          _this.level_id_1 = null;
+          _this.level_id_2 = null;
+        }
         //点击一级分类时，显示激活状态,二级分类【不限】按钮要设置激活状态
         $("#category-"+id_1).siblings("a").removeClass("cur");
         $("#category-"+id_1).addClass("cur");
@@ -160,6 +168,9 @@
           }
         }
 
+        //刷新课程列表
+        _this.listCourse(1);
+
       },
 
       /**
@@ -170,6 +181,17 @@
         //点击一级分类时,二级分类【不限】按钮要设置激活状态
         $("#category-" + id_2).siblings("a").removeClass("on");
         $("#category-" + id_2).addClass("on");
+
+        //判断点击 是否 【不限】
+        if (id_2 === '11111111'){
+          _this.level_id_2 = null;
+        }else{
+          _this.level_id_2 = id_2;
+        }
+
+        //刷新课程列表
+        _this.listCourse(1);
+
       }
 
 

@@ -45,24 +45,29 @@ public class CourseServiceImpl implements CourseService {
     public void findAll(CoursePageDto pageDto) {
         //分页
         PageHelper.startPage(pageDto.getPageNum(), pageDto.getPageSize());
-        //查询数据库
-
-        //1. 倒叙排列
-        CourseExample courseExample = new CourseExample();
-        CourseExample.Criteria criteria = courseExample.createCriteria();
-        courseExample.setOrderByClause("sort asc");
-        //判断发布状态
-        if (!StringUtils.isEmpty(pageDto.getStatus())){
-            criteria.andStatusEqualTo(pageDto.getStatus());
-        }
-        //2. 设置total属性
-        List<Course> courseListDB = courseMapper.selectByExample(courseExample);
-        PageInfo<Course> pageInfo = new PageInfo<>(courseListDB);
+        List<CourseDto> courseDtoList = myCourseMapper.list(pageDto);
+        PageInfo<CourseDto> pageInfo = new PageInfo<>(courseDtoList);
         pageDto.setTotalNum(pageInfo.getTotal());
-        
-        //工具类转换
-        List<CourseDto> courseDtoList = CopyUtil.copyList(courseListDB, CourseDto.class);
         pageDto.setList(courseDtoList);
+
+//        //查询数据库
+//
+//        //1. 倒叙排列
+//        CourseExample courseExample = new CourseExample();
+//        CourseExample.Criteria criteria = courseExample.createCriteria();
+//        courseExample.setOrderByClause("sort asc");
+//        //判断发布状态
+//        if (!StringUtils.isEmpty(pageDto.getStatus())){
+//            criteria.andStatusEqualTo(pageDto.getStatus());
+//        }
+//        //2. 设置total属性
+//        List<Course> courseListDB = courseMapper.selectByExample(courseExample);
+//        PageInfo<Course> pageInfo = new PageInfo<>(courseListDB);
+//        pageDto.setTotalNum(pageInfo.getTotal());
+//
+//        //工具类转换
+//        List<CourseDto> courseDtoList = CopyUtil.copyList(courseListDB, CourseDto.class);
+//        pageDto.setList(courseDtoList);
     }
 
     /**
