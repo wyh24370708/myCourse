@@ -31,8 +31,9 @@
           </div>
           <!--课程 end-->
 
-          <!--课程内容 & 章节 start-->
+          <!--课程内容 & 章节 & 讲师 start-->
           <div class="row">
+            <!--课程内容 & 章节 start-->
             <div class="col-sm-9">
               <!--Tabs-->
               <ul class="nav nav-tabs">
@@ -47,11 +48,27 @@
               <!--tab content-->
               <div class="tab-content">
                 <div class="tab-pane active" id="info" v-html="course.courseContent"></div>
-                <div class="tab-pane " id="chapter"></div>
+                <div class="tab-pane" id="chapter"></div>
               </div>
             </div>
+            <!--课程内容 & 章节 end-->
+
+            <!--讲师信息 start -->
+            <div class="col-md-3">
+              <div class="card" style="width: 18rem;">
+                <img v-bind:src="teacher.image" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">{{teacher.name}}</h5>
+                  <p class="card-text">{{teacher.position}}</p>
+                  <p class="card-text">{{teacher.motto}}</p>
+                  <a href="#" class="btn btn-primary">讲师所有课程(未做)</a>
+                </div>
+              </div>
+            </div>
+            <!--讲师信息 end -->
           </div>
-          <!--课程内容 & 章节 end-->
+          <!--课程内容 & 章节 讲师 end-->
+
         </div>
       </div>
     </main>
