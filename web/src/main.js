@@ -47,6 +47,19 @@ Object.keys(filter).forEach(key => {
   Vue.filter(key, filter[key])
 });
 
+/**
+ * axios拦截器
+ */
+Axios.interceptors.request.use((config)=>{
+  console.log("请求:",config);
+  return config;
+},error => {});
+Axios.interceptors.response.use((response)=>{
+  console.log("响应:",response);
+  return response;
+},error => {});
+
+
 new Vue({
   router,
   render: h => h(App),
