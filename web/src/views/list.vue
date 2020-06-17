@@ -64,6 +64,7 @@
         courses:[],//所有课程
         level_1: [],//一级分类
         level_2: [],//二级分类
+        categorys: [],
       }
     },
     mounted() {
@@ -110,6 +111,7 @@
           //then异步执行,当.then()前的方法执行完后再执行then()内部的程序，这样就避免了，数据没获取到等的问题。
           console.log("查询分类结果:", resp.content);
           let categorys = resp.content;//返回真实数据
+          _this.categorys = categorys;
 
           //将所有的记录格式化成树形结构
           _this.level_1 = [];
@@ -117,16 +119,6 @@
             let categorySingle = categorys[i];//i
             if (categorySingle.parent === '00000000') {
               _this.level_1.push(categorySingle);
-              for (let j = 0; j < categorys.length; j++) {
-                let child = categorys[j];//j
-                if (child.parent === categorySingle.id) {
-                  if (Tool.isEmpty(categorySingle.children)) {
-                    categorySingle.children = [];
-                  }
-                  categorySingle.children.push(child);
-                  console.log(categorySingle.children);
-                }
-              }
             }else{
               _this.level_2.push(categorySingle);
             }
@@ -137,14 +129,43 @@
       /**
        * 【点击一级分类】
        */
-      onClickLevel1(id){
+      onClickLevel1(id_1){
         let _this = this;
+        //点击一级分类时，显示激活状态,二级分类【不限】按钮要设置激活状态
+        $("#category-"+id_1).siblings("a").removeClass("cur");
+        $("#category-"+id_1).addClass("cur");
+        //点击一级分类时,二级分类【不限】按钮要设置激活状态
+        $("#category-11111111").siblings("a").removeClass("on");
+        $("#category-11111111").addClass("on");
+        //二级分类中的内容清空
+        _this.level_2 = [];
+        let categorys = _this.categorys;
+        //点击【全部】,显示所有二级分类
+        if (id_1 === '00000000'){
+          for (let i = 0; i < categorys.length; i++) {
+            let category_two = categorys[i];
+            if (categorys[i].parent !== "00000000"){
+              _this.level_2.push(category_two);
+            }
+          }
+        }
+
+        //点击其他一级分类,放入所属一级分类的内容
+        if (id_1 !== '00000000'){
+          for (let i = 0; i < categorys.length; i++) {
+            let category_two = categorys[i];
+            if (categorys[i].parent == id_1){
+              _this.level_2.push(category_two);
+            }
+          }
+        }
+
       },
 
       /**
        * 【点击二级分类】
        */
-      onClickLevel2(id){
+      onClickLevel2(id_2){
         let _this = this;
       }
 
