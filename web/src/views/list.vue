@@ -18,7 +18,7 @@
         <div class="row">
           <div class="col-md-12">
             <a v-on:click="onClickLevel2('11111111')" id="category-11111111" href="javascript:;" class="on">不限</a>
-            <a v-for="o in level_2" v-on:click="onClickLevel1(o.id)" v-bind:id="'category-' + o.id" href="javascript:;">{{o.name}}</a>
+            <a v-for="o in level_2" v-on:click="onClickLevel2(o.id)" v-bind:id="'category-' + o.id" href="javascript:;">{{o.name}}</a>
 
             <div style="clear:both"></div>
           </div>
@@ -167,6 +167,9 @@
        */
       onClickLevel2(id_2){
         let _this = this;
+        //点击一级分类时,二级分类【不限】按钮要设置激活状态
+        $("#category-" + id_2).siblings("a").removeClass("on");
+        $("#category-" + id_2).addClass("on");
       }
 
 
