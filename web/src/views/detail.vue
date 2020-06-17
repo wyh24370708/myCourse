@@ -3,6 +3,7 @@
     <main role="main">
       <div class="album py-5 bg-light">
         <div class="container">
+          <!--课程详情 start-->
           <div class="row course-head">
             <!--课程封面 start-->
             <div class="col-sm-6" id="cover-video-div">
@@ -28,6 +29,29 @@
             </div>
             <!--详情 end-->
           </div>
+          <!--课程 end-->
+
+          <!--课程内容 & 章节 start-->
+          <div class="row">
+            <div class="col-sm-9">
+              <!--Tabs-->
+              <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a class="nav-link active" href="#info" data-toggle="tab">课程介绍</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#chapter" data-toggle="tab">章节目录</a>
+                </li>
+              </ul>
+
+              <!--tab content-->
+              <div class="tab-content">
+                <div class="tab-pane active" id="info" v-html="course.courseContent"></div>
+                <div class="tab-pane " id="chapter"></div>
+              </div>
+            </div>
+          </div>
+          <!--课程内容 & 章节 end-->
         </div>
       </div>
     </main>

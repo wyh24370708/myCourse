@@ -94,7 +94,7 @@ public class CourseDto {
     /**
      * 课程内容
      */
-    private String CourseContent;
+    private String courseContent;
     /**
      * 大章信息
      */
@@ -127,7 +127,7 @@ public class CourseDto {
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", categorys=").append(categorys);
         sb.append(", teacherId='").append(teacherId).append('\'');
-        sb.append(", CourseContent='").append(CourseContent).append('\'');
+        sb.append(", CourseContent='").append(courseContent).append('\'');
         sb.append(", chapters=").append(chapters);
         sb.append(", sections=").append(sections);
         sb.append(", teacher=").append(teacher);

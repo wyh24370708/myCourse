@@ -198,7 +198,7 @@ public class CourseServiceImpl implements CourseService {
         //查找课程内容
         Course_content courseContent = course_contentMapper.selectByPrimaryKey(courseId);
         if (courseContent!=null){
-            courseContent.setContent(courseContent.getContent());
+            courseDto.setCourseContent(courseContent.getContent());
         }
         //查询大章内容
         List<ChapterDto> chapterDtos = chapterService.findChapterByCourseId(courseId);
