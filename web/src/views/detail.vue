@@ -48,7 +48,30 @@
               <!--tab content-->
               <div class="tab-content">
                 <div class="tab-pane active" id="info" v-html="course.courseContent"></div>
-                <div class="tab-pane" id="chapter"></div>
+                <div class="tab-pane" id="chapter">
+                  <div v-for="chapter in chapters" class="chapter">
+                    <div class="chapter-chapter">
+                      <span class="folded-button">{{chapter.name}}</span>
+                    </div>
+                    <div>
+                      <table class="table table-striped">
+                        <tr v-for="(sec, index) in chapter.sections" class="chapter-section-tr">
+                          <td class="col-sm-8 col-xs-12">
+                            <div class="section-title">
+                              <i class="fa fa-video-camera d-none d-sm-inline"></i>&nbsp;&nbsp;
+                              <span class="d-none d-sm-inline">第{{index+1}}节&nbsp;&nbsp;</span>
+                              {{sec.title}}
+                              <span v-show="sec.charge !== SECTION_CHARGE.CHARGE.key" class="badge badge-primary hidden-xs">免费</span>
+                            </div>
+                          </td>
+                          <td class="col-sm-1 text-right">
+                            <span class="badge badge-primary">{{sec.time | formatSecond}}</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <!--课程内容 & 章节 end-->
@@ -85,7 +108,8 @@
         teacher:{},
         chapters:[],
         sections:[],
-        COURSE_LEVEL: COURSE_LEVEL
+        COURSE_LEVEL: COURSE_LEVEL,
+        SECTION_CHARGE: SECTION_CHARGE,
       }
     },
     mounted() {
@@ -103,9 +127,22 @@
           let resp = response.data;
           if (resp.success){
             _this.course = resp.content;
-            _this.teacher = resp.content.teacher;
-            _this.chapters = resp.content.chapters;
-            _this.sections = resp.content.sections;
+            _this.teacher = resp.content.teacher || {};
+            _this.chapters = resp.content.chapters || {};
+            _this.sections = resp.content.sections || {};
+
+            //把小节放进大章
+            for (let i = 0; i < _this.chapters.length; i++) {
+              let chapter = _this.chapters[i];
+              chapter.sections = [];
+              for (let j = 0; j < _this.sections.length; j++) {
+                let section = _this.sections[j];
+                if (section.chapterId === chapter.id){
+                  chapter.sections.push(section);
+                }
+              }
+            }
+
           }
         })
       }
@@ -139,6 +176,49 @@
    @media (max-width: 700px) {
      .course-head h1 {
        font-size: 1.5rem;
+     }
+   }
+
+
+   /* 章节列表 */
+   .chapter {
+     padding-bottom: 1.25rem;
+   }
+   .chapter-chapter {
+     font-size: 1.25rem;
+     padding: 1.25rem;
+     background-color: #23527c;
+     color: white;
+   }
+   .chapter-section-tr {
+     font-size: 1rem;
+   }
+   .chapter-section-tr td{
+     padding: 1rem 1.25rem;
+     vertical-align: middle;
+   }
+   /*鼠标手势*/
+   .chapter-section-tr td .section-title{
+     color: #555;
+   }
+
+   .chapter-section-tr td .section-title:hover{
+     color: #23527c;
+     font-weight: bolder;
+     cursor: pointer;
+   }
+
+   /*行头小图标*/
+   .chapter-section-tr td .section-title i{
+     color: #2a6496;
+   }
+
+   @media (max-width: 700px) {
+     .chapter-chapter {
+       font-size: 1.2rem;
+     }
+     .chapter-section-tr {
+       font-size: 0.9rem;
      }
    }
 
