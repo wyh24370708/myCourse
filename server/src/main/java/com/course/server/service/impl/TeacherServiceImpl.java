@@ -84,6 +84,12 @@ public class TeacherServiceImpl implements TeacherService {
         return teacherDtoList;
     }
 
+    @Override
+    public TeacherDto findTeacherById(String id) {
+        Teacher teacherDB = teacherMapper.selectByPrimaryKey(id);
+        return CopyUtil.copy(teacherDB,TeacherDto.class);
+    }
+
     private void insert(Teacher teacher) {
         //设定新增的id的uuid值
         teacher.setId(UuidUtil.getShortUuid());

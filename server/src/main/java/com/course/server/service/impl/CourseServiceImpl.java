@@ -3,13 +3,13 @@ package com.course.server.service.impl;
 import com.course.server.domain.Course;
 import com.course.server.domain.CourseExample;
 import com.course.server.domain.Course_content;
+import com.course.server.domain.Teacher;
 import com.course.server.dto.*;
 import com.course.server.enums.CourseStatusEnum;
 import com.course.server.mapper.CourseMapper;
 import com.course.server.mapper.Course_contentMapper;
 import com.course.server.mapper.my.MyCourseMapper;
-import com.course.server.service.CourseService;
-import com.course.server.service.Course_categoryService;
+import com.course.server.service.*;
 import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
@@ -36,6 +36,13 @@ public class CourseServiceImpl implements CourseService {
     private Course_categoryService course_categoryService;
     @Resource
     private Course_contentMapper course_contentMapper;
+    @Resource
+    private ChapterService chapterService;
+    @Resource
+    private SectionService sectionService;
+    @Resource
+    private TeacherService teacherService;
+
 
     /**
      * 查询所有
@@ -173,6 +180,43 @@ public class CourseServiceImpl implements CourseService {
         List<Course> courseList = courseMapper.selectByExample(example);
         List<CourseDto> courseDtoList = CopyUtil.copyList(courseList, CourseDto.class);
         return courseDtoList;
+    }
+
+    /**
+     * web
+     * 查找课程详情,包括大章,小节,讲师,课程内容
+     */
+    @Override
+    public CourseDto findCourse(String courseId) {
+        //查询课程
+        Course courseDB = courseMapper.selectByPrimaryKey(courseId);
+        if (courseDB == null || !courseDB.getStatus().equals(CourseStatusEnum.PUBLISH.getCode())){
+            return null;
+        }
+        CourseDto courseDto = CopyUtil.copy(courseDB, CourseDto.class);
+
+        //查找课程内容
+        Course_content courseContent = course_contentMapper.selectByPrimaryKey(courseId);
+        if (courseContent!=null){
+            courseContent.setContent(courseContent.getContent());
+        }
+        //查询大章内容
+        List<ChapterDto> chapterDtos = chapterService.findChapterByCourseId(courseId);
+        if (chapterDtos != null){
+            courseDto.setChapters(chapterDtos);
+        }
+        //查询小节内容
+        List<SectionDto> sectionDtos = sectionService.findSectionByCourseId(courseId);
+        if (sectionDtos != null){
+            courseDto.setSections(sectionDtos);
+        }
+        //查询讲师内容
+        TeacherDto teacherDto = teacherService.findTeacherById(courseDto.getTeacherId());
+        if (teacherDto != null){
+            courseDto.setTeacher(teacherDto);
+        }
+
+        return courseDto;
     }
 
     //插入

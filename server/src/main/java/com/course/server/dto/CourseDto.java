@@ -4,8 +4,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import com.course.server.domain.Section;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 
+@Data
 public class CourseDto {
 
     /**
@@ -87,125 +90,24 @@ public class CourseDto {
      */
     private String teacherId;
 
-    public String getTeacherId() {
-        return teacherId;
-    }
 
-    public void setTeacherId(String teacherId) {
-        this.teacherId = teacherId;
-    }
+    /**
+     * 课程内容
+     */
+    private String CourseContent;
+    /**
+     * 大章信息
+     */
+    private List<ChapterDto> chapters;
+    /**
+     * 小节信息
+     */
+    private List<SectionDto> sections;
+    /**
+     * 讲师信息
+     */
+    private TeacherDto teacher;
 
-    public List<CategoryDto> getCategorys() {
-        return categorys;
-    }
-
-    public void setCategorys(List<CategoryDto> categorys) {
-        this.categorys = categorys;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
-
-    public Integer getTime() {
-        return time;
-    }
-
-    public void setTime(Integer time) {
-        this.time = time;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
-    public String getCharge() {
-        return charge;
-    }
-
-    public void setCharge(String charge) {
-        this.charge = charge;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Integer getEnroll() {
-        return enroll;
-    }
-
-    public void setEnroll(Integer enroll) {
-        this.enroll = enroll;
-    }
-
-    public Integer getSort() {
-        return sort;
-    }
-
-    public void setSort(Integer sort) {
-        this.sort = sort;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 
     @Override
     public String toString() {
@@ -225,6 +127,10 @@ public class CourseDto {
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", categorys=").append(categorys);
         sb.append(", teacherId='").append(teacherId).append('\'');
+        sb.append(", CourseContent='").append(CourseContent).append('\'');
+        sb.append(", chapters=").append(chapters);
+        sb.append(", sections=").append(sections);
+        sb.append(", teacher=").append(teacher);
         sb.append('}');
         return sb.toString();
     }

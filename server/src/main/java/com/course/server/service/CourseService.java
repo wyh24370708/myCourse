@@ -51,4 +51,10 @@ public interface CourseService {
      * @return
      */
     List<CourseDto> listNew(PageDto pageDto);
+
+    /**
+     * web
+     * 查找课程详情,包括大章,小节,讲师,课程内容
+     */
+    CourseDto findCourse(String courseId);
 }

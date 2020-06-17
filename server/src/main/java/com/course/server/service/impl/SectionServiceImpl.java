@@ -94,6 +94,19 @@ public class SectionServiceImpl implements SectionService {
         sectionMapper.deleteByPrimaryKey(id);
     }
 
+    /**
+     * 查询小节内容
+     * @param courseId
+     * @return
+     */
+    @Override
+    public List<SectionDto> findSectionByCourseId(String courseId) {
+        SectionExample example = new SectionExample();
+        example.createCriteria().andCourseIdEqualTo(courseId);
+        List<Section> sectionListDB = sectionMapper.selectByExample(example);
+        return CopyUtil.copyList(sectionListDB,SectionDto.class);
+    }
+
     private void insert(Section section) {
         Date date = new Date();
         section.setCreatedAt(date);

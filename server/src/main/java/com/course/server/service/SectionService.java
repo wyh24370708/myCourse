@@ -25,5 +25,11 @@ public interface SectionService {
      * @param id
      */
     void delete(String id);
-    
+
+    /**
+     * 查询小节内容
+     * @param courseId
+     * @return
+     */
+    List<SectionDto> findSectionByCourseId(String courseId);
 }

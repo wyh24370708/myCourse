@@ -51,4 +51,16 @@ public class CourseWebController {
         return responseDto;
     }
 
+    /**
+     * 查找课程详情,包括大章,小节,讲师,课程内容
+     */
+    @GetMapping("/find/{id}")
+    public ResponseDto findCourse(@PathVariable("id") String courseId){
+        ResponseDto responseDto = new ResponseDto();
+        CourseDto courseDto = courseService.findCourse(courseId);
+        responseDto.setContent(courseDto);
+        return responseDto;
+    }
+
+
 }

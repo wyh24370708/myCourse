@@ -29,4 +29,11 @@ public interface TeacherService {
      * 查询所有 不分页
      */
     List<TeacherDto> all();
+
+    /**]
+     * 查询单个讲师的信息
+     * @param id
+     * @return
+     */
+    TeacherDto findTeacherById(String id);
 }

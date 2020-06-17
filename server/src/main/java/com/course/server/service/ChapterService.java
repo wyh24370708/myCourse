@@ -1,9 +1,8 @@
 package com.course.server.service;
 
         import com.course.server.domain.Chapter;
-        import com.course.server.dto.ChapterDto;
-        import com.course.server.dto.ChapterPageDto;
-        import com.course.server.dto.PageDto;
+        import com.course.server.domain.Teacher;
+        import com.course.server.dto.*;
 
         import java.util.List;
 
@@ -25,4 +24,9 @@ public interface ChapterService {
      * @param id
      */
     void delete(String id);
+
+    /**
+     *查询大章内容
+     */
+    List<ChapterDto> findChapterByCourseId(String courseId);
 }

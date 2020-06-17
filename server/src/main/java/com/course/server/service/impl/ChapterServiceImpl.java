@@ -87,6 +87,19 @@ public class ChapterServiceImpl implements ChapterService {
         chapterMapper.deleteByPrimaryKey(id);
     }
 
+    /**
+     * 查询大章内容
+     * @param courseId
+     * @return
+     */
+    @Override
+    public List<ChapterDto> findChapterByCourseId(String courseId) {
+        ChapterExample example = new ChapterExample();
+        example.createCriteria().andCourseIdEqualTo(courseId);
+        List<Chapter> chapterListDB = chapterMapper.selectByExample(example);
+        return CopyUtil.copyList(chapterListDB,ChapterDto.class);
+    }
+
     private void insert(Chapter chapter) {
         //设定新增的id的uuid值
         chapter.setId(UuidUtil.getShortUuid());
