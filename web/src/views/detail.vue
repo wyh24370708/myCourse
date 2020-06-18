@@ -50,11 +50,26 @@
                 <div class="tab-pane" id="info" v-html="course.courseContent"></div>
                 <div class="tab-pane active" id="chapter">
                   <div v-for="(chapter,chapter_index) in chapters" class="chapter">
-                    <div class="chapter-chapter">
+                    <div class="chapter-chapter" v-on:click="doFolded(chapter,chapter_index)">
                       <span class="span1">第&nbsp;{{chapter_index+1}}&nbsp;章 </span>
                       <span class="folded-button">{{chapter.name}}</span>
+                      <span class="pull-right">
+                        <!-- "+"图标 -->
+                        <svg class="bi bi-plus-square" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                             v-show="chapter.folded">
+                          <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
+                          <path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
+                          <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                        </svg>
+                        <!-- "-"图标   -->
+                        <svg class="bi bi-dash-square" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                          v-show="!chapter.folded">
+                          <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                          <path fill-rule="evenodd" d="M3.5 8a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.5-.5z"/>
+                        </svg>
+                      </span>
                     </div>
-                    <div>
+                    <div v-show="!chapter.folded">
                       <table class="table table-striped">
                         <tr v-for="(sec, section_index) in chapter.sections" class="chapter-section-tr">
                           <td class="col-sm-8 col-xs-12">
@@ -147,6 +162,17 @@
 
           }
         })
+      },
+
+      /**
+       * 展开收缩一个章节
+       */
+      doFolded(chapter,i){
+        let _this = this;
+        chapter.folded = !chapter.folded;
+        // 在v-for里写v-show，只修改属性不起作用，需要$set
+        // 重新啊chapter放进数组chapters里面,放在i位置,让数组重新监听数组元素属性的变化
+        _this.$set(_this.chapters, i, chapter);
       }
     }
   }
@@ -192,6 +218,7 @@
      background-color: #23527c;
      color: white;
      margin-top: 1rem;
+     cursor: pointer;/*手势图标,来展开收缩章节*/
    }
 
    .chapter-chapter .span1{
