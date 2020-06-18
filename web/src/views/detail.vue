@@ -35,20 +35,20 @@
           <div class="row">
             <!--课程内容 & 章节 start-->
             <div class="col-sm-9">
-              <!--Tabs-->
+              <!--Tabs  active表示激活,data-toggle=tab表示切换tab的激活状态-->
               <ul class="nav nav-tabs">
                 <li class="nav-item">
-                  <a class="nav-link active" href="#info" data-toggle="tab">课程介绍</a>
+                  <a class="nav-link" href="#info" data-toggle="tab">课程介绍</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#chapter" data-toggle="tab">章节目录</a>
+                  <a class="nav-link active" href="#chapter" data-toggle="tab">章节目录</a>
                 </li>
               </ul>
 
               <!--tab content-->
               <div class="tab-content">
-                <div class="tab-pane active" id="info" v-html="course.courseContent"></div>
-                <div class="tab-pane" id="chapter">
+                <div class="tab-pane" id="info" v-html="course.courseContent"></div>
+                <div class="tab-pane active" id="chapter">
                   <div v-for="chapter in chapters" class="chapter">
                     <div class="chapter-chapter">
                       <span class="folded-button">{{chapter.name}}</span>
@@ -59,6 +59,7 @@
                           <td class="col-sm-8 col-xs-12">
                             <div class="section-title">
                               <i class="fa fa-video-camera d-none d-sm-inline"></i>&nbsp;&nbsp;
+                              <!--d-none 等价于 dispaly none显示  sm分辨率时在显示-->
                               <span class="d-none d-sm-inline">第{{index+1}}节&nbsp;&nbsp;</span>
                               {{sec.title}}
                               <span v-show="sec.charge !== SECTION_CHARGE.CHARGE.key" class="badge badge-primary hidden-xs">免费</span>
@@ -186,15 +187,16 @@
    }
    .chapter-chapter {
      font-size: 1.25rem;
-     padding: 1.25rem;
+     padding: 0.8rem;
      background-color: #23527c;
      color: white;
+     margin-top: 1rem;
    }
    .chapter-section-tr {
      font-size: 1rem;
    }
    .chapter-section-tr td{
-     padding: 1rem 1.25rem;
+     padding: 1rem 1.25rem 0.6rem;
      vertical-align: middle;
    }
    /*鼠标手势*/
@@ -205,7 +207,7 @@
    .chapter-section-tr td .section-title:hover{
      color: #23527c;
      font-weight: bolder;
-     cursor: pointer;
+     cursor: pointer;/*鼠标手势*/
    }
 
    /*行头小图标*/
