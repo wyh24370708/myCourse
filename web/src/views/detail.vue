@@ -49,18 +49,19 @@
               <div class="tab-content">
                 <div class="tab-pane" id="info" v-html="course.courseContent"></div>
                 <div class="tab-pane active" id="chapter">
-                  <div v-for="chapter in chapters" class="chapter">
+                  <div v-for="(chapter,chapter_index) in chapters" class="chapter">
                     <div class="chapter-chapter">
+                      <span class="span1">第&nbsp;{{chapter_index+1}}&nbsp;章 </span>
                       <span class="folded-button">{{chapter.name}}</span>
                     </div>
                     <div>
                       <table class="table table-striped">
-                        <tr v-for="(sec, index) in chapter.sections" class="chapter-section-tr">
+                        <tr v-for="(sec, section_index) in chapter.sections" class="chapter-section-tr">
                           <td class="col-sm-8 col-xs-12">
                             <div class="section-title">
                               <i class="fa fa-video-camera d-none d-sm-inline"></i>&nbsp;&nbsp;
                               <!--d-none 等价于 dispaly none显示  sm分辨率时在显示-->
-                              <span class="d-none d-sm-inline">第{{index+1}}节&nbsp;&nbsp;</span>
+                              <span class="d-none d-sm-inline">{{chapter_index+1}}.{{section_index+1}}&nbsp;&nbsp;</span>
                               {{sec.title}}
                               <span v-show="sec.charge !== SECTION_CHARGE.CHARGE.key" class="badge badge-primary hidden-xs">免费</span>
                             </div>
@@ -191,6 +192,10 @@
      background-color: #23527c;
      color: white;
      margin-top: 1rem;
+   }
+
+   .chapter-chapter .span1{
+     padding-right: 1.5rem;
    }
    .chapter-section-tr {
      font-size: 1rem;
