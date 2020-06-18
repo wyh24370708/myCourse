@@ -191,7 +191,7 @@
                     <label for="inputSort" class="col-sm-2 control-label">顺序</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control" id="inputSort"
-                             v-model="section.sort" >
+                             v-model="section.sort" disabled>
                     </div>
                   </div>
               <!-- freemaker生成 end -->
@@ -289,7 +289,9 @@
         //弹出新增的模态框
         add() {
             let _this = this;
-            _this.section = {};//清除上次编辑的内容
+            _this.section = {
+              sort: _this.$refs.pagination.total + 1
+            };//清除上次编辑的内容
             $("#form-modal").modal({backdrop:'static'});//点击模态框以外的地方,模态框不关闭
             $("#form-modal").modal("show");//显示模态框
         },
